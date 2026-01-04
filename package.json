@@ -6,7 +6,9 @@
     "build": "meteor build ../output/vue --directory",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "type-check": "vue-tsc --noEmit",
+    "type-check:watch": "vue-tsc --noEmit --watch"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.5",
@@ -19,17 +21,21 @@
   "meteor": {
     "modern": true,
     "mainModule": {
-      "client": "client/entry-meteor.js",
-      "server": "server/entry-meteor.js"
+      "client": "client/entry-meteor.ts",
+      "server": "server/entry-meteor.ts"
     },
-    "testModule": "tests/main.js"
+    "testModule": "tests/main.ts"
   },
   "devDependencies": {
-    "@types/meteor": "^2.9.7",
     "@tailwindcss/vite": "^4.1.11",
+    "@types/meteor": "^2.9.7",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "meteor-vite": "^3.2.1",
     "tailwindcss": "^4.1.11",
-    "vite": "^6.0.11"
+    "typescript": "^5.9.3",
+    "vite": "^6.0.11",
+    "vue-tsc": "^3.2.1"
   }
 }

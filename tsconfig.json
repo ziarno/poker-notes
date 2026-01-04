@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    // Language & Environment
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // Meteor-specific
+    "types": ["meteor", "node", "mocha"],
+    "skipLibCheck": true,
+
+    // Vue-specific
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+
+    // Strict Type Checking
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+
+    // Module Resolution
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    // Output
+    "noEmit": true,
+    "sourceMap": true,
+
+    // Path Mapping (for Meteor absolute imports)
+    "baseUrl": ".",
+    "paths": {
+      "/imports/*": ["./imports/*"]
+    }
+  },
+  "include": [
+    "client/**/*",
+    "server/**/*",
+    "imports/**/*",
+    "tests/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".meteor/local"
+  ],
+  "vueCompilerOptions": {
+    "target": 3.3
+  }
+}

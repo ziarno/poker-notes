@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Hello from '../components/Hello.vue'
 import Info from '../components/Info.vue'
 </script>

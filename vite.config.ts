@@ -5,11 +5,16 @@ import { meteor } from 'meteor-vite/plugin';
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      script: {
+        defineModel: true,
+        propsDestructure: true,
+      },
+    }),
     tailwindcss(),
     meteor({
-      clientEntry: 'client/main.js',
-      serverEntry: 'server/main.js',
+      clientEntry: 'client/main.ts',
+      serverEntry: 'server/main.ts',
       enableExperimentalFeatures: true,
       stubValidation: {
         ignorePackages: ['meteor/mongo'],
@@ -18,5 +23,10 @@ export default defineConfig({
   ],
   optimizeDeps: {
     exclude: ['vue-meteor-tracker'],
+  },
+  resolve: {
+    alias: {
+      '/imports': '/imports',
+    },
   },
 });
