@@ -1,6 +1,18 @@
 /// <reference types="vite/client" />
 /// <reference types="@types/meteor" />
 
+// Vite plugin type declarations
+declare module '@tailwindcss/vite' {
+  import type { Plugin } from 'vite'
+  const tailwindcss: () => Plugin
+  export default tailwindcss
+}
+
+declare module 'meteor-vite/plugin' {
+  import type { Plugin } from 'vite'
+  export function meteor(options?: any): Plugin
+}
+
 // Vue SFC module declarations
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
