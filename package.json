@@ -21,8 +21,8 @@
   "meteor": {
     "modern": true,
     "mainModule": {
-      "client": "client/entry-meteor.ts",
-      "server": "server/entry-meteor.ts"
+      "client": "client/entry-meteor-client.ts",
+      "server": "server/entry-meteor-server.ts"
     },
     "testModule": "tests/main.ts"
   },
