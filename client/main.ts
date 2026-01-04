@@ -1,1 +1,1 @@
-import '../imports/ui/main'
+import '../imports/startup/main-client'

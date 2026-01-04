@@ -1,10 +1,13 @@
+import '../api/methods'
+import '../api/collections'
+
 import { Meteor } from 'meteor/meteor'
 import { createApp } from 'vue'
 import { VueMeteor } from 'vue-meteor-tracker'
 
-import './main.css'
-import App from './App.vue'
-import { router } from './router'
+import '../ui/main.css'
+import App from '../ui/App.vue'
+import { router } from '../ui/router'
 
 Meteor.startup(() => {
   const app = createApp(App)
