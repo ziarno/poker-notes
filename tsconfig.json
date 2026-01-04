@@ -38,16 +38,8 @@
       "/imports/*": ["./imports/*"]
     }
   },
-  "include": [
-    "client/**/*",
-    "server/**/*",
-    "imports/**/*",
-    "tests/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    ".meteor/local"
-  ],
+  "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*"],
+  "exclude": ["node_modules", ".meteor/local"],
   "vueCompilerOptions": {
     "target": 3.3
   }

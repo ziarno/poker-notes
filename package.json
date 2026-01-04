@@ -8,7 +8,9 @@
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
     "type-check": "vue-tsc --noEmit",
-    "type-check:watch": "vue-tsc --noEmit --watch"
+    "type-check:watch": "vue-tsc --noEmit --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@babel/runtime": "^7.23.5",
@@ -33,6 +35,7 @@
     "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "meteor-vite": "^3.2.1",
+    "prettier": "^3.7.4",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.3",
     "vite": "^6.0.11",

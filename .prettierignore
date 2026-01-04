@@ -1,0 +1,24 @@
+# Dependencies
+node_modules
+
+# Meteor
+.meteor/local
+.meteor/meteorite
+
+# Build outputs
+dist
+build
+.output
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode
+.idea
+
+# Package lock files
+package-lock.json
