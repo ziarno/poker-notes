@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="p-2">
-    <router-view />
-  </div>
+  <p>New game</p>
 </template>
+
+<style scoped></style>

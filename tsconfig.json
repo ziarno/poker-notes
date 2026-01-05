@@ -8,7 +8,7 @@
     "moduleResolution": "bundler",
 
     // Meteor-specific
-    "types": ["meteor", "node", "mocha"],
+    "types": ["meteor", "node", "mocha", "@modyfi/vite-plugin-yaml/modules"],
     "skipLibCheck": true,
 
     // Vue-specific

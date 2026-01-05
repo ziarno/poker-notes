@@ -2,6 +2,7 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 import { meteor } from 'meteor-vite/plugin'
+import ViteYaml from '@modyfi/vite-plugin-yaml'
 
 export default defineConfig({
   plugins: [
@@ -12,6 +13,7 @@ export default defineConfig({
       },
     }),
     tailwindcss(),
+    ViteYaml(),
     meteor({
       clientEntry: 'client/main.ts',
       serverEntry: 'server/main.ts',
