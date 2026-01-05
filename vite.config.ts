@@ -1,8 +1,8 @@
-import vue from '@vitejs/plugin-vue'
-import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'vite'
-import { meteor } from 'meteor-vite/plugin'
 import ViteYaml from '@modyfi/vite-plugin-yaml'
+import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
+import { meteor } from 'meteor-vite/plugin'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [

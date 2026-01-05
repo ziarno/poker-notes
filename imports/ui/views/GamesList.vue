@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { autorun, subscribe } from 'vue-meteor-tracker'
+
 import { GamesCollection } from '@/api/collections'
 
 subscribe('games')

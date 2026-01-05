@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import GamesList from '@/ui/views/GamesList.vue'
-import GameDetails from '@/ui/views/GameDetails.vue'
+import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+
 import CreateNewGame from '@/ui/views/CreateNewGame.vue'
+import GameDetails from '@/ui/views/GameDetails.vue'
+import GamesList from '@/ui/views/GamesList.vue'
 
 const routes: RouteRecordRaw[] = [
   {

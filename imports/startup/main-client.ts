@@ -1,15 +1,14 @@
-import '../api/methods'
-import '../api/collections'
-
 import { Meteor } from 'meteor/meteor'
 import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
 import { VueMeteor } from 'vue-meteor-tracker'
 
-import '../ui/main.css'
-import App from '../ui/App.vue'
-import { router } from '../ui/router'
-import { createI18n } from 'vue-i18n'
+import '@/api/collections'
+import '@/api/methods'
 import { Langs, pl } from '@/lang'
+import App from '@/ui/App.vue'
+import '@/ui/main.css'
+import { router } from '@/ui/router'
 
 Meteor.startup(() => {
   const app = createApp(App)

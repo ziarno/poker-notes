@@ -1,7 +1,8 @@
+import { GamesCollection } from '@/api/collections'
+
+import '../api/collections'
 import '../api/methods'
 import '../api/publications'
-import '../api/collections'
-import { GamesCollection } from '@/api/collections'
 
 Meteor.startup(async () => {
   const games = await GamesCollection.find({}).fetchAsync()
