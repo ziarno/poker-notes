@@ -35,7 +35,7 @@
     // Path Mapping (for Meteor absolute imports)
     "baseUrl": ".",
     "paths": {
-      "/imports/*": ["./imports/*"]
+      "@/*": ["./imports/*"]
     }
   },
   "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*"],

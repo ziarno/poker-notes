@@ -9,7 +9,7 @@ import '../ui/main.css'
 import App from '../ui/App.vue'
 import { router } from '../ui/router'
 import { createI18n } from 'vue-i18n'
-import { Langs, pl } from '/imports/lang'
+import { Langs, pl } from '@/lang'
 
 Meteor.startup(() => {
   const app = createApp(App)

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
-import type { Link } from '/imports/types'
+import type { Link } from '@/types'
 
 export const LinksCollection: Mongo.Collection<Link> =
   new Mongo.Collection<Link>('links')

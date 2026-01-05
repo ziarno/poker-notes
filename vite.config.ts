@@ -28,7 +28,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '/imports': '/imports',
+      '@': '/imports',
     },
   },
 })

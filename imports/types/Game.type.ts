@@ -1,5 +1,5 @@
-import { Player } from '/imports/types/Player.type.ts'
-import { Transfer } from '/imports/types/Transfer.type.ts'
+import { Player } from '@/types/Player.type.ts'
+import { Transfer } from '@/types/Transfer.type.ts'
 
 export interface Game {
   _id?: string
