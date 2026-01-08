@@ -29,6 +29,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/imports',
+      '@volt': '/src/volt',
     },
   },
 })

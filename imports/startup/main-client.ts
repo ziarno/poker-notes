@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor'
+import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { VueMeteor } from 'vue-meteor-tracker'
@@ -16,7 +17,11 @@ Meteor.startup(() => {
     locale: pl._locale,
     messages: { pl },
   })
+
   app.use(i18n)
+  app.use(PrimeVue, {
+    unstyled: true,
+  })
   app.use(router)
   app.use(VueMeteor)
   app.mount('#app')
