@@ -6,3 +6,7 @@ import { Game } from '@/types/Game.type.ts'
 Meteor.publish('games', function (limit = 20): Mongo.Cursor<Game> {
   return GamesCollection.find({}, { limit })
 })
+
+Meteor.publish('game', function (id: string) {
+  return GamesCollection.find({ _id: id })
+})

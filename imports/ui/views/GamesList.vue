@@ -4,15 +4,16 @@ import { autorun, subscribe } from 'vue-meteor-tracker'
 import { GamesCollection } from '@/api/collections'
 import GameListItem from '@/ui/components/GameListItem.vue'
 
-import { PLAYING_CARDS } from '../../constants/playingCrads.const.ts'
-
 subscribe('games')
 const games = autorun(() => GamesCollection.find({}).fetch()).result
 </script>
 
 <template>
-  <h1>{{ $t('poker_notes') }}</h1>
-  <p class="text-7xl text-black" v-for="card in PLAYING_CARDS">{{ card }}</p>
+  <h1
+    class="text-center text-5xl font-[Poker] mb-3 mt-3 text-black dark:text-white"
+  >
+    {{ $t('poker_notes') }}
+  </h1>
   <div>
     <GameListItem v-for="game of games" :key="game._id" :game="game" />
   </div>

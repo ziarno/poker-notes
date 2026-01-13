@@ -1,3 +1,10 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
 @import '../assets/volt-vue-vars.css';
+
+@font-face {
+    font-family: 'Poker';
+    src: url('/fonts/Poker.ttf')
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
