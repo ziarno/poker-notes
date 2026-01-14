@@ -15,7 +15,9 @@
   "dependencies": {
     "@babel/runtime": "^7.23.5",
     "@swc/helpers": "^0.5.17",
+    "date-fns": "^4.1.0",
     "meteor-node-stubs": "^1.2.12",
+    "primeicons": "^7.0.0",
     "primevue": "^4.5.4",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-primeui": "^0.6.1",

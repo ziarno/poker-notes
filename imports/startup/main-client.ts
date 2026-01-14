@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor'
+import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
