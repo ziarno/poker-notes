@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import Panel from '@volt/Panel.vue'
-import { computed } from 'vue'
 
+import { useFormattedDate } from '@/composables'
 import { Game } from '@/types'
 import InfoTags from '@/ui/components/InfoTags.vue'
-import { formatDate } from '@/utils'
 
 const props = defineProps<{
   game: Game
 }>()
 
-const date = computed(() => formatDate(props.game.date, 'E, dd.MM.yyyy'))
+const date = useFormattedDate(props.game.date, 'E, dd.MM.yyyy')
 </script>
 
 <template>
@@ -19,7 +18,7 @@ const date = computed(() => formatDate(props.game.date, 'E, dd.MM.yyyy'))
       <template #header>
         <div class="flex justify-between w-full">
           <p class="flex-1 text-lg">{{ game.title }}</p>
-          <InfoTags :game="game" />
+          <InfoTags :game="game" class="ml-3" />
         </div>
       </template>
       <div class="flex justify-between">

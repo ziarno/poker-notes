@@ -7,6 +7,7 @@ import { autorun, subscribe } from 'vue-meteor-tracker'
 import { useRoute } from 'vue-router'
 
 import { GamesCollection } from '@/api/collections'
+import InfoTags from '@/ui/components/InfoTags.vue'
 
 const route = useRoute()
 const id = route.params.id
@@ -22,7 +23,7 @@ const tableData = computed(() =>
 </script>
 
 <template>
-  <div class="flex w-full items-center">
+  <div class="flex w-full items-center mb-4">
     <SecondaryButton
       @click="$router.back()"
       icon="pi pi-chevron-left"
@@ -33,7 +34,8 @@ const tableData = computed(() =>
     <p>{{ game?.title }}</p>
   </div>
   <template v-if="game">
-    <div class="card">
+    <InfoTags :game="game" long class="flex justify-between space-x-1" />
+    <div class="mt-5">
       <DataTable :value="tableData">
         <Column field="name" :header="$t('players')"></Column>
         <Column
