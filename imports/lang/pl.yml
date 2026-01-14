@@ -6,6 +6,8 @@ date: Data
 new_game: Nowa gra
 title: Tytuł
 buy_in: Wejście
+buy_out: Wyjście
 players: Gracze
+balance: Stan
 add: Dodaj
 create_game: Gram w grę

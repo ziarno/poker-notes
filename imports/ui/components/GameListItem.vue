@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import Panel from '@volt/Panel.vue'
 import { computed } from 'vue'
 
 import { Game } from '@/types'
-import { formatDate, getGameTotal } from '@/utils'
-
-import Panel from '/src/volt/Panel.vue'
-import Tag from '/src/volt/Tag.vue'
+import InfoTags from '@/ui/components/InfoTags.vue'
+import { formatDate } from '@/utils'
 
 const props = defineProps<{
   game: Game
 }>()
 
-const gameTotal = computed(() => getGameTotal(props.game))
 const date = computed(() => formatDate(props.game.date, 'E, dd.MM.yyyy'))
 </script>
 
@@ -21,15 +19,7 @@ const date = computed(() => formatDate(props.game.date, 'E, dd.MM.yyyy'))
       <template #header>
         <div class="flex justify-between w-full">
           <p class="flex-1 text-lg">{{ game.title }}</p>
-          <div class="shrink-0 space-x-1 ml-3">
-            <Tag
-              severity="secondary"
-              icon="pi pi-user"
-              :value="game.players.length"
-            />
-            <Tag severity="secondary" icon="pi pi-wallet" :value="game.buyIn" />
-            <Tag severity="secondary" icon="pi pi-dollar" :value="gameTotal" />
-          </div>
+          <InfoTags :game="game" />
         </div>
       </template>
       <div class="flex justify-between">
