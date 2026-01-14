@@ -13,7 +13,7 @@ const game = autorun(() => GamesCollection.findOne(id)).result
 
 <template>
   <p>Game Details</p>
-  <template v-if="!!game">
+  <template v-if="game">
     <p>{{ game.title }}</p>
   </template>
 </template>
