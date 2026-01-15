@@ -10,6 +10,9 @@ import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 const emit = defineEmits<{
   (e: 'add', player: NewPlayer): void
 }>()
+defineProps<{
+  buyIn: number
+}>()
 const { t } = useI18n()
 
 const getDefaultValue = () => ({
@@ -26,14 +29,18 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit" class="flex space-x-1">
+  <form @submit.prevent="onSubmit" class="flex space-x-3">
     <InputText
       class="min-w-16 flex-grow"
       inputId="player_name"
       v-model="playerFormData.name"
       :placeholder="t('name')"
     />
-    <InputNumberStep v-model="playerFormData.in" input-class="max-w-[60px]" />
+    <InputNumberStep
+      :step="buyIn"
+      v-model="playerFormData.in"
+      input-class="max-w-[45px]"
+    />
     <Button
       type="submit"
       icon="pi pi-plus"

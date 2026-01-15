@@ -11,12 +11,12 @@ defineProps<{
 <template>
   <InputNumber
     :min="0"
-    :input-class="`text-center ${inputClass}`"
-    id="buyIn"
+    :input-class="`text-center !pl-1 !pr-1 ${inputClass}`"
     :use-grouping="false"
     showButtons
     buttonLayout="horizontal"
     :step="10"
+    variant="filled"
   >
     <template #incrementicon>
       <PlusIcon />
