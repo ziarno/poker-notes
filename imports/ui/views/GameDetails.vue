@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import DataTable from '@volt/DataTable.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -10,6 +9,7 @@ import { useRoute } from 'vue-router'
 import { GamesCollection } from '@/api/collections'
 import { useFormattedDate } from '@/composables'
 import InfoTags from '@/ui/components/InfoTags.vue'
+import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 import { isNumber } from '@/utils/number.utils.ts'
 
 const route = useRoute()
@@ -36,19 +36,7 @@ const tableData = computed(() => {
 </script>
 
 <template>
-  <div class="flex w-full items-center mb-4">
-    <SecondaryButton
-      @click="$router.back()"
-      icon="pi pi-chevron-left"
-      aria-label="Bookmark"
-      variant="text"
-      rounded
-    />
-    <div class="ml-2">
-      <p class="text-lg">{{ game?.title }}</p>
-      <p class="text-xs opacity-50">{{ date }}</p>
-    </div>
-  </div>
+  <NavigationHeader :title="game?.title" :subtitle="date" />
   <template v-if="game">
     <InfoTags
       :game="game"

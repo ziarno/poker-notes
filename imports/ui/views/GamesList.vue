@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@volt/Button.vue'
 import { autorun, subscribe } from 'vue-meteor-tracker'
 
 import { GamesCollection } from '@/api/collections'
@@ -14,8 +15,15 @@ const games = autorun(() => GamesCollection.find({}).fetch()).result
   >
     {{ $t('poker_notes') }}
   </h1>
-  <div>
-    <GameListItem v-for="game of games" :key="game._id" :game="game" />
+  <GameListItem v-for="game of games" :key="game._id" :game="game" />
+  <div class="absolute bottom-0 left-0 right-0 flex justify-center mb-10">
+    <Button
+      raised
+      class="text-white"
+      @click="$router.push('/new')"
+      icon="pi pi-plus"
+      :label="$t('new_game')"
+    />
   </div>
 </template>
 

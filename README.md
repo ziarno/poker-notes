@@ -1,6 +1,6 @@
 # Meteor + Vue3 + Vite
 
-This is a simple example of how to use Vue3 with Meteor.
+This is a simple app with Vue3, Tailwind and Meteor.
 
 ## How to use
 

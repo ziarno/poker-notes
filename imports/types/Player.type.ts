@@ -3,3 +3,5 @@ export interface Player {
   in: number
   out: number
 }
+
+export type NewPlayer = Pick<Player, 'name' | 'in'>
