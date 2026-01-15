@@ -1,4 +1,4 @@
-import { Player } from '@/types/Player.type.ts'
+import { NewPlayer, Player } from '@/types/Player.type.ts'
 import { Transfer } from '@/types/Transfer.type.ts'
 
 export interface Game {
@@ -8,4 +8,10 @@ export interface Game {
   date: Date
   players: Player[]
   transfers: Transfer[]
+}
+
+export interface NewGame {
+  buyIn: Game['buyIn']
+  title: Game['title']
+  players: NewPlayer[]
 }

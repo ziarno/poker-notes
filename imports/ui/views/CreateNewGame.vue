@@ -6,6 +6,7 @@ import InputText from '@volt/InputText.vue'
 import Column from 'primevue/column'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
@@ -13,27 +14,28 @@ import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const formData = ref<{
-  name: string
+  title: string
   buyIn: number
   players: NewPlayer[]
 }>({
-  name: '',
+  title: '',
   buyIn: 50,
   players: [],
 })
 
 function addPlayer(player: NewPlayer) {
-  console.log('addPlayer ', player)
   formData.value.players.push(player)
 }
 function removePlayer(index: number) {
   formData.value.players.splice(index, 1)
 }
 
-function onSubmit() {
-  console.log(formData.value)
+async function onSubmit() {
+  const id = await Meteor.callAsync('createGame', formData.value)
+  router.replace(`/games/${id}`)
 }
 </script>
 
@@ -44,7 +46,7 @@ function onSubmit() {
       <label for="title" class="text-gray-600 text-sm block mb-1">{{
         t('title')
       }}</label>
-      <InputText id="title" fluid v-model="formData.name" />
+      <InputText id="title" fluid v-model="formData.title" />
     </div>
     <div>
       <label for="buyIn" class="text-gray-600 text-sm block mb-1">{{
@@ -59,7 +61,7 @@ function onSubmit() {
             <span>{{ slotProps.index + 1 }}.</span>
           </template>
         </Column>
-        <Column field="name" :header="t('players')"></Column>
+        <Column class="capitalize" field="name" :header="t('players')"></Column>
         <Column :header="t('buy_in')" class="w-0">
           <template #body="slotProps">
             <InputNumberStep
