@@ -11,3 +11,4 @@ players: Gracze
 balance: Stan
 add: Dodaj
 create_game: Gram w grę
+sum: Suma
