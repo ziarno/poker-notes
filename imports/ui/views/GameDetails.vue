@@ -8,6 +8,7 @@ import { autorun, subscribe } from 'vue-meteor-tracker'
 import { useRoute } from 'vue-router'
 
 import { GamesCollection } from '@/api/collections'
+import { useFormattedDate } from '@/composables'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import { isNumber } from '@/utils/number.utils.ts'
 
@@ -17,6 +18,8 @@ const id = route.params.id
 subscribe('game', id)
 
 const game = autorun(() => GamesCollection.findOne(id)).result
+const date = useFormattedDate(game.value?.date, 'dd.MM.yyyy')
+
 const tableData = computed(() => {
   if (!game.value) return []
 
@@ -41,13 +44,20 @@ const tableData = computed(() => {
       variant="text"
       rounded
     />
-    <p>{{ game?.title }}</p>
+    <div class="ml-2">
+      <p class="text-lg">{{ game?.title }}</p>
+      <p class="text-xs opacity-50">{{ date }}</p>
+    </div>
   </div>
   <template v-if="game">
-    <InfoTags :game="game" long class="flex justify-between space-x-1" />
+    <InfoTags
+      :game="game"
+      long
+      class="flex justify-around space-x-1 flex-wrap space-y-2 items-start"
+    />
     <div class="mt-5">
       <DataTable :value="tableData">
-        <Column field="name" :header="t('players')">
+        <Column field="name">
           <template #body="slotProps">
             <p
               :class="{

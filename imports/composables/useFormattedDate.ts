@@ -2,6 +2,6 @@ import { computed } from 'vue'
 
 import { formatDate } from '@/utils'
 
-export function useFormattedDate(date: Date, format: string) {
-  return computed(() => formatDate(date, format))
+export function useFormattedDate(date: Date | undefined, format: string) {
+  return computed(() => date && formatDate(date, format))
 }

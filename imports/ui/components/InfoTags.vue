@@ -2,7 +2,6 @@
 import Tag from '@volt/Tag.vue'
 import { computed } from 'vue'
 
-import { useFormattedDate } from '@/composables'
 import { Game } from '@/types'
 import { getGameTotal } from '@/utils'
 
@@ -12,14 +11,10 @@ const props = defineProps<{
 }>()
 
 const gameTotal = computed(() => getGameTotal(props.game))
-const date = useFormattedDate(props.game.date, 'dd.MM.yyyy')
 </script>
 
 <template>
   <div class="shrink-0 space-x-1">
-    <Tag v-if="long" severity="secondary" icon="pi pi-calendar">
-      <span class="font-light">{{ date }}</span>
-    </Tag>
     <Tag severity="secondary" icon="pi pi-user">
       <span class="font-light" v-if="long">{{ $t('players_count') }}:</span>
       <span>{{ game.players.length }}</span>
