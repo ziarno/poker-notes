@@ -79,7 +79,6 @@ async function onSubmit() {
               @click="removePlayer(slotProps.index)"
               variant="outlined"
               icon="pi pi-times"
-              severity="danger"
             />
           </template>
         </Column>

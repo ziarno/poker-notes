@@ -13,4 +13,7 @@ Meteor.methods({
     }
     return GamesCollection.insertAsync(newGame)
   },
+  async removeGame(id: string) {
+    return GamesCollection.removeAsync(id)
+  },
 })

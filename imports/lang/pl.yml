@@ -13,3 +13,10 @@ add: Dodaj
 create_game: Gram w grę
 sum: Suma
 name: Imię
+delete_confirm_title: Usuwanko
+delete_confirm_description: Na pewno usunąć tę grę?
+delete_confirm_button: Usuń
+delete_toast_confirmed: Usunięto
+error: Błąd
+something_wrong: Coś się skopało :(
+cancel: Anuluj

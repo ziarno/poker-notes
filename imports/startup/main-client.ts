@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
+import ConfirmationService from 'primevue/confirmationservice'
+import ToastService from 'primevue/toastservice'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { VueMeteor } from 'vue-meteor-tracker'
@@ -23,6 +25,8 @@ Meteor.startup(() => {
   app.use(PrimeVue, {
     unstyled: true,
   })
+  app.use(ConfirmationService)
+  app.use(ToastService)
   app.use(router)
   app.use(VueMeteor)
   app.mount('#app')

@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ConfirmDialog from '@volt/ConfirmDialog.vue'
+import Toast from '@volt/Toast.vue'
+</script>
 
 <template>
   <div
@@ -6,4 +9,6 @@
   >
     <router-view />
   </div>
+  <ConfirmDialog />
+  <Toast />
 </template>

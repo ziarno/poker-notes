@@ -41,11 +41,6 @@ const onSubmit = () => {
       v-model="playerFormData.in"
       input-class="max-w-[45px]"
     />
-    <Button
-      type="submit"
-      icon="pi pi-plus"
-      icon-pos="right"
-      class="shrink-0"
-    ></Button>
+    <Button type="submit" icon="pi pi-plus" class="shrink-0"></Button>
   </form>
 </template>
