@@ -53,7 +53,7 @@ async function onSubmit() {
       />
     </template>
   </NavigationHeader>
-  <form class="space-y-3 mb-14">
+  <form class="space-y-3 mb-14" @submit.prevent="onSubmit">
     <div>
       <label for="title" class="text-gray-600 text-sm block mb-1">{{
         t('title')
