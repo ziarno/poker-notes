@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Button from '@volt/Button.vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { autorun, subscribe } from 'vue-meteor-tracker'
 
@@ -10,6 +11,9 @@ const { t } = useI18n()
 
 subscribe('games')
 const games = autorun(() => GamesCollection.find({}).fetch()).result
+const gamesSorted = computed(() =>
+  games.value?.sort((g1, g2) => g2.date.getTime() - g1.date.getTime())
+)
 </script>
 
 <template>
@@ -18,16 +22,16 @@ const games = autorun(() => GamesCollection.find({}).fetch()).result
   >
     {{ t('poker_notes') }}
   </h1>
-  <GameListItem v-for="game of games" :key="game._id" :game="game" />
-  <div class="absolute bottom-0 left-0 right-0 flex justify-center mb-10">
-    <Button
+  <div class="flex justify-center mt-8 mb-10">
+    <SecondaryButton
       raised
-      class="text-white"
       @click="$router.push('/new')"
       icon="pi pi-plus"
       :label="t('new_game')"
     />
   </div>
+  <GameListItem v-for="game of gamesSorted" :key="game._id" :game="game" />
+  <div class="fixed bottom-0 left-0 right-0 flex justify-center mb-10"></div>
 </template>
 
 <style scoped></style>

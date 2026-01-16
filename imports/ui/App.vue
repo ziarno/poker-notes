@@ -4,9 +4,7 @@ import Toast from '@volt/Toast.vue'
 </script>
 
 <template>
-  <div
-    class="p-3 max-w-xl m-auto max-xs:pl-1 max-xs:pr-1 h-screen overflow-y-scroll"
-  >
+  <div class="p-3 max-w-xl m-auto max-xs:pl-1 max-xs:pr-1">
     <router-view />
   </div>
   <ConfirmDialog />

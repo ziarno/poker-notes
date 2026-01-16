@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Button from '@volt/Button.vue'
 import DangerButton from '@volt/DangerButton.vue'
 import DataTable from '@volt/DataTable.vue'
 import InputText from '@volt/InputText.vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -40,8 +40,19 @@ async function onSubmit() {
 </script>
 
 <template>
-  <NavigationHeader :title="t('new_game')" />
-  <form class="space-y-3 mb-24" @submit.prevent="onSubmit">
+  <NavigationHeader :title="t('new_game')">
+    <template #icon>
+      <SecondaryButton
+        @click="onSubmit"
+        raised
+        icon="pi pi-arrow-right"
+        icon-pos="right"
+        :label="t('create_game')"
+        size="small"
+      />
+    </template>
+  </NavigationHeader>
+  <form class="space-y-3 mb-24">
     <div>
       <label for="title" class="text-gray-600 text-sm block mb-1">{{
         t('title')
@@ -84,19 +95,6 @@ async function onSubmit() {
         </Column>
       </DataTable>
       <InputNewPlayer :buyIn="formData.buyIn" class="mt-5" @add="addPlayer" />
-    </div>
-    <div
-      class="absolute bottom-0 left-0 right-0 flex justify-center mb-10 pointer-events-none"
-    >
-      <Button
-        type="submit"
-        raised
-        class="text-white pointer-events-auto"
-        @click="$router.push('/new')"
-        icon="pi pi-arrow-right"
-        icon-pos="right"
-        :label="t('create_game')"
-      />
     </div>
   </form>
 </template>
