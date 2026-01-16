@@ -3,3 +3,10 @@ node_modules/
 
 # TypeScript
 *.tsbuildinfo
+
+# Environment files
+.env
+.env.*.local
+
+# Build output
+build/
