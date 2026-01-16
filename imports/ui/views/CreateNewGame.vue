@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@volt/Button.vue'
 import DangerButton from '@volt/DangerButton.vue'
 import DataTable from '@volt/DataTable.vue'
 import InputText from '@volt/InputText.vue'
@@ -52,7 +53,7 @@ async function onSubmit() {
       />
     </template>
   </NavigationHeader>
-  <form class="space-y-3 mb-24">
+  <form class="space-y-3 mb-14">
     <div>
       <label for="title" class="text-gray-600 text-sm block mb-1">{{
         t('title')
@@ -95,6 +96,16 @@ async function onSubmit() {
         </Column>
       </DataTable>
       <InputNewPlayer :buyIn="formData.buyIn" class="mt-5" @add="addPlayer" />
+      <div class="flex justify-center mt-8">
+        <Button
+          type="submit"
+          raised
+          icon="pi pi-arrow-right"
+          icon-pos="right"
+          :label="t('create_game')"
+          class="text-white"
+        />
+      </div>
     </div>
   </form>
 </template>
