@@ -5,6 +5,7 @@ import InputNumber from '@volt/InputNumber.vue'
 
 defineProps<{
   inputClass?: string
+  step?: number
 }>()
 </script>
 
@@ -15,7 +16,7 @@ defineProps<{
     :use-grouping="false"
     showButtons
     buttonLayout="horizontal"
-    :step="10"
+    :step="step ?? 10"
     variant="filled"
   >
     <template #incrementicon>

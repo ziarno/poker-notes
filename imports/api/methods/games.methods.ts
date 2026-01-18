@@ -16,4 +16,20 @@ Meteor.methods({
   async removeGame(id: string) {
     return GamesCollection.removeAsync(id)
   },
+  async setPlayerIn(gameId: string, playerName: string, inValue: number) {
+    return GamesCollection.updateAsync(
+      { _id: gameId, 'players.name': playerName },
+      { $set: { 'players.$.in': inValue } }
+    )
+  },
+  async setPlayerOut(
+    gameId: string,
+    playerName: string,
+    outValue: number | null
+  ) {
+    return GamesCollection.updateAsync(
+      { _id: gameId, 'players.name': playerName },
+      { $set: { 'players.$.out': outValue } }
+    )
+  },
 })

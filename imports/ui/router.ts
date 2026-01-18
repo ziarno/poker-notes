@@ -1,8 +1,8 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
-import GameDetailsView from '@/ui/views/GameDetails.view..vue'
+import GameDetailsView from '@/ui/views/GameDetails.view.vue'
 import GamesListView from '@/ui/views/GamesList.view.vue'
-import ViewNewGameView from '@/ui/views/ViewNewGame.view.vue'
+import NewGameView from '@/ui/views/NewGame.view.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/new',
-    component: ViewNewGameView,
+    component: NewGameView,
   },
 ]
 
