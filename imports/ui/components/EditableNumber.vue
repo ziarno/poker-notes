@@ -8,6 +8,7 @@ const props = defineProps<{
   value: number | null
   editing: boolean
   step?: number
+  min?: number
 }>()
 
 const modelValue = ref(props.value)
@@ -35,6 +36,7 @@ onClickOutside(refInput, () => {
       <InputNumberStep
         ref="input"
         :step="step"
+        :min="min"
         v-model="modelValue"
         @update:model-value="emit('input', $event)"
         input-class="max-w-[45px]"

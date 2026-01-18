@@ -1,5 +1,5 @@
 import { GamesCollection } from '@/api/collections'
-import { Game, NewGame } from '@/types'
+import { Game, NewGame, NewPlayer } from '@/types'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
 
 Meteor.methods({
@@ -30,6 +30,12 @@ Meteor.methods({
     return GamesCollection.updateAsync(
       { _id: gameId, 'players.name': playerName },
       { $set: { 'players.$.out': outValue } }
+    )
+  },
+  async addPlayer(gameId: string, player: NewPlayer) {
+    return GamesCollection.updateAsync(
+      { _id: gameId },
+      { $push: { players: { name: player.name, in: player.in, out: null } } }
     )
   },
 })

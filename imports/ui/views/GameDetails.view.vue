@@ -2,6 +2,8 @@
 import DataTable from '@volt/DataTable.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
+import ColumnGroup from 'primevue/columngroup'
+import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { autorun, subscribe } from 'vue-meteor-tracker'
@@ -10,8 +12,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { GamesCollection } from '@/api/collections'
 import { useFormattedDate } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
+import { NewPlayer } from '@/types'
 import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InfoTags from '@/ui/components/InfoTags.vue'
+import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 import { isNumber } from '@/utils/number.utils.ts'
 
@@ -25,6 +29,7 @@ async function removeGame() {
 
 const { t } = useI18n()
 const id = route.params.id
+const isAddingNewPlayer = ref(false)
 subscribe('game', id)
 
 const game = autorun(() => GamesCollection.findOne(id)).result
@@ -32,18 +37,19 @@ const date = useFormattedDate(game.value?.date, 'dd.MM.yyyy')
 const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
 
 const tableData = computed(() => {
-  if (!game.value) return []
-
-  const playersData = game.value.players.map(player => ({
+  return game.value?.players.map(player => ({
     ...player,
     balance: isNumber(player.out) ? player.out - player.in : null,
   }))
-  const sums = {
-    in: game.value.players.reduce((sum, p) => sum + p.in, 0),
-    out: game.value.players.reduce((sum, p) => sum + (p.out || 0), 0),
-  }
-  return [...playersData, sums]
 })
+const totalIn = computed(
+  () => game.value?.players.reduce((sum, p) => sum + p.in, 0).toString() ?? ''
+)
+const totalOut = computed(
+  () =>
+    game.value?.players.reduce((sum, p) => sum + (p.out || 0), 0).toString() ??
+    ''
+)
 
 const editingValue = ref('')
 function editValue(index: number, type: 'in' | 'out') {
@@ -57,6 +63,10 @@ function saveInValue(name: string, value: number | null) {
 }
 function saveOutValue(name: string, value: number | null) {
   Meteor.callAsync('setPlayerOut', game.value!._id, name, value)
+}
+function addPlayer(player: NewPlayer) {
+  Meteor.callAsync('addPlayer', game.value!._id, player)
+  isAddingNewPlayer.value = false
 }
 </script>
 
@@ -100,10 +110,11 @@ function saveOutValue(name: string, value: number | null) {
         >
           <template #body="slotProps">
             <EditableNumber
+              v-if="slotProps.data.name"
               :step="game.buyIn"
               :editing="editingValue === slotProps.index + 'in'"
-              v-if="slotProps.data.name"
               :value="slotProps.data.in"
+              :min="game.buyIn"
               @click="editValue(slotProps.index, 'in')"
               @request-hide="resetEditingValue"
               @input="value => saveInValue(slotProps.data.name, value)"
@@ -120,9 +131,10 @@ function saveOutValue(name: string, value: number | null) {
         >
           <template #body="slotProps">
             <EditableNumber
-              :editing="editingValue === slotProps.index + 'out'"
               v-if="slotProps.data.name"
+              :editing="editingValue === slotProps.index + 'out'"
               :value="slotProps.data.out"
+              :min="0"
               @click="editValue(slotProps.index, 'out')"
               @request-hide="resetEditingValue"
               @input="value => saveOutValue(slotProps.data.name, value)"
@@ -137,9 +149,49 @@ function saveOutValue(name: string, value: number | null) {
           headerClass="text-center"
           bodyClass="!text-center"
         ></Column>
+        <ColumnGroup type="footer">
+          <Row>
+            <Column :colspan="4" footer-class="pl-0 pr-0 pt-2 pb-2">
+              <template #footer>
+                <SecondaryButton
+                  class="mt-1 mb-1"
+                  size="small"
+                  @click="isAddingNewPlayer = true"
+                  v-if="!isAddingNewPlayer"
+                  icon="pi pi-plus"
+                  icon-pos="right"
+                  :label="t('add_player')"
+                />
+                <InputNewPlayer
+                  show-cancel
+                  v-else
+                  :buy-in="game.buyIn"
+                  @add="addPlayer"
+                  @cancel="isAddingNewPlayer = false"
+                />
+              </template>
+            </Column>
+          </Row>
+          <Row>
+            <Column :footer="t('sum')" footer-style="text-align: right;" />
+            <Column
+              :footer="totalIn"
+              footer-class="!text-center game-details-footer-row"
+            />
+            <Column
+              :footer="totalOut"
+              footer-class="!text-center game-details-footer-row"
+            />
+            <Column />
+          </Row>
+        </ColumnGroup>
       </DataTable>
     </div>
   </template>
 </template>
 
-<style scoped></style>
+<style>
+.game-details-footer-row > span {
+  font-weight: normal !important;
+}
+</style>
