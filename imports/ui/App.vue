@@ -4,7 +4,7 @@ import Toast from '@volt/Toast.vue'
 </script>
 
 <template>
-  <div class="p-3 max-w-xl m-auto max-xs:pl-1 max-xs:pr-1">
+  <div class="max-xs:pl-1 max-xs:pr-1 dark:bg-surface-900 m-auto max-w-xl p-3">
     <router-view />
   </div>
   <ConfirmDialog />

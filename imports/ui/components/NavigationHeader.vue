@@ -11,7 +11,7 @@ defineSlots<{
 </script>
 
 <template>
-  <div class="flex w-full items-center mb-4 space-x-2">
+  <div class="mb-4 flex w-full items-center space-x-2">
     <SecondaryButton
       @click="$router.back()"
       icon="pi pi-chevron-left"
@@ -20,8 +20,10 @@ defineSlots<{
       rounded
     />
     <div class="flex-grow">
-      <p class="text-lg">{{ title }}</p>
-      <p v-if="subtitle" class="text-xs opacity-50">{{ subtitle }}</p>
+      <p class="dark:text-surface-0 text-lg">{{ title }}</p>
+      <p v-if="subtitle" class="dark:text-surface-0 text-xs opacity-50">
+        {{ subtitle }}
+      </p>
     </div>
     <div>
       <slot name="icon"></slot>
