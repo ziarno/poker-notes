@@ -21,3 +21,10 @@ error: Błąd
 something_wrong: Coś się skopało :(
 cancel: Anuluj
 add_player: Dodaj gracza
+transfers: Transfery
+from: Od
+to: Do
+value: Wartość
+settlement: Rozliczenie
+settlement_info: Rozliczenie dostępne kiedy wszyscy gracze wyjdą z gry
+settlement_warning: Sumy wejścia i wyjścia muszą być takie same

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from '@volt/Button.vue'
-import DangerButton from '@volt/DangerButton.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
@@ -30,6 +29,7 @@ const getDefaultValue = () => ({
 const playerFormData = ref(getDefaultValue())
 
 const onSubmit = () => {
+  if (!playerFormData.value.name || !playerFormData.value.in) return
   emit('add', { ...playerFormData.value })
   Object.assign(playerFormData.value, getDefaultValue())
   inputRef.value?.$el?.focus()
@@ -58,7 +58,6 @@ onClickOutside(formRef, () => props.showCancel && emit('cancel'))
       :min="buyIn"
       :step="buyIn"
       v-model="playerFormData.in"
-      input-class="max-w-[45px]"
       @keydown.prevent.enter="onSubmit"
     />
     <Button type="submit" icon="pi pi-plus" class="shrink-0"></Button>

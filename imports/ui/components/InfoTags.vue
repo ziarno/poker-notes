@@ -32,5 +32,3 @@ const gameTotal = computed(() => getGameTotal(props.game))
     </Tag>
   </div>
 </template>
-
-<style scoped></style>

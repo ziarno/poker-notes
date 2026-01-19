@@ -1,5 +1,5 @@
 import { GamesCollection } from '@/api/collections'
-import { Game, NewGame, NewPlayer } from '@/types'
+import { Game, NewGame, NewPlayer, Transfer } from '@/types'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
 
 Meteor.methods({
@@ -36,6 +36,18 @@ Meteor.methods({
     return GamesCollection.updateAsync(
       { _id: gameId },
       { $push: { players: { name: player.name, in: player.in, out: null } } }
+    )
+  },
+  async addTransfer(gameId: string, transfer: Transfer) {
+    return GamesCollection.updateAsync(
+      { _id: gameId },
+      { $push: { transfers: transfer } }
+    )
+  },
+  async removeTransfer(gameId: string, transfer: Transfer) {
+    return GamesCollection.updateAsync(
+      { _id: gameId },
+      { $pull: { transfers: transfer } }
     )
   },
 })

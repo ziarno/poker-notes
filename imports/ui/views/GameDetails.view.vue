@@ -10,6 +10,7 @@ import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmation
 import EditablePlayersList from '@/ui/components/EditablePlayersList.vue'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
+import Transfers from '@/ui/components/Transfers.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,9 +48,24 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
     />
     <EditablePlayersList :game="game" />
 
-    <h1 class="text-surface-700 dark:text-surface-0 mt-10 font-semibold">
+    <h2
+      class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
+    >
       {{ t('transfers') }}
-    </h1>
+    </h2>
+    <Transfers :game="game" />
+
+    <h2
+      class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
+    >
+      {{ t('settlement') }}
+    </h2>
+    <p class="text-surface-400 text-center text-sm">
+      {{ t('settlement_info') }}
+    </p>
+    <p class="text-surface-400 text-center text-sm">
+      {{ t('settlement_warning') }}
+    </p>
   </template>
 </template>
 

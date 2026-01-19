@@ -34,12 +34,12 @@ onClickOutside(refInput, () => {
       class="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform bg-white"
     >
       <InputNumberStep
+        @keydown.prevent.enter="emit('requestHide')"
         ref="input"
         :step="step"
         :min="min"
         v-model="modelValue"
         @update:model-value="emit('input', $event)"
-        input-class="max-w-[45px]"
         class="absolute"
       />
     </div>

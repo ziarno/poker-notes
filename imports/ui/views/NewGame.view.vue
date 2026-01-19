@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from '@volt/Button.vue'
-import DangerButton from '@volt/DangerButton.vue'
 import DataTable from '@volt/DataTable.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
@@ -53,15 +52,15 @@ async function onSubmit() {
       />
     </template>
   </NavigationHeader>
-  <form class="space-y-3 mb-14" @submit.prevent="onSubmit">
+  <form class="mb-14 space-y-3" @submit.prevent="onSubmit">
     <div>
-      <label for="title" class="text-gray-600 text-sm block mb-1">{{
+      <label for="title" class="mb-1 block text-sm text-gray-600">{{
         t('title')
       }}</label>
       <InputText id="title" fluid v-model="formData.title" />
     </div>
     <div>
-      <label for="buyIn" class="text-gray-600 text-sm block mb-1">{{
+      <label for="buyIn" class="mb-1 block text-sm text-gray-600">{{
         t('buy_in')
       }}</label>
       <InputNumberStep v-model="formData.buyIn" fluid />
@@ -80,14 +79,13 @@ async function onSubmit() {
               :step="formData.buyIn"
               :min="formData.buyIn"
               v-model="slotProps.data.in"
-              input-class="max-w-[45px]"
               size="small"
             />
           </template>
         </Column>
         <Column class="w-0 !p-0">
           <template #body="slotProps">
-            <DangerButton
+            <SecondaryButton
               @click="removePlayer(slotProps.index)"
               variant="outlined"
               icon="pi pi-times"
@@ -96,7 +94,7 @@ async function onSubmit() {
         </Column>
       </DataTable>
       <InputNewPlayer :buyIn="formData.buyIn" class="mt-5" @add="addPlayer" />
-      <div class="flex justify-center mt-8">
+      <div class="mt-8 flex justify-center">
         <Button
           type="submit"
           raised

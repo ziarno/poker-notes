@@ -10,6 +10,7 @@ import { useI18n } from 'vue-i18n'
 import { Game, NewPlayer } from '@/types'
 import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
+import { getTotalIn, getTotalOut } from '@/utils/game.utils.ts'
 import { isNumber } from '@/utils/number.utils.ts'
 
 const { game } = defineProps<{
@@ -26,12 +27,8 @@ const tableData = computed(() => {
     balance: isNumber(player.out) ? player.out - player.in : null,
   }))
 })
-const totalIn = computed(
-  () => game.players.reduce((sum, p) => sum + p.in, 0).toString() ?? ''
-)
-const totalOut = computed(
-  () => game.players.reduce((sum, p) => sum + (p.out || 0), 0).toString() ?? ''
-)
+const totalIn = computed(() => getTotalIn(game).toString() ?? '')
+const totalOut = computed(() => getTotalOut(game).toString() ?? '')
 
 const editingValue = ref('')
 function editValue(index: number, type: 'in' | 'out') {
@@ -54,18 +51,7 @@ function addPlayer(player: NewPlayer) {
 
 <template>
   <DataTable ref="data-table" :value="tableData" class="mt-4">
-    <Column field="name">
-      <template #body="slotProps">
-        <p
-          :class="{
-            'text-right': !slotProps.data.name,
-            'font-bold': !slotProps.data.name,
-          }"
-        >
-          {{ slotProps.data.name || `${t('sum')}` }}
-        </p>
-      </template>
-    </Column>
+    <Column field="name" />
     <Column
       field="in"
       :header="t('buy_in')"
@@ -152,5 +138,3 @@ function addPlayer(player: NewPlayer) {
     </ColumnGroup>
   </DataTable>
 </template>
-
-<style scoped></style>

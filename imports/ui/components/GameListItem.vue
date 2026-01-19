@@ -14,9 +14,9 @@ const date = useFormattedDate(props.game.date, 'E, dd.MM.yyyy')
 
 <template>
   <RouterLink class="cursor-pointer" :to="`/games/${game._id}`">
-    <Panel class="mb-5 border-1 border-surface-200 shadow-md">
+    <Panel class="border-surface-200 mb-5 border-1 shadow-md">
       <template #header>
-        <div class="flex justify-between w-full">
+        <div class="flex w-full justify-between">
           <p class="flex-1 text-lg">{{ game.title }}</p>
           <InfoTags :game="game" class="ml-3" />
         </div>
@@ -25,12 +25,10 @@ const date = useFormattedDate(props.game.date, 'E, dd.MM.yyyy')
         <span class="flex-grow-1 text-sm">
           {{ game.players.map(p => p.name).join(', ') }}
         </span>
-        <span class="text-sm ml-5 shrink-0 flex items-end opacity-50">
+        <span class="ml-5 flex shrink-0 items-end text-sm opacity-50">
           {{ date }}
         </span>
       </div>
     </Panel>
   </RouterLink>
 </template>
-
-<style scoped></style>

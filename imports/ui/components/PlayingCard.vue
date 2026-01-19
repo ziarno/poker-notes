@@ -55,5 +55,3 @@ const cardColorClass = computed(() =>
 <template>
   <span :class="['text-3xl', cardColorClass]">{{ card }}</span>
 </template>
-
-<style scoped></style>
