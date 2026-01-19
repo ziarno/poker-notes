@@ -2,13 +2,16 @@
 import Button from '@volt/Button.vue'
 import Select from '@volt/Select.vue'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 
 const { game } = defineProps<{
   game: Game
 }>()
+const { t } = useI18n()
 
 const emit = defineEmits<{
   (e: 'add', transfer: Transfer): void
@@ -16,24 +19,38 @@ const emit = defineEmits<{
 }>()
 
 const getDefaultValue = () => ({
-  from: '',
-  to: '',
+  from: { key: '', name: '' },
+  to: { key: '', name: '' },
   value: game.buyIn,
 })
 
 const formData = ref(getDefaultValue())
+const menuItems = [
+  {
+    key: POT_KEY_NAME,
+    name: t('pot').toUpperCase(),
+  },
+  ...game.players.map(p => ({
+    key: p.name,
+    name: p.name,
+  })),
+]
 const optionsFrom = computed(() =>
-  game.players.map(p => p.name).filter(p => p !== formData.value.to)
+  menuItems.filter(p => p.key !== formData.value.to.key)
 )
 const optionsTo = computed(() =>
-  game.players.map(p => p.name).filter(p => p !== formData.value.from)
+  menuItems.filter(p => p.key !== formData.value.from.key)
 )
 
 const onSubmit = () => {
   if (!formData.value.to || !formData.value.from || !formData.value.value) {
     return
   }
-  emit('add', { ...formData.value })
+  emit('add', {
+    from: formData.value.from.key,
+    to: formData.value.to.key,
+    value: formData.value.value,
+  })
   Object.assign(formData.value, getDefaultValue())
 }
 </script>
@@ -44,13 +61,13 @@ const onSubmit = () => {
     class="flex w-full justify-between space-x-3"
   >
     <Select
-      a
+      optionLabel="name"
       v-model="formData.from"
       :options="optionsFrom"
       class="shrink-1 grow-1 basis-0 overflow-hidden"
     />
     <Select
-      a
+      optionLabel="name"
       v-model="formData.to"
       :options="optionsTo"
       class="shrink-1 grow-1 basis-0 overflow-hidden"
