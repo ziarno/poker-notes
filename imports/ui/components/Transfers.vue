@@ -26,7 +26,11 @@ function removeTransfer(transfer: Transfer) {
 </script>
 
 <template>
-  <DataTable :value="game.transfers">
+  <DataTable
+    :value="game.transfers"
+    v-if="game.transfers.length"
+    table-class="mb-5"
+  >
     <Column field="from" :header="t('from')">
       <template #body="slotProps">
         <span v-if="slotProps.data.from === POT_KEY_NAME">{{
@@ -60,7 +64,7 @@ function removeTransfer(transfer: Transfer) {
     </Column>
   </DataTable>
   <SecondaryButton
-    class="mt-5 mb-2"
+    class="mb-2"
     size="small"
     @click="isAddingNewTransfer = true"
     v-if="!isAddingNewTransfer"
@@ -72,7 +76,7 @@ function removeTransfer(transfer: Transfer) {
   <InputNewTransfer
     v-if="isAddingNewTransfer"
     :game="game"
-    class="mt-5"
+    class=""
     @add="addTransfer"
     @cancel="isAddingNewTransfer = false"
   />
