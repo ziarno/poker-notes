@@ -1,0 +1,40 @@
+diff --git a/node_modules/primevue/inputnumber/InputNumber.vue b/node_modules/primevue/inputnumber/InputNumber.vue
+index b25c45a..04954d5 100644
+--- a/node_modules/primevue/inputnumber/InputNumber.vue
++++ b/node_modules/primevue/inputnumber/InputNumber.vue
+@@ -353,7 +353,6 @@ export default {
+         },
+         onUpButtonMouseDown(event) {
+             if (!this.disabled) {
+-                this.$refs.input.$el.focus();
+                 this.repeat(event, null, 1);
+                 event.preventDefault();
+             }
+@@ -380,7 +379,6 @@ export default {
+         },
+         onDownButtonMouseDown(event) {
+             if (!this.disabled) {
+-                this.$refs.input.$el.focus();
+                 this.repeat(event, null, -1);
+                 event.preventDefault();
+             }
+diff --git a/node_modules/primevue/inputnumber/index.mjs b/node_modules/primevue/inputnumber/index.mjs
+index c736997..4aeabd9 100644
+--- a/node_modules/primevue/inputnumber/index.mjs
++++ b/node_modules/primevue/inputnumber/index.mjs
+@@ -424,7 +424,6 @@ var script = {
+     },
+     onUpButtonMouseDown: function onUpButtonMouseDown(event) {
+       if (!this.disabled) {
+-        this.$refs.input.$el.focus();
+         this.repeat(event, null, 1);
+         event.preventDefault();
+       }
+@@ -451,7 +450,6 @@ var script = {
+     },
+     onDownButtonMouseDown: function onDownButtonMouseDown(event) {
+       if (!this.disabled) {
+-        this.$refs.input.$el.focus();
+         this.repeat(event, null, -1);
+         event.preventDefault();
+       }
