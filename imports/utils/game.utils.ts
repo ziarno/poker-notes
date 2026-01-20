@@ -26,8 +26,8 @@ export function isGameInOutEqual(game: Game) {
 
 export function getGameSettlement(game: FinishedGame) {
   function giveMoney(from: string, to: string, value: number) {
-    loosers[from] += value
-    winners[to] -= value
+    if (loosers[from] !== undefined) loosers[from] += value
+    if (winners[to] !== undefined) winners[to] -= value
     if (loosers[from] === 0) delete loosers[from]
     if (winners[to] === 0) delete winners[to]
 
@@ -37,9 +37,9 @@ export function getGameSettlement(game: FinishedGame) {
   function cascadeAllDebt() {
     for (const looserName in loosers) {
       for (const winnerName in winners) {
-        while (loosers[looserName] < 0 && winners[winnerName] > 0) {
-          const looserAmount = Math.abs(loosers[looserName])
-          const winnerAmount = winners[winnerName]
+        while ((loosers[looserName] ?? 0) < 0 && (winners[winnerName] ?? 0) > 0) {
+          const looserAmount = Math.abs(loosers[looserName] ?? 0)
+          const winnerAmount = winners[winnerName] ?? 0
           const amountToGive = Math.min(looserAmount, winnerAmount)
           giveMoney(looserName, winnerName, amountToGive)
         }
@@ -47,18 +47,26 @@ export function getGameSettlement(game: FinishedGame) {
     }
   }
 
-  function findSumParts(players, sum, sumPartsCount, omitPlayerNames) {
+  type SettlementPlayers = Record<string, number>
+  type SumParts = [string, number][] | null
+
+  function findSumParts(
+    players: SettlementPlayers,
+    sum: number,
+    sumPartsCount: number,
+    omitPlayerNames: string[]
+  ): SumParts {
     if (sum === 0) return null
     if (sumPartsCount === 1) {
       for (const name in players) {
         if (omitPlayerNames.includes(name)) continue
-        if (players[name] === sum) return [[name, players[name]]]
+        if (players[name] === sum) return [[name, players[name]!]]
       }
     }
 
     for (const name in players) {
       if (omitPlayerNames.includes(name)) continue
-      const amount = players[name]
+      const amount = players[name]!
       const otherPlayers = findSumParts(
         players,
         sum - amount,
@@ -66,14 +74,12 @@ export function getGameSettlement(game: FinishedGame) {
         omitPlayerNames ? [...omitPlayerNames, name] : [name]
       )
       if (otherPlayers) {
-        return [...otherPlayers, [name, players[name]]]
+        return [...otherPlayers, [name, players[name]!]]
       }
     }
 
     return null
   }
-
-  type SettlementPlayers = Record<string, number>
 
   const POT = { name: POT_KEY_NAME, in: 0, out: 0 }
   const transfers: Transfer[] = []
@@ -92,14 +98,14 @@ export function getGameSettlement(game: FinishedGame) {
       })
     }),
     omitBy(value => value === 0),
-    thru((players: SettlementPlayers) => {
+    thru((players: SettlementPlayers): [SettlementPlayers, SettlementPlayers] => {
       const winners: SettlementPlayers = {}
       const loosers: SettlementPlayers = {}
       for (const name in players) {
         if (players[name]! > 0) {
-          winners[name] = players[name]
+          winners[name] = players[name]!
         } else {
-          loosers[name] = players[name]
+          loosers[name] = players[name]!
         }
       }
       return [winners, loosers]
@@ -109,7 +115,7 @@ export function getGameSettlement(game: FinishedGame) {
   for (const sumPartsCount of [1, 2, 3, 4, 5]) {
     for (const winnerName in winners) {
       if (!(winnerName in winners)) continue
-      const winnerAmount = winners[winnerName]
+      const winnerAmount = winners[winnerName]!
       const loosersToPay = findSumParts(
         loosers,
         -winnerAmount,
@@ -125,7 +131,7 @@ export function getGameSettlement(game: FinishedGame) {
     }
     for (const looserName in loosers) {
       if (!(looserName in loosers)) continue
-      const looserAmount = loosers[looserName]
+      const looserAmount = loosers[looserName]!
       const winnersToPay = findSumParts(
         winners,
         -looserAmount,
