@@ -40,18 +40,7 @@ async function onSubmit() {
 </script>
 
 <template>
-  <NavigationHeader :title="t('new_game')">
-    <template #icon>
-      <SecondaryButton
-        @click="onSubmit"
-        raised
-        icon="pi pi-arrow-right"
-        icon-pos="right"
-        :label="t('create_game')"
-        size="small"
-      />
-    </template>
-  </NavigationHeader>
+  <NavigationHeader :title="t('new_game')" />
   <form class="mb-14 space-y-3" @submit.prevent="onSubmit">
     <div>
       <label for="title" class="mb-1 block text-sm text-gray-600">{{
@@ -95,13 +84,12 @@ async function onSubmit() {
       </DataTable>
       <InputNewPlayer :buyIn="formData.buyIn" class="mt-5" @add="addPlayer" />
       <div class="mt-8 flex justify-center">
-        <Button
+        <SecondaryButton
           type="submit"
           raised
           icon="pi pi-arrow-right"
           icon-pos="right"
           :label="t('create_game')"
-          class="text-white"
         />
       </div>
     </div>

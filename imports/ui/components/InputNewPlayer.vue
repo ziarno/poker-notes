@@ -16,6 +16,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   buyIn: number
   showCancel?: boolean
+  showInput?: boolean
 }>()
 const { t } = useI18n()
 const inputRef = useTemplateRef('name-input')
@@ -55,6 +56,7 @@ onClickOutside(formRef, () => props.showCancel && emit('cancel'))
       :placeholder="t('name')"
     />
     <InputNumberStep
+      v-if="showInput"
       :min="buyIn"
       :step="buyIn"
       v-model="playerFormData.in"

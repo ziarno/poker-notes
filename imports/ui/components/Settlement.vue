@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
+import GameSummaryCopy from '@/ui/components/GameSummaryCopy.vue'
 import {
   getGameSettlement,
   isGameFinished,
@@ -35,30 +36,34 @@ const settlement = computed<Transfer[]>(() => {
     <p v-else-if="!isInOutEqual" class="text-surface-400 text-center text-sm">
       {{ t('settlement_warning') }}
     </p>
-    <DataTable v-else :value="settlement">
-      <Column field="from" :header="t('from')">
-        <template #body="slotProps">
-          <span v-if="slotProps.data.from === POT_KEY_NAME">{{
-            t('pot').toUpperCase()
-          }}</span>
-          <span v-else>{{ slotProps.data.from }}</span>
-        </template>
-      </Column>
-      <Column field="to" :header="t('to')">
-        <template #body="slotProps">
-          <span v-if="slotProps.data.to === POT_KEY_NAME">{{
-            t('pot').toUpperCase()
-          }}</span>
-          <span v-else>{{ slotProps.data.to }}</span>
-        </template>
-      </Column>
-      <Column
-        field="value"
-        :header="t('value')"
-        class="w-0 pr-0 pl-0"
-        bodyClass="!text-center !p-0"
-      />
-    </DataTable>
-    <slot></slot>
+    <template v-else>
+      <DataTable :value="settlement">
+        <Column field="from" :header="t('from')">
+          <template #body="slotProps">
+            <span v-if="slotProps.data.from === POT_KEY_NAME">{{
+              t('pot').toUpperCase()
+            }}</span>
+            <span v-else>{{ slotProps.data.from }}</span>
+          </template>
+        </Column>
+        <Column field="to" :header="t('to')">
+          <template #body="slotProps">
+            <span v-if="slotProps.data.to === POT_KEY_NAME">{{
+              t('pot').toUpperCase()
+            }}</span>
+            <span v-else>{{ slotProps.data.to }}</span>
+          </template>
+        </Column>
+        <Column
+          field="value"
+          :header="t('value')"
+          class="w-0 pr-0 pl-0"
+          bodyClass="!text-center !p-0"
+        />
+      </DataTable>
+      <div class="mt-10 flex justify-center">
+        <GameSummaryCopy v-if="isGameFinished(game)" :game="game" />
+      </div>
+    </template>
   </div>
 </template>

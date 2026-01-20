@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import Fieldset from '@volt/Fieldset.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useClipboard } from '@vueuse/core'
 import { flow, join, map, sortBy } from 'lodash/fp'
 import { useToast } from 'primevue/usetoast'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
@@ -15,12 +16,25 @@ const { game } = defineProps<{
 }>()
 const { t } = useI18n()
 const date = useFormattedDate(game.date, 'E, dd.MM.yyyy')
+const summaryRef = useTemplateRef('summary')
 const toast = useToast()
 
 const source = ref('text-to-copy')
 const { copy, isSupported } = useClipboard({ source })
 
 function copyToClipboard() {
+  const textToCopy = generateCopyText()
+  copy(textToCopy)
+  toast.add({
+    closable: true,
+    severity: 'success',
+    summary: t('copied'),
+    detail: textToCopy,
+    life: 3000,
+  })
+}
+
+function generateCopyText() {
   const playersText = flow(
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {
@@ -35,22 +49,17 @@ function copyToClipboard() {
     join('\n')
   )(getGameSettlement(game))
 
-  const textToCopy = `${game.title} | ${date.value}
+  return `${game.title} | ${date.value}
 
 ${playersText}
 
 ${t('settlement').toUpperCase()}
-${settlementText}
-`
+${settlementText}`
+}
 
-  copy(textToCopy)
-  toast.add({
-    closable: true,
-    severity: 'success',
-    summary: t('copied'),
-    detail: textToCopy,
-    life: 3000,
-  })
+function onCollapsed(collapsed: boolean) {
+  if (collapsed) return
+  window.getSelection()?.selectAllChildren(summaryRef.value!)
 }
 </script>
 
@@ -61,6 +70,14 @@ ${settlementText}
     @click="copyToClipboard"
     :label="t('copy_game')"
   />
+  <Fieldset
+    v-else
+    :legend="t('summary')"
+    class="w-full"
+    toggleable
+    collapsed
+    @update:collapsed="onCollapsed"
+  >
+    <pre ref="summary" class="text-xs">{{ generateCopyText() }}</pre>
+  </Fieldset>
 </template>
-
-<style scoped></style>

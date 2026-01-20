@@ -115,6 +115,7 @@ function addPlayer(player: NewPlayer) {
             />
             <InputNewPlayer
               show-cancel
+              show-input
               v-else
               :buy-in="game.buyIn"
               @add="addPlayer"

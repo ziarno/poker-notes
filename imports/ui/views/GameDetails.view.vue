@@ -7,13 +7,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { GamesCollection } from '@/api/collections'
 import { useFormattedDate } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
-import ButtonCopyGameDetails from '@/ui/components/ButtonCopyGameDetails.vue'
 import EditablePlayersList from '@/ui/components/EditablePlayersList.vue'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 import Settlement from '@/ui/components/Settlement.vue'
 import Transfers from '@/ui/components/Transfers.vue'
-import { isGameFinished } from '@/utils/game.utils.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -63,11 +61,7 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
     >
       {{ t('settlement') }}
     </h2>
-    <Settlement :game="game">
-      <div class="mt-10 flex justify-center">
-        <ButtonCopyGameDetails v-if="isGameFinished(game)" :game="game" />
-      </div>
-    </Settlement>
+    <Settlement :game="game" />
   </template>
 </template>
 
