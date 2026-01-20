@@ -15,20 +15,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.5",
-    "@swc/helpers": "^0.5.17",
-    "@vueuse/core": "^14.1.0",
-    "date-fns": "^4.1.0",
-    "lodash": "^4.17.21",
-    "meteor-node-stubs": "^1.2.12",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.5.4",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss-primeui": "^0.6.1",
-    "vue": "^3.3.9",
-    "vue-i18n": "^11.2.8",
-    "vue-meteor-tracker": "^3.0.0-beta.7",
-    "vue-router": "^4.2.5",
     "@modyfi/vite-plugin-yaml": "^1.1.1",
+    "@swc/helpers": "^0.5.17",
     "@tailwindcss/vite": "^4.1.11",
     "@trivago/prettier-plugin-sort-imports": "^6.0.1",
     "@types/lodash": "^4.17.23",
@@ -36,12 +24,24 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vueuse/core": "^14.1.0",
+    "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
+    "meteor-node-stubs": "^1.2.12",
     "meteor-vite": "^3.2.1",
     "prettier": "^3.8.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.5.4",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.11",
+    "tailwindcss-primeui": "^0.6.1",
     "typescript": "^5.9.3",
     "vite": "^6.0.11",
+    "vue": "^3.3.9",
+    "vue-i18n": "^11.2.8",
+    "vue-meteor-tracker": "^3.0.0-beta.7",
+    "vue-router": "^4.2.5",
     "vue-tsc": "^3.2.1"
   },
   "meteor": {
@@ -51,7 +51,5 @@
       "server": "server/entry-meteor-server.ts"
     },
     "testModule": "tests/main.ts"
-  },
-  "devDependencies": {
   }
 }

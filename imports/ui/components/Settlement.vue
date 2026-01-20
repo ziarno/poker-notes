@@ -28,7 +28,7 @@ const settlement = computed<Transfer[]>(() => {
 </script>
 
 <template>
-  <div class="mb-15">
+  <div class="mb-10">
     <p v-if="isOngoing" class="text-surface-400 text-center text-sm">
       {{ t('settlement_info') }}
     </p>
@@ -59,5 +59,6 @@ const settlement = computed<Transfer[]>(() => {
         bodyClass="!text-center !p-0"
       />
     </DataTable>
+    <slot></slot>
   </div>
 </template>

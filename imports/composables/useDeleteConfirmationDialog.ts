@@ -23,7 +23,7 @@ export function useDeleteConfirmationDialog(onConfirm: () => Promise<void>) {
         try {
           await onConfirm()
           toast.add({
-            severity: 'info',
+            severity: 'success',
             summary: t('delete_confirm_title'),
             detail: t('delete_toast_confirmed'),
             life: 1000,
