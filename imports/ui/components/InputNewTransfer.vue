@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from '@volt/Button.vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
 import Select from '@volt/Select.vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -58,7 +59,7 @@ const onSubmit = () => {
 <template>
   <form
     @submit.prevent="onSubmit"
-    class="flex w-full justify-between space-x-3"
+    class="flex w-full justify-between space-x-2"
   >
     <Select
       optionLabel="name"
@@ -73,6 +74,7 @@ const onSubmit = () => {
       class="shrink-1 grow-1 basis-0 overflow-hidden"
     />
     <InputNumberStep v-model="formData.value" />
-    <Button class="ml-2" @click="onSubmit" icon="pi pi-check" />
+    <Button @click="onSubmit" icon="pi pi-check" />
+    <SecondaryButton @click="emit('cancel')" outlined icon="pi pi-times" />
   </form>
 </template>

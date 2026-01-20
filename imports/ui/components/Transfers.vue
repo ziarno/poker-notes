@@ -2,6 +2,7 @@
 import DataTable from '@volt/DataTable.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
@@ -13,6 +14,7 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
+const isAddingNewTransfer = ref(false)
 
 function addTransfer(transfer: Transfer) {
   Meteor.callAsync('addTransfer', game._id, transfer)
@@ -57,5 +59,21 @@ function removeTransfer(transfer: Transfer) {
       </template>
     </Column>
   </DataTable>
-  <InputNewTransfer :game="game" class="mt-5" @add="addTransfer" />
+  <SecondaryButton
+    class="mt-5 mb-2"
+    size="small"
+    @click="isAddingNewTransfer = true"
+    v-if="!isAddingNewTransfer"
+    icon="pi pi-plus"
+    icon-pos="right"
+    :label="t('add_transfer')"
+  />
+
+  <InputNewTransfer
+    v-if="isAddingNewTransfer"
+    :game="game"
+    class="mt-5"
+    @add="addTransfer"
+    @cancel="isAddingNewTransfer = false"
+  />
 </template>
