@@ -17,5 +17,30 @@
   "background_color": "#ffffff",
   "start_url": "/",
   "scope": "/",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "Aplikacja do zapisu stanu gry graczy oraz generowania rozliczenia",
+  "screenshots": [
+      {
+        "src": "/img/screenshot1.png",
+        "type": "image/png",
+        "sizes": "906x1626"
+      },
+      {
+        "src": "/img/screenshot2.png",
+        "type": "image/png",
+        "sizes": "906x1626"
+      },
+      {
+        "src": "/img/screenshot3.png",
+        "type": "image/png",
+        "sizes": "906x1626"
+      },
+      {
+        "src": "/img/screenshot4.png",
+        "type": "image/png",
+        "sizes": "906x1626"
+      }
+  ],
+  "categories": ["games", "productivity", "utilities"]
 }
