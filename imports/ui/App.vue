@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import ConfirmDialog from '@volt/ConfirmDialog.vue'
 import Toast from '@volt/Toast.vue'
+import { subscribe } from 'vue-meteor-tracker'
+
+subscribe('games')
 </script>
 
 <template>
