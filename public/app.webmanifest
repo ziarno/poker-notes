@@ -1,0 +1,21 @@
+{
+  "name": "Poker Notes",
+  "short_name": "Poker Notes",
+  "icons": [
+    {
+      "src": "/img/spades192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/spades512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#3f3f46",
+  "background_color": "#ffffff",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone"
+}

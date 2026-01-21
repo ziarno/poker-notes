@@ -14,6 +14,8 @@ import App from '@/ui/App.vue'
 import '@/ui/main.css'
 import { router } from '@/ui/router'
 
+import './serviceworker.ts'
+
 Meteor.startup(() => {
   const app = createApp(App)
   const i18n = createI18n<typeof pl, Langs>({
