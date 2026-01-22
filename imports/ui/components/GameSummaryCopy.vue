@@ -44,7 +44,7 @@ function generateCopyText() {
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {
       const balanceSign = p.out - p.in > 0 ? '+' : ''
-      return `${p.name}: ${p.in} -> ${p.out} = ${balanceSign}${p.out - p.in}`
+      return `${p.name}: ${p.in} → ${p.out} = ${balanceSign}${p.out - p.in}`
     }),
     join('\n')
   )(game.players as FinishedPlayer[])
@@ -55,7 +55,7 @@ function generateCopyText() {
       to: name(t.to),
       value: t.value,
     })),
-    map((t: Transfer) => `${t.from} -> ${t.to}: ${t.value}`),
+    map((t: Transfer) => `${t.from} → ${t.to}: ${t.value}`),
     join('\n')
   )(getGameSettlement(game))
 
