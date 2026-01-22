@@ -268,6 +268,16 @@ async function handleRequest(request) {
     const isExternal = origin !== self.location.origin
     const response = await fetch(request, isExternal ? { mode: 'cors' } : {}) // set CORS for use with external CDN
 
+    // Treat server unavailable responses (cold start, bad gateway, etc.) as cache-worthy failures
+    const unavailableStatuses = [425, 502, 503, 504]
+    if (unavailableStatuses.includes(response.status)) {
+      const cached = await caches.match(request)
+      if (cached) {
+        return cached
+      }
+      // If no cache, fall through to return the error response
+    }
+
     if (!response || response.status !== 200 || response.type !== 'basic') {
       return response
     }
