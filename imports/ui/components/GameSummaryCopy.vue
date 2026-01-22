@@ -8,6 +8,7 @@ import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
+import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { FinishedGame, FinishedPlayer, Transfer } from '@/types'
 import { getGameSettlement } from '@/utils/game.utils.ts'
 
@@ -35,6 +36,10 @@ function copyToClipboard() {
 }
 
 function generateCopyText() {
+  function name(n: string) {
+    return n === POT_KEY_NAME ? t('pot').toUpperCase() : n
+  }
+
   const playersText = flow(
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {
@@ -45,6 +50,11 @@ function generateCopyText() {
   )(game.players as FinishedPlayer[])
 
   const settlementText = flow(
+    map((t: Transfer) => ({
+      from: name(t.from),
+      to: name(t.to),
+      value: t.value,
+    })),
     map((t: Transfer) => `${t.from} -> ${t.to}: ${t.value}`),
     join('\n')
   )(getGameSettlement(game))
