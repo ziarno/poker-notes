@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Button from '@volt/Button.vue'
 import DataTable from '@volt/DataTable.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
@@ -8,6 +7,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
+import { createGame } from '@/api/methods/games.methods'
 import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
@@ -34,7 +34,7 @@ function removePlayer(index: number) {
 }
 
 async function onSubmit() {
-  const id = await Meteor.callAsync('createGame', formData.value)
+  const id = await createGame(formData.value)
   router.replace(`/games/${id}`)
 }
 </script>

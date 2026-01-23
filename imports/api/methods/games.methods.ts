@@ -1,9 +1,13 @@
+import { createMethod } from 'meteor/jam:method'
+
 import { GamesCollection } from '@/api/collections'
 import { Game, NewGame, NewPlayer, Transfer } from '@/types'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
 
-Meteor.methods({
-  async createGame(game: NewGame) {
+export const createGame = createMethod({
+  name: 'createGame',
+  validate: () => {},
+  async run(game: NewGame) {
     const newGame: Game = {
       title: capitalizeFirstLetter(game.title),
       buyIn: game.buyIn,
@@ -13,38 +17,80 @@ Meteor.methods({
     }
     return GamesCollection.insertAsync(newGame)
   },
-  async removeGame(id: string) {
+})
+
+export const removeGame = createMethod({
+  name: 'removeGame',
+  validate: () => {},
+  async run(id: string) {
     return GamesCollection.removeAsync(id)
   },
-  async setPlayerIn(gameId: string, playerName: string, inValue: number) {
+})
+
+export const setPlayerIn = createMethod({
+  name: 'setPlayerIn',
+  validate: () => {},
+  async run({
+    gameId,
+    playerName,
+    inValue,
+  }: {
+    gameId: string
+    playerName: string
+    inValue: number
+  }) {
     return GamesCollection.updateAsync(
       { _id: gameId, 'players.name': playerName },
       { $set: { 'players.$.in': inValue } }
     )
   },
-  async setPlayerOut(
-    gameId: string,
-    playerName: string,
+})
+
+export const setPlayerOut = createMethod({
+  name: 'setPlayerOut',
+  validate: () => {},
+  async run({
+    gameId,
+    playerName,
+    outValue,
+  }: {
+    gameId: string
+    playerName: string
     outValue: number | null
-  ) {
+  }) {
     return GamesCollection.updateAsync(
       { _id: gameId, 'players.name': playerName },
       { $set: { 'players.$.out': outValue } }
     )
   },
-  async addPlayer(gameId: string, player: NewPlayer) {
+})
+
+export const addPlayer = createMethod({
+  name: 'addPlayer',
+  validate: () => {},
+  async run({ gameId, player }: { gameId: string; player: NewPlayer }) {
     return GamesCollection.updateAsync(
       { _id: gameId },
       { $push: { players: { name: player.name, in: player.in, out: null } } }
     )
   },
-  async addTransfer(gameId: string, transfer: Transfer) {
+})
+
+export const addTransfer = createMethod({
+  name: 'addTransfer',
+  validate: () => {},
+  async run({ gameId, transfer }: { gameId: string; transfer: Transfer }) {
     return GamesCollection.updateAsync(
       { _id: gameId },
       { $push: { transfers: transfer } }
     )
   },
-  async removeTransfer(gameId: string, transfer: Transfer) {
+})
+
+export const removeTransfer = createMethod({
+  name: 'removeTransfer',
+  validate: () => {},
+  async run({ gameId, transfer }: { gameId: string; transfer: Transfer }) {
     return GamesCollection.updateAsync(
       { _id: gameId },
       { $pull: { transfers: transfer } }

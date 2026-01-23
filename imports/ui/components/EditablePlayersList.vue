@@ -7,6 +7,7 @@ import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { setPlayerIn, setPlayerOut, addPlayer as addPlayerMethod } from '@/api/methods/games.methods'
 import { Game, NewPlayer } from '@/types'
 import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
@@ -38,13 +39,13 @@ function resetEditingValue() {
   editingValue.value = ''
 }
 function saveInValue(name: string, value: number | null) {
-  Meteor.callAsync('setPlayerIn', game._id, name, value)
+  setPlayerIn({ gameId: game._id!, playerName: name, inValue: value! })
 }
 function saveOutValue(name: string, value: number | null) {
-  Meteor.callAsync('setPlayerOut', game._id, name, value)
+  setPlayerOut({ gameId: game._id!, playerName: name, outValue: value })
 }
 function addPlayer(player: NewPlayer) {
-  Meteor.callAsync('addPlayer', game._id, player)
+  addPlayerMethod({ gameId: game._id!, player })
   isAddingNewPlayer.value = false
 }
 </script>

@@ -5,6 +5,7 @@ import { autorun, subscribe } from 'vue-meteor-tracker'
 import { useRoute, useRouter } from 'vue-router'
 
 import { GamesCollection } from '@/api/collections'
+import { removeGame as removeGameMethod } from '@/api/methods/games.methods'
 import { useFormattedDate } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import EditablePlayersList from '@/ui/components/EditablePlayersList.vue'
@@ -17,7 +18,7 @@ const route = useRoute()
 const router = useRouter()
 
 async function removeGame() {
-  await Meteor.callAsync('removeGame', game.value?._id)
+  await removeGameMethod(game.value?._id)
   router.replace('/')
 }
 

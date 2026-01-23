@@ -29,6 +29,21 @@ declare module 'meteor/mongo' {
   export * from '@types/meteor/mongo'
 }
 
+declare module 'meteor/jam:method' {
+  interface MethodOptions<TArgs, TResult> {
+    name: string
+    schema?: unknown
+    validate?: (args: TArgs) => void
+    before?: (args: TArgs) => TArgs | void
+    after?: (result: TResult) => TResult | void
+    run: (args: TArgs) => TResult | Promise<TResult>
+  }
+
+  export function createMethod<TArgs, TResult>(
+    options: MethodOptions<TArgs, TResult>
+  ): (args: TArgs) => Promise<TResult>
+}
+
 // vue-meteor-tracker module enhancement
 declare module 'vue-meteor-tracker' {
   import { Meteor } from 'meteor/meteor'
