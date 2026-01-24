@@ -22,3 +22,6 @@ build
 
 # Package lock files
 package-lock.json
+
+#meteor packages
+packages/jam_offline
