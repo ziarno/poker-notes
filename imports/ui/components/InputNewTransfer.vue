@@ -26,7 +26,7 @@ const getDefaultValue = () => ({
 })
 
 const formData = ref(getDefaultValue())
-const menuItems = [
+const menuItems = computed(() => [
   {
     key: POT_KEY_NAME,
     name: t('pot').toUpperCase(),
@@ -35,12 +35,12 @@ const menuItems = [
     key: p.name,
     name: p.name,
   })),
-]
+])
 const optionsFrom = computed(() =>
-  menuItems.filter(p => p.key !== formData.value.to.key)
+  menuItems.value.filter(p => p.key !== formData.value.to.key)
 )
 const optionsTo = computed(() =>
-  menuItems.filter(p => p.key !== formData.value.from.key)
+  menuItems.value.filter(p => p.key !== formData.value.from.key)
 )
 
 const onSubmit = () => {
@@ -54,6 +54,8 @@ const onSubmit = () => {
   })
   Object.assign(formData.value, getDefaultValue())
 }
+
+console.log(game)
 </script>
 
 <template>
