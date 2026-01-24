@@ -3,6 +3,7 @@ import DataTable from '@volt/DataTable.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { cloneDeep } from 'lodash'
+import { Random } from 'meteor/random'
 import Column from 'primevue/column'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -35,11 +36,15 @@ function removePlayer(index: number) {
 }
 
 async function onSubmit() {
+  // we generate the _id on the FE because it will be a different id
+  // after the user gets back online and calls this method, so the method
+  // remembered by jam:offline in IndexDB should include the id
+  const _id = Random.id(8)
   // cloneDeep is needed for jam:offline - it removes Proxied objects.
   // Proxies can't be saved in IndexedDB and vue creates proxies for refs.
   // In this case, the players array was Proxies
-  const id = await createGame(cloneDeep(formData.value))
-  router.replace(`/games/${id}`)
+  await createGame(cloneDeep({ ...formData.value, _id }))
+  router.replace(`/games/${_id}`)
 }
 </script>
 

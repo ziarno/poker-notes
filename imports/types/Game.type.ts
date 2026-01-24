@@ -11,6 +11,7 @@ export interface Game {
 }
 
 export interface NewGame {
+  _id?: string
   buyIn: Game['buyIn']
   title: Game['title']
   players: NewPlayer[]

@@ -9,6 +9,7 @@ export const createGame = createMethod({
   validate: () => {},
   async run(game: NewGame) {
     const newGame: Game = {
+      _id: game._id,
       title: capitalizeFirstLetter(game.title),
       buyIn: game.buyIn,
       players: game.players.map(p => ({ ...p, out: null })),
