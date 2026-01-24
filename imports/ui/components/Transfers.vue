@@ -9,6 +9,7 @@ import {
   addTransfer as addTransferMethod,
   removeTransfer as removeTransferMethod,
 } from '@/api/methods/games.methods'
+import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
@@ -26,8 +27,10 @@ async function addTransfer(transfer: Transfer) {
 }
 
 function removeTransfer(transfer: Transfer) {
-  removeTransferMethod({ gameId: game._id!, transfer })
+  return removeTransferMethod({ gameId: game._id!, transfer })
 }
+
+const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
 </script>
 
 <template>
@@ -63,7 +66,7 @@ function removeTransfer(transfer: Transfer) {
         <SecondaryButton
           outlined
           icon="pi pi-times"
-          @click="removeTransfer(data)"
+          @click="confirmRemoveTransfer(data)"
         />
       </template>
     </Column>

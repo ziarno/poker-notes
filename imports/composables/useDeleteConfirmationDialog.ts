@@ -2,12 +2,14 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
-export function useDeleteConfirmationDialog(onConfirm: () => Promise<void>) {
+export function useDeleteConfirmationDialog(
+  onConfirm: (...args: any[]) => Promise<void>
+) {
   const confirm = useConfirm()
   const toast = useToast()
   const { t } = useI18n()
 
-  return function () {
+  return function (...args: any[]) {
     confirm.require({
       header: t('delete_confirm_title'),
       message: t('delete_confirm_description'),
@@ -21,7 +23,7 @@ export function useDeleteConfirmationDialog(onConfirm: () => Promise<void>) {
       },
       accept: async () => {
         try {
-          await onConfirm()
+          await onConfirm(...args)
           toast.add({
             severity: 'success',
             summary: t('delete_confirm_title'),
