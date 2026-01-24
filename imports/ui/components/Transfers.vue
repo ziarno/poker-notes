@@ -5,7 +5,10 @@ import Column from 'primevue/column'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { addTransfer as addTransferMethod, removeTransfer as removeTransferMethod } from '@/api/methods/games.methods'
+import {
+  addTransfer as addTransferMethod,
+  removeTransfer as removeTransferMethod,
+} from '@/api/methods/games.methods'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
@@ -17,8 +20,9 @@ const { game } = defineProps<{
 const { t } = useI18n()
 const isAddingNewTransfer = ref(false)
 
-function addTransfer(transfer: Transfer) {
+async function addTransfer(transfer: Transfer) {
   addTransferMethod({ gameId: game._id!, transfer })
+  isAddingNewTransfer.value = false
 }
 
 function removeTransfer(transfer: Transfer) {

@@ -54,8 +54,6 @@ const onSubmit = () => {
   })
   Object.assign(formData.value, getDefaultValue())
 }
-
-console.log(game)
 </script>
 
 <template>
