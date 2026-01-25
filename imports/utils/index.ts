@@ -1,2 +1,5 @@
 export * from './date.utils.ts'
 export * from './api.utils.ts'
+export * from './game.utils.ts'
+export * from './number.utils.ts'
+export * from './string.utils.ts'

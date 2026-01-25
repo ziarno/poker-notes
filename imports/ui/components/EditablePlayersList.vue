@@ -7,12 +7,16 @@ import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { setPlayerIn, setPlayerOut, addPlayer as addPlayerMethod } from '@/api/methods/games.methods'
+import {
+  addPlayer as addPlayerMethod,
+  setPlayerIn,
+  setPlayerOut,
+} from '@/api/methods/games.methods'
 import { Game, NewPlayer } from '@/types'
+import Balance from '@/ui/components/Balance.vue'
 import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
-import { getTotalIn, getTotalOut } from '@/utils/game.utils.ts'
-import { isNumber } from '@/utils/number.utils.ts'
+import { getTotalIn, getTotalOut, isNumber } from '@/utils'
 
 const { game } = defineProps<{
   game: Game
@@ -57,7 +61,7 @@ function addPlayer(player: NewPlayer) {
       field="in"
       :header="t('buy_in')"
       class="w-0"
-      headerClass="text-center"
+      headerClass="thead-center"
       bodyClass="!text-center !p-0"
     >
       <template #body="slotProps">
@@ -78,7 +82,7 @@ function addPlayer(player: NewPlayer) {
       field="out"
       :header="t('buy_out')"
       class="w-0"
-      headerClass="text-center"
+      headerClass="thead-center"
       bodyClass="!text-center !p-0"
     >
       <template #body="slotProps">
@@ -98,9 +102,13 @@ function addPlayer(player: NewPlayer) {
       field="balance"
       :header="t('balance')"
       class="w-0 !pt-0 !pb-0"
-      headerClass="text-center"
+      headerClass="thead-center"
       bodyClass="!text-center"
-    ></Column>
+    >
+      <template #body="slotProps">
+        <Balance :value="slotProps.data.balance" />
+      </template>
+    </Column>
     <ColumnGroup type="footer">
       <Row>
         <Column :colspan="4" footer-class="pl-0 pr-0 pt-2 pb-2">
@@ -140,3 +148,9 @@ function addPlayer(player: NewPlayer) {
     </ColumnGroup>
   </DataTable>
 </template>
+
+<style>
+.thead-center > div {
+  justify-content: center;
+}
+</style>

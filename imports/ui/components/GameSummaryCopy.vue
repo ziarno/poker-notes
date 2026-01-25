@@ -11,6 +11,7 @@ import { useFormattedDate } from '@/composables'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { FinishedGame, FinishedPlayer, Transfer } from '@/types'
 import { getGameSettlement } from '@/utils/game.utils.ts'
+import { balanceToString } from '@/utils/string.utils.ts'
 
 const { game } = defineProps<{
   game: FinishedGame
@@ -43,8 +44,7 @@ function generateCopyText() {
   const playersText = flow(
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {
-      const balanceSign = p.out - p.in > 0 ? '+' : ''
-      return `${p.name}: ${p.in} → ${p.out} = ${balanceSign}${p.out - p.in}`
+      return `${p.name}: ${p.in} → ${p.out} = ${balanceToString(p.out - p.in)}`
     }),
     join('\n')
   )(game.players as FinishedPlayer[])
