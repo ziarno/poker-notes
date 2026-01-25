@@ -15,7 +15,6 @@ defineSlots<{
     <SecondaryButton
       @click="$router.back()"
       icon="pi pi-chevron-left"
-      aria-label="Bookmark"
       variant="text"
       rounded
     />

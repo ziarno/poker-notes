@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import DataTable from '@volt/DataTable.vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { addTransfer } from '@/api/methods'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
 import GameSummaryCopy from '@/ui/components/GameSummaryCopy.vue'
@@ -26,6 +28,10 @@ const settlement = computed<Transfer[]>(() => {
   if (!isGameFinished(game)) return []
   return getGameSettlement(game)
 })
+
+function addToTransfers(transfer: Transfer) {
+  addTransfer({ gameId: game._id, transfer })
+}
 </script>
 
 <template>
@@ -60,6 +66,15 @@ const settlement = computed<Transfer[]>(() => {
           class="w-0 pr-0 pl-0"
           bodyClass="!text-center !p-0"
         />
+        <Column class="w-0">
+          <template #body="slotProps">
+            <SecondaryButton
+              outlined
+              icon="pi pi-check"
+              @click="addToTransfers(slotProps.data)"
+            />
+          </template>
+        </Column>
       </DataTable>
       <div class="mt-10 flex justify-center">
         <GameSummaryCopy v-if="isGameFinished(game)" :game="game" />
