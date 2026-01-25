@@ -131,6 +131,7 @@ function addPlayer(name: string) {
             <InputNewPlayer
               show-cancel
               v-else
+              :exclude-names="game.players.map(p => p.name)"
               @add="addPlayer"
               @cancel="isAddingNewPlayer = false"
             />
