@@ -48,14 +48,20 @@ function saveInValue(name: string, value: number | null) {
 function saveOutValue(name: string, value: number | null) {
   setPlayerOut({ gameId: game._id!, playerName: name, outValue: value })
 }
-function addPlayer(player: NewPlayer) {
-  addPlayerMethod({ gameId: game._id!, player })
+function addPlayer(name: string) {
+  addPlayerMethod({
+    gameId: game._id!,
+    player: {
+      name,
+      in: game.buyIn,
+    },
+  })
   isAddingNewPlayer.value = false
 }
 </script>
 
 <template>
-  <DataTable ref="data-table" :value="tableData" class="mt-4">
+  <DataTable dataKey="name" ref="data-table" :value="tableData" class="mt-4">
     <Column field="name" />
     <Column
       field="in"
@@ -124,9 +130,7 @@ function addPlayer(player: NewPlayer) {
             />
             <InputNewPlayer
               show-cancel
-              show-input
               v-else
-              :buy-in="game.buyIn"
               @add="addPlayer"
               @cancel="isAddingNewPlayer = false"
             />

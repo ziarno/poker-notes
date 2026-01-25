@@ -5,6 +5,7 @@ import SecondaryButton from '@volt/SecondaryButton.vue'
 import { cloneDeep } from 'lodash'
 import { Random } from 'meteor/random'
 import Column from 'primevue/column'
+import { useToast } from 'primevue/usetoast'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -17,6 +18,7 @@ import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 
 const { t } = useI18n()
 const router = useRouter()
+const toast = useToast()
 
 const formData = ref<{
   title: string
@@ -28,14 +30,35 @@ const formData = ref<{
   players: [],
 })
 
-function addPlayer(player: NewPlayer) {
-  formData.value.players.push(player)
+function addPlayer(name: string) {
+  formData.value.players.push({
+    name: name,
+    in: formData.value.buyIn,
+  })
 }
 function removePlayer(index: number) {
   formData.value.players.splice(index, 1)
 }
 
 async function onSubmit() {
+  if (!formData.value.title) {
+    toast.add({
+      severity: 'error',
+      summary: t('error'),
+      detail: t('error_no_title'),
+      life: 1000,
+    })
+    return
+  }
+  if (!formData.value.players.length) {
+    toast.add({
+      severity: 'error',
+      summary: t('error'),
+      detail: t('error_no_players'),
+      life: 1000,
+    })
+    return
+  }
   // we generate the _id on the FE because it will be a different id
   // after the user gets back online and calls this method, so the method
   // remembered by jam:offline in IndexDB should include the id
@@ -91,7 +114,11 @@ async function onSubmit() {
           </template>
         </Column>
       </DataTable>
-      <InputNewPlayer :buyIn="formData.buyIn" class="mt-5" @add="addPlayer" />
+      <InputNewPlayer
+        :exclude-names="formData.players.map(p => p.name)"
+        class="mt-5"
+        @add="addPlayer"
+      />
       <div class="mt-8 flex justify-center">
         <SecondaryButton
           type="submit"

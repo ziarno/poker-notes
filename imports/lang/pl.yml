@@ -32,3 +32,6 @@ settlement_warning: Sumy wejścia i wyjścia muszą być takie same
 copy_game: Skopiuj podsumowanie do schowka
 copied: Skopiowano do schowka
 summary: Podsumowanie
+error_duplicate_name: To imię już istnieje
+error_no_title: Podaj tytuł
+error_no_players: Dodaj graczy

@@ -3,45 +3,45 @@ import Button from '@volt/Button.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
-import { ref, useTemplateRef, watch } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { NewPlayer } from '@/types'
-import InputNumberStep from '@/ui/components/InputNumberStep.vue'
-
 const emit = defineEmits<{
-  (e: 'add', player: NewPlayer): void
+  (e: 'add', name: string): void
   (e: 'cancel'): void
 }>()
 const props = defineProps<{
-  buyIn: number
+  excludeNames?: string[]
   showCancel?: boolean
-  showInput?: boolean
 }>()
 const { t } = useI18n()
 const inputRef = useTemplateRef('name-input')
 const formRef = useTemplateRef('form')
+const toast = useToast()
 
-const getDefaultValue = () => ({
-  name: '',
-  in: props.buyIn,
-})
-
-const playerFormData = ref(getDefaultValue())
+const name = ref('')
 
 const onSubmit = () => {
-  if (!playerFormData.value.name || !playerFormData.value.in) return
-  emit('add', { ...playerFormData.value })
-  Object.assign(playerFormData.value, getDefaultValue())
+  const isExcludedName = props.excludeNames?.includes(name.value)
+  if (isExcludedName) {
+    toast.add({
+      severity: 'error',
+      summary: t('error'),
+      detail: t('error_duplicate_name'),
+      life: 3000,
+    })
+    return
+  }
+
+  if (!name.value) {
+    return
+  }
+
+  emit('add', name.value)
+  name.value = ''
   inputRef.value?.$el?.focus()
 }
-
-watch(
-  () => props.buyIn,
-  () => {
-    playerFormData.value.in = props.buyIn
-  }
-)
 
 onClickOutside(formRef, () => props.showCancel && emit('cancel'))
 </script>
@@ -52,15 +52,8 @@ onClickOutside(formRef, () => props.showCancel && emit('cancel'))
       ref="name-input"
       class="w-0 flex-grow"
       inputId="player_name"
-      v-model="playerFormData.name"
+      v-model="name"
       :placeholder="t('name')"
-    />
-    <InputNumberStep
-      v-if="showInput"
-      :min="buyIn"
-      :step="buyIn"
-      v-model="playerFormData.in"
-      @keydown.prevent.enter="onSubmit"
     />
     <Button type="submit" icon="pi pi-plus" class="shrink-0"></Button>
     <SecondaryButton
