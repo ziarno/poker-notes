@@ -62,12 +62,14 @@ const onSubmit = () => {
     class="flex w-full justify-between space-x-2"
   >
     <Select
+      :placeholder="t('from')"
       optionLabel="name"
       v-model="formData.from"
       :options="optionsFrom"
       class="shrink-1 grow-1 basis-0 overflow-hidden"
     />
     <Select
+      :placeholder="t('to')"
       optionLabel="name"
       v-model="formData.to"
       :options="optionsTo"
