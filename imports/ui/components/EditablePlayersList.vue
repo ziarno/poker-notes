@@ -68,7 +68,7 @@ function addPlayer(name: string) {
       :header="t('buy_in')"
       class="w-0"
       headerClass="thead-center"
-      bodyClass="!text-center !p-0"
+      bodyClass="!text-center !p-0 !pr-1"
     >
       <template #body="slotProps">
         <EditableNumber
@@ -89,7 +89,7 @@ function addPlayer(name: string) {
       :header="t('buy_out')"
       class="w-0"
       headerClass="thead-center"
-      bodyClass="!text-center !p-0"
+      bodyClass="!text-center !p-0 !pl-1"
     >
       <template #body="slotProps">
         <EditableNumber
@@ -107,7 +107,7 @@ function addPlayer(name: string) {
     <Column
       field="balance"
       :header="t('balance')"
-      class="w-0 !pt-0 !pb-0"
+      class="w-1 !py-0 pl-7"
       headerClass="thead-center"
       bodyClass="!text-center"
     >

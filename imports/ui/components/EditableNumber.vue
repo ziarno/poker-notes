@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'
 
@@ -25,8 +26,9 @@ onClickOutside(refInput, () => {
 </script>
 
 <template>
-  <button
-    class="relative flex h-full min-h-[40px] w-full items-center justify-center"
+  <SecondaryButton
+    outlined
+    class="relative flex h-full min-h-[40px] w-full items-center justify-center overflow-visible"
   >
     <span>{{ value }}</span>
     <div
@@ -43,5 +45,5 @@ onClickOutside(refInput, () => {
         class="absolute"
       />
     </div>
-  </button>
+  </SecondaryButton>
 </template>
