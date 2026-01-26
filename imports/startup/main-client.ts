@@ -9,19 +9,20 @@ import { VueMeteor } from 'vue-meteor-tracker'
 
 import '@/api/collections'
 import '@/api/methods'
-import { Langs, pl } from '@/lang'
+import { Langs, en, pl } from '@/lang'
 import App from '@/ui/App.vue'
 import '@/ui/main.css'
 import { router } from '@/ui/router'
 
 import './serviceworker.ts'
 
+export const i18n = createI18n<typeof pl, Langs>({
+  locale: pl._locale,
+  messages: { en, pl },
+})
+
 Meteor.startup(() => {
   const app = createApp(App)
-  const i18n = createI18n<typeof pl, Langs>({
-    locale: pl._locale,
-    messages: { pl },
-  })
 
   app.use(i18n)
   app.use(PrimeVue, {

@@ -1,0 +1,37 @@
+_locale: en
+poker_notes: Poker nOtes
+players_count: Players
+pot: Pot
+date: Date
+new_game: New game
+title: Title
+buy_in: Buy in
+buy_out: Buy out
+players: Players
+balance: Balance
+add: Add
+create_game: Start game
+sum: Sum
+name: Name
+delete_confirm_title: Delete
+delete_confirm_description: Are you sure you want to delete?
+delete_confirm_button: Delete
+delete_toast_confirmed: Deleted
+error: Error
+something_wrong: Something went wrong :(
+cancel: Cancel
+add_player: Add player
+transfers: Transfers
+add_transfer: Add transfer
+from: From
+to: To
+value: Value
+settlement: Settlement
+settlement_info: Settlement available when all players have cashed out
+settlement_warning: Buy in and buy out totals must match
+copy_game: Copy summary to clipboard
+copied: Copied to clipboard
+summary: Summary
+error_duplicate_name: This name already exists
+error_no_title: Please enter a title
+error_no_players: Please add players
