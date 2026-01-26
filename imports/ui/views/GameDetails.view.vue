@@ -8,9 +8,9 @@ import { GamesCollection } from '@/api/collections'
 import { removeGame as removeGameMethod } from '@/api/methods/games.methods'
 import { useFormattedDate } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
-import EditablePlayersList from '@/ui/components/EditablePlayersList.vue'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
+import PlayersTable from '@/ui/components/PlayersTable.vue'
 import Settlement from '@/ui/components/Settlement.vue'
 import Transfers from '@/ui/components/Transfers.vue'
 
@@ -48,7 +48,7 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
       long
       class="mt-5 flex flex-wrap items-start justify-around space-x-1"
     />
-    <EditablePlayersList :game="game" />
+    <PlayersTable :game="game" />
 
     <h2
       class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"

@@ -77,6 +77,22 @@ export const addPlayer = createMethod({
   },
 })
 
+export const removePlayer = createMethod({
+  name: 'removePlayer',
+  validate: () => {},
+  async run({ gameId, playerName }: { gameId: string; playerName: string }) {
+    return GamesCollection.updateAsync(
+      { _id: gameId },
+      {
+        $pull: {
+          players: { name: playerName },
+          transfers: { $or: [{ from: playerName }, { to: playerName }] },
+        },
+      }
+    )
+  },
+})
+
 export const addTransfer = createMethod({
   name: 'addTransfer',
   validate: () => {},

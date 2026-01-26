@@ -9,11 +9,14 @@ import { useI18n } from 'vue-i18n'
 
 import {
   addPlayer as addPlayerMethod,
+  removePlayer as removePlayerMethod,
   setPlayerIn,
   setPlayerOut,
 } from '@/api/methods/games.methods'
-import { Game, NewPlayer } from '@/types'
+import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
+import { Game } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
+import EditableName from '@/ui/components/EditableName.vue'
 import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import { getTotalIn, getTotalOut, isNumber } from '@/utils'
@@ -23,6 +26,7 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
+const confirmRemove = useDeleteConfirmationDialog(removePlayer)
 
 const isAddingNewPlayer = ref(false)
 
@@ -58,11 +62,19 @@ function addPlayer(name: string) {
   })
   isAddingNewPlayer.value = false
 }
+
+function removePlayer(playerName: string) {
+  removePlayerMethod({ gameId: game._id, playerName })
+}
 </script>
 
 <template>
   <DataTable dataKey="name" ref="data-table" :value="tableData" class="mt-4">
-    <Column field="name" />
+    <Column field="name" body-class="pl-0">
+      <template #body="slotProps">
+        <EditableName :name="slotProps.data.name" @remove="confirmRemove" />
+      </template>
+    </Column>
     <Column
       field="in"
       :header="t('buy_in')"
