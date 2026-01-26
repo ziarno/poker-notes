@@ -30,6 +30,7 @@ onClickOutside(formRef, () => {
 <template>
   <form ref="formRef" @submit.prevent="onSubmit">
     <SecondaryButton
+      v-if="isEditing.value"
       icon="pi pi-times"
       @click="emit('remove', name)"
       outlined

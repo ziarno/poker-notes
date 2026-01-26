@@ -70,7 +70,7 @@ function removePlayer(playerName: string) {
 
 <template>
   <DataTable dataKey="name" ref="data-table" :value="tableData" class="mt-4">
-    <Column field="name" body-class="pl-0">
+    <Column field="name">
       <template #body="slotProps">
         <EditableName :name="slotProps.data.name" @remove="confirmRemove" />
       </template>
