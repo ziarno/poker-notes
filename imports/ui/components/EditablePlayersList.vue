@@ -107,7 +107,7 @@ function addPlayer(name: string) {
     <Column
       field="balance"
       :header="t('balance')"
-      class="w-1 !py-0 pl-7"
+      class="w-0 min-w-[90px] !py-0 pl-7"
       headerClass="thead-center"
       bodyClass="!text-center"
     >
