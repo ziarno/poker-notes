@@ -64,13 +64,13 @@ function addPlayer(name: string) {
 }
 
 function removePlayer(playerName: string) {
-  removePlayerMethod({ gameId: game._id, playerName })
+  return removePlayerMethod({ gameId: game._id, playerName })
 }
 </script>
 
 <template>
   <DataTable dataKey="name" ref="data-table" :value="tableData" class="mt-4">
-    <Column field="name">
+    <Column field="name" body-class="max-w-0 !py-0 !pl-0 min-w-32">
       <template #body="slotProps">
         <EditableName :name="slotProps.data.name" @remove="confirmRemove" />
       </template>
@@ -79,8 +79,8 @@ function removePlayer(playerName: string) {
       field="in"
       :header="t('buy_in')"
       class="w-0"
-      headerClass="thead-center"
-      bodyClass="!text-center !p-0 !pr-1"
+      headerClass="thead-center safari:!px-1"
+      bodyClass="!text-center !pl-0 !pr-1 !py-1"
     >
       <template #body="slotProps">
         <EditableNumber
@@ -100,8 +100,8 @@ function removePlayer(playerName: string) {
       field="out"
       :header="t('buy_out')"
       class="w-0"
-      headerClass="thead-center"
-      bodyClass="!text-center !p-0 !pl-1"
+      headerClass="thead-center safari:!px-1"
+      bodyClass="!text-center !pl-0 !pr-1 !py-1"
     >
       <template #body="slotProps">
         <EditableNumber
@@ -119,8 +119,8 @@ function removePlayer(playerName: string) {
     <Column
       field="balance"
       :header="t('balance')"
-      class="w-0 min-w-[90px] !py-0 pl-7"
-      headerClass="thead-center"
+      class="w-0 min-w-[80px]"
+      headerClass="thead-center safari:!px-1"
       bodyClass="!text-center"
     >
       <template #body="slotProps">

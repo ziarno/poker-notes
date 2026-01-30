@@ -8,6 +8,8 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant safari (&:where(.safari, .safari *));
+
 @theme {
     --breakpoint-xs: 24rem;
 }

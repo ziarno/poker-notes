@@ -22,6 +22,11 @@ export const i18n = createI18n<typeof pl, Langs>({
 })
 
 Meteor.startup(() => {
+  // detect safari for specific css
+  if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+    document.documentElement.classList.add('safari')
+  }
+
   const app = createApp(App)
 
   app.use(i18n)
