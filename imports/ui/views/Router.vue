@@ -14,7 +14,7 @@ router.beforeEach((to, from) => {
 </script>
 
 <template>
-  <div class="max-xs:pl-1 max-xs:pr-1 dark:bg-surface-900 m-auto max-w-xl p-3">
+  <div class="max-xs:px-1 dark:bg-surface-900 safari:p-2 m-auto max-w-xl p-3">
     <router-view v-slot="{ Component }">
       <Transition :name="transitionName" mode="out-in">
         <component :is="Component" :key="$route.path" />

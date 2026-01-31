@@ -32,6 +32,10 @@ export const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    return { top: 0 }
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({ top: 0 })
+      }, 160)
+    })
   },
 })
