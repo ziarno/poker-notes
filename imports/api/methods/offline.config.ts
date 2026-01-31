@@ -7,7 +7,7 @@ Methods.configure({
   after: [],
   // Globally make all methods serverOnly, aka disable Optimistic UI, by setting to true
   serverOnly: false,
-  // By default all methods will be protected by authentication, override it for all
+  // By default, all methods will be protected by authentication, override it for all
   // methods by setting this to true
   open: true,
   // Customize the logged out error

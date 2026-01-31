@@ -86,7 +86,7 @@ export const removePlayer = createMethod({
       {
         $pull: {
           players: { name: playerName },
-          transfers: { $or: [{ from: playerName }, { to: playerName }] },
+          transfers: { $or: [{ from: playerName }, { to: playerName }] } as any,
         },
       }
     )

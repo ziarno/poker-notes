@@ -39,7 +39,7 @@
       "@volt/*": ["./src/volt/*"]
     }
   },
-  "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*"],
+  "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*", "packages/**/*"],
   "exclude": ["node_modules", ".meteor/local"],
   "vueCompilerOptions": {
     "target": 3.3

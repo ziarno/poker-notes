@@ -32,38 +32,40 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
 </script>
 
 <template>
-  <NavigationHeader :title="game?.title" :subtitle="date">
-    <template #icon>
-      <SecondaryButton
-        @click="confirmRemoveGame"
-        variant="outlined"
-        icon="pi pi-trash"
-        severity="danger"
+  <div>
+    <NavigationHeader :title="game?.title" :subtitle="date">
+      <template #icon>
+        <SecondaryButton
+          @click="confirmRemoveGame"
+          variant="outlined"
+          icon="pi pi-trash"
+          severity="danger"
+        />
+      </template>
+    </NavigationHeader>
+    <template v-if="game">
+      <InfoTags
+        :game="game"
+        long
+        class="mt-5 flex flex-wrap items-start justify-around space-x-1"
       />
+      <PlayersTable :game="game" />
+
+      <h2
+        class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
+      >
+        {{ t('transfers') }}
+      </h2>
+      <Transfers :game="game" />
+
+      <h2
+        class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
+      >
+        {{ t('settlement') }}
+      </h2>
+      <Settlement :game="game" />
     </template>
-  </NavigationHeader>
-  <template v-if="game">
-    <InfoTags
-      :game="game"
-      long
-      class="mt-5 flex flex-wrap items-start justify-around space-x-1"
-    />
-    <PlayersTable :game="game" />
-
-    <h2
-      class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
-    >
-      {{ t('transfers') }}
-    </h2>
-    <Transfers :game="game" />
-
-    <h2
-      class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
-    >
-      {{ t('settlement') }}
-    </h2>
-    <Settlement :game="game" />
-  </template>
+  </div>
 </template>
 
 <style>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'

@@ -15,19 +15,21 @@ const gamesSorted = computed(() =>
 </script>
 
 <template>
-  <h1
-    class="mt-3 mb-3 text-center font-[Poker] text-5xl text-black dark:text-white"
-  >
-    {{ t('poker_notes') }}
-  </h1>
-  <div class="mt-8 mb-10 flex justify-center">
-    <SecondaryButton
-      raised
-      @click="$router.push('/new')"
-      icon="pi pi-plus"
-      :label="t('new_game')"
-    />
+  <div>
+    <h1
+      class="mt-3 mb-3 text-center font-[Poker] text-5xl text-black dark:text-white"
+    >
+      {{ t('poker_notes') }}
+    </h1>
+    <div class="mt-8 mb-10 flex justify-center">
+      <SecondaryButton
+        raised
+        @click="$router.push('/new')"
+        icon="pi pi-plus"
+        :label="t('new_game')"
+      />
+    </div>
+    <GameListItem v-for="game of gamesSorted" :key="game._id" :game="game" />
+    <div class="fixed right-0 bottom-0 left-0 mb-10 flex justify-center"></div>
   </div>
-  <GameListItem v-for="game of gamesSorted" :key="game._id" :game="game" />
-  <div class="fixed right-0 bottom-0 left-0 mb-10 flex justify-center"></div>
 </template>

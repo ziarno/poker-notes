@@ -72,62 +72,68 @@ async function onSubmit() {
 </script>
 
 <template>
-  <NavigationHeader :title="t('new_game')" />
-  <form class="mb-14 space-y-3" @submit.prevent="onSubmit">
-    <div>
-      <label for="title" class="mb-1 block text-sm text-gray-600">{{
-        t('title')
-      }}</label>
-      <InputText id="title" fluid v-model="formData.title" />
-    </div>
-    <div>
-      <label for="buyIn" class="mb-1 block text-sm text-gray-600">{{
-        t('buy_in')
-      }}</label>
-      <InputNumberStep v-model="formData.buyIn" fluid />
-    </div>
-    <div>
-      <DataTable v-if="formData.players.length" :value="formData.players">
-        <Column class="w-0">
-          <template #body="slotProps">
-            <span>{{ slotProps.index + 1 }}.</span>
-          </template>
-        </Column>
-        <Column class="capitalize" field="name" :header="t('players')"></Column>
-        <Column :header="t('buy_in')" class="w-0">
-          <template #body="slotProps">
-            <InputNumberStep
-              :step="formData.buyIn"
-              :min="formData.buyIn"
-              v-model="slotProps.data.in"
-              size="small"
-            />
-          </template>
-        </Column>
-        <Column class="w-0 !p-0">
-          <template #body="slotProps">
-            <SecondaryButton
-              @click="removePlayer(slotProps.index)"
-              variant="outlined"
-              icon="pi pi-times"
-            />
-          </template>
-        </Column>
-      </DataTable>
-      <InputNewPlayer
-        :exclude-names="formData.players.map(p => p.name)"
-        class="mt-5"
-        @add="addPlayer"
-      />
-      <div class="mt-8 flex justify-center">
-        <SecondaryButton
-          type="submit"
-          raised
-          icon="pi pi-arrow-right"
-          icon-pos="right"
-          :label="t('create_game')"
-        />
+  <div>
+    <NavigationHeader :title="t('new_game')" />
+    <form class="mb-14 space-y-3" @submit.prevent="onSubmit">
+      <div>
+        <label for="title" class="mb-1 block text-sm text-gray-600">{{
+          t('title')
+        }}</label>
+        <InputText id="title" fluid v-model="formData.title" />
       </div>
-    </div>
-  </form>
+      <div>
+        <label for="buyIn" class="mb-1 block text-sm text-gray-600">{{
+          t('buy_in')
+        }}</label>
+        <InputNumberStep v-model="formData.buyIn" fluid />
+      </div>
+      <div>
+        <DataTable v-if="formData.players.length" :value="formData.players">
+          <Column class="w-0">
+            <template #body="slotProps">
+              <span>{{ slotProps.index + 1 }}.</span>
+            </template>
+          </Column>
+          <Column
+            class="capitalize"
+            field="name"
+            :header="t('players')"
+          ></Column>
+          <Column :header="t('buy_in')" class="w-0">
+            <template #body="slotProps">
+              <InputNumberStep
+                :step="formData.buyIn"
+                :min="formData.buyIn"
+                v-model="slotProps.data.in"
+                size="small"
+              />
+            </template>
+          </Column>
+          <Column class="w-0 !p-0">
+            <template #body="slotProps">
+              <SecondaryButton
+                @click="removePlayer(slotProps.index)"
+                variant="outlined"
+                icon="pi pi-times"
+              />
+            </template>
+          </Column>
+        </DataTable>
+        <InputNewPlayer
+          :exclude-names="formData.players.map(p => p.name)"
+          class="mt-5"
+          @add="addPlayer"
+        />
+        <div class="mt-8 flex justify-center">
+          <SecondaryButton
+            type="submit"
+            raised
+            icon="pi pi-arrow-right"
+            icon-pos="right"
+            :label="t('create_game')"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
