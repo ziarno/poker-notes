@@ -3,7 +3,7 @@ import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
 export function useDeleteConfirmationDialog(
-  onConfirm: (...args: any[]) => Promise<void>
+  onConfirm: (...args: any[]) => Promise<any>
 ) {
   const confirm = useConfirm()
   const toast = useToast()

@@ -36,7 +36,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./imports/*"],
-      "@volt/*": ["./src/volt/*"]
+      "@volt/*": ["./src/volt/*"],
+      "meteor/jam:method": ["./imports/types/meteor/jam_method.d.ts"]
     }
   },
   "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*", "packages/**/*"],
