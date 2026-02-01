@@ -18,8 +18,8 @@ const route = useRoute()
 const router = useRouter()
 
 async function removeGame() {
-  await removeGameMethod(game.value?._id)
   router.replace('/')
+  await removeGameMethod(game.value?._id)
 }
 
 const { t } = useI18n()

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DataTable from '@volt/DataTable.vue'
+import Message from '@volt/Message.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
 import { computed } from 'vue'
@@ -39,9 +40,15 @@ function addToTransfers(transfer: Transfer) {
     <p v-if="isOngoing" class="text-surface-400 text-center text-sm">
       {{ t('settlement_info') }}
     </p>
-    <p v-else-if="!isInOutEqual" class="text-surface-400 text-center text-sm">
-      {{ t('settlement_warning') }}
-    </p>
+    <Message
+      icon="pi pi-exclamation-triangle"
+      size="small"
+      v-else-if="!isInOutEqual"
+      severity="warn"
+      variant="simple"
+      class="justify-center"
+      >{{ t('settlement_warning') }}</Message
+    >
     <template v-else>
       <DataTable :value="settlement">
         <Column field="from" :header="t('from')">
