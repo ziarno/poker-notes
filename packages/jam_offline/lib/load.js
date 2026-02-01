@@ -21,7 +21,7 @@ async function load({ offline = false } = {}) {
       try {
         localCollection.insert(doc);
       } catch (e) {
-        console.error(e);
+        // console.error(e);
       }
     }
 

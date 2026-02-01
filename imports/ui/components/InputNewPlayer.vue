@@ -3,9 +3,10 @@ import Button from '@volt/Button.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
-import { useToast } from 'primevue/usetoast'
 import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { useCheckExcludedName } from '@/composables'
 
 const emit = defineEmits<{
   (e: 'add', name: string): void
@@ -18,23 +19,11 @@ const props = defineProps<{
 const { t } = useI18n()
 const inputRef = useTemplateRef('name-input')
 const formRef = useTemplateRef('form')
-const toast = useToast()
-
+const checkIsNameExcluded = useCheckExcludedName(() => props.excludeNames)
 const name = ref('')
 
 const onSubmit = () => {
-  const isExcludedName = props.excludeNames?.includes(name.value)
-  if (isExcludedName) {
-    toast.add({
-      severity: 'error',
-      summary: t('error'),
-      detail: t('error_duplicate_name'),
-      life: 3000,
-    })
-    return
-  }
-
-  if (!name.value) {
+  if (checkIsNameExcluded(name.value)) {
     return
   }
 

@@ -1,7 +1,7 @@
 import { createMethod } from 'meteor/jam:method'
 
 import { GamesCollection } from '@/api/collections'
-import { Game, NewGame, NewPlayer, Transfer } from '@/types'
+import { Game, NewGame, NewPlayer, Player, Transfer } from '@/types'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
 
 export const createGame = createMethod({
@@ -28,41 +28,39 @@ export const removeGame = createMethod({
   },
 })
 
-export const setPlayerIn = createMethod({
-  name: 'setPlayerIn',
+export const setPlayer = createMethod({
+  name: 'setPlayer',
   validate: () => {},
   async run({
     gameId,
     playerName,
-    inValue,
+    player,
   }: {
     gameId: string
     playerName: string
-    inValue: number
+    player: Player
   }) {
-    return GamesCollection.updateAsync(
+    function maybeRename(name: string) {
+      return name === playerName ? player.name : name
+    }
+    await GamesCollection.updateAsync(
       { _id: gameId, 'players.name': playerName },
-      { $set: { 'players.$.in': inValue } }
+      { $set: { 'players.$': player } }
     )
-  },
-})
 
-export const setPlayerOut = createMethod({
-  name: 'setPlayerOut',
-  validate: () => {},
-  async run({
-    gameId,
-    playerName,
-    outValue,
-  }: {
-    gameId: string
-    playerName: string
-    outValue: number | null
-  }) {
-    return GamesCollection.updateAsync(
-      { _id: gameId, 'players.name': playerName },
-      { $set: { 'players.$.out': outValue } }
-    )
+    if (playerName !== player.name) {
+      const game = await GamesCollection.findOneAsync(gameId)
+      if (game) {
+        const transfers = game.transfers.map(t => ({
+          ...t,
+          from: maybeRename(t.from),
+          to: maybeRename(t.to),
+        }))
+        await GamesCollection.updateAsync(gameId, {
+          $set: { transfers },
+        })
+      }
+    }
   },
 })
 

@@ -35,3 +35,5 @@ summary: Podsumowanie
 error_duplicate_name: To imię już istnieje
 error_no_title: Podaj tytuł
 error_no_players: Dodaj graczy
+remove_player: Usuń gracza
+save: Zapisz

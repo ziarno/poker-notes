@@ -3,22 +3,16 @@ import DataTable from '@volt/DataTable.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import Column from 'primevue/column'
 import ColumnGroup from 'primevue/columngroup'
+import { DataTableRowSelectEvent } from 'primevue/datatable'
 import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  addPlayer as addPlayerMethod,
-  removePlayer as removePlayerMethod,
-  setPlayerIn,
-  setPlayerOut,
-} from '@/api/methods/games.methods'
-import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
-import { Game } from '@/types'
+import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods'
+import { Game, Player } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
-import EditableName from '@/ui/components/EditableName.vue'
-import EditableNumber from '@/ui/components/EditableNumber.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
+import EditPlayerDialog from '@/ui/components/dialog/EditPlayerDialog.vue'
 import { getTotalIn, getTotalOut, isNumber } from '@/utils'
 
 const { game } = defineProps<{
@@ -26,9 +20,9 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
-const confirmRemove = useDeleteConfirmationDialog(removePlayer)
 
 const isAddingNewPlayer = ref(false)
+const editingPlayer = ref<Player | null>(null)
 
 const tableData = computed(() => {
   return game.players.map(player => ({
@@ -39,19 +33,6 @@ const tableData = computed(() => {
 const totalIn = computed(() => getTotalIn(game).toString() ?? '')
 const totalOut = computed(() => getTotalOut(game).toString() ?? '')
 
-const editingValue = ref('')
-function editValue(index: number, type: 'in' | 'out') {
-  editingValue.value = index + type
-}
-function resetEditingValue() {
-  editingValue.value = ''
-}
-function saveInValue(name: string, value: number | null) {
-  setPlayerIn({ gameId: game._id!, playerName: name, inValue: value! })
-}
-function saveOutValue(name: string, value: number | null) {
-  setPlayerOut({ gameId: game._id!, playerName: name, outValue: value })
-}
 function addPlayer(name: string) {
   addPlayerMethod({
     gameId: game._id!,
@@ -63,58 +44,39 @@ function addPlayer(name: string) {
   isAddingNewPlayer.value = false
 }
 
-function removePlayer(playerName: string) {
-  return removePlayerMethod({ gameId: game._id, playerName })
+function onRowClick(e: DataTableRowSelectEvent<Player>) {
+  editingPlayer.value = e.data
 }
 </script>
 
 <template>
-  <DataTable dataKey="name" ref="data-table" :value="tableData" class="mt-4">
-    <Column field="name" body-class="max-w-0 !py-0 !pl-0 min-w-32">
-      <template #body="slotProps">
-        <EditableName :name="slotProps.data.name" @remove="confirmRemove" />
-      </template>
-    </Column>
+  <DataTable
+    selection-mode="single"
+    @row-select="onRowClick"
+    dataKey="name"
+    ref="data-table"
+    :value="tableData"
+    class="mt-4"
+  >
+    <Column
+      field="name"
+      body-class="max-w-0 !pr-1 min-w-32 overflow-hidden text-ellipsis safari:!pl-1"
+    ></Column>
     <Column
       field="in"
       :header="t('buy_in')"
       class="w-0"
       headerClass="thead-center safari:!px-1"
-      bodyClass="!text-center !pl-0 !pr-1 !py-1"
+      bodyClass="!text-center"
     >
-      <template #body="slotProps">
-        <EditableNumber
-          v-if="slotProps.data.name"
-          :step="game.buyIn"
-          :editing="editingValue === slotProps.index + 'in'"
-          :value="slotProps.data.in"
-          :min="game.buyIn"
-          @click="editValue(slotProps.index, 'in')"
-          @request-hide="resetEditingValue"
-          @input="value => saveInValue(slotProps.data.name, value)"
-        />
-        <span v-else>{{ slotProps.data.in }}</span>
-      </template>
     </Column>
     <Column
       field="out"
       :header="t('buy_out')"
       class="w-0"
       headerClass="thead-center safari:!px-1"
-      bodyClass="!text-center !pl-0 !pr-1 !py-1"
+      bodyClass="!text-center"
     >
-      <template #body="slotProps">
-        <EditableNumber
-          v-if="slotProps.data.name"
-          :editing="editingValue === slotProps.index + 'out'"
-          :value="slotProps.data.out"
-          :min="0"
-          @click="editValue(slotProps.index, 'out')"
-          @request-hide="resetEditingValue"
-          @input="value => saveOutValue(slotProps.data.name, value)"
-        />
-        <span v-else>{{ slotProps.data.out }}</span>
-      </template>
     </Column>
     <Column
       field="balance"
@@ -164,6 +126,11 @@ function removePlayer(playerName: string) {
       </Row>
     </ColumnGroup>
   </DataTable>
+  <EditPlayerDialog
+    :player="editingPlayer"
+    @hide="editingPlayer = null"
+    :game="game"
+  />
 </template>
 
 <style>
