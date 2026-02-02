@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n'
 import {
   addTransfer as addTransferMethod,
   removeTransfer as removeTransferMethod,
-} from '@/api/methods/games.methods'
+} from '@/api/methods/games.methods.ts'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'

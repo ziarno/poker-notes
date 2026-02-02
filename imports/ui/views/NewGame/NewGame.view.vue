@@ -10,7 +10,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { createGame } from '@/api/methods/games.methods'
+import { createGame } from '@/api/methods/games.methods.ts'
 import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'

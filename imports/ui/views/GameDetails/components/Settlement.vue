@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n'
 import { addTransfer } from '@/api/methods'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
-import GameSummaryCopy from '@/ui/components/GameSummaryCopy.vue'
+import GameSummaryCopy from '@/ui/views/GameDetails/components/GameSummaryCopy.vue'
 import {
   getGameSettlement,
   isGameFinished,

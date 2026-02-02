@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n'
 import {
   removePlayer as removePlayerMethod,
   setPlayer as setPlayerMethod,
-} from '@/api/methods/games.methods'
+} from '@/api/methods/games.methods.ts'
 import { useCheckExcludedName } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { Game, Player } from '@/types'

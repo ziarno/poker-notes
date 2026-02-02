@@ -10,9 +10,9 @@ import { useFormattedDate } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
-import PlayersTable from '@/ui/components/PlayersTable.vue'
-import Settlement from '@/ui/components/Settlement.vue'
-import Transfers from '@/ui/components/Transfers.vue'
+import PlayersTable from '@/ui/views/GameDetails/components/PlayersTable.vue'
+import Settlement from '@/ui/views/GameDetails/components/Settlement.vue'
+import Transfers from '@/ui/views/GameDetails/components/Transfers.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -8,11 +8,11 @@ import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods'
+import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
 import { Game, Player } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
-import EditPlayerDialog from '@/ui/components/dialog/EditPlayerDialog.vue'
+import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
 import { getTotalIn, getTotalOut, isNumber } from '@/utils'
 
 const { game } = defineProps<{

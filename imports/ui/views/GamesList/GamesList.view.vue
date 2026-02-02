@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { autorun } from 'vue-meteor-tracker'
 
 import { GamesCollection } from '@/api/collections'
-import GameListItem from '@/ui/components/GameListItem.vue'
+import GameListItem from '@/ui/views/GamesList/components/GameListItem.vue'
 
 const { t } = useI18n()
 const games = autorun(() => GamesCollection.find({}).fetch()).result

@@ -1,8 +1,8 @@
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
-import GameDetailsView from '@/ui/views/GameDetails.view.vue'
-import GamesListView from '@/ui/views/GamesList.view.vue'
-import NewGameView from '@/ui/views/NewGame.view.vue'
+import GameDetailsView from '@/ui/views/GameDetails'
+import GamesListView from '@/ui/views/GamesList'
+import NewGameView from '@/ui/views/NewGame'
 
 declare module 'vue-router' {
   interface RouteMeta {
