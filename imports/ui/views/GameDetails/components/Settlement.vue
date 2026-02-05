@@ -7,6 +7,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addTransfer } from '@/api/methods'
+import { useIsGameCreator } from '@/composables'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
 import GameSummaryCopy from '@/ui/views/GameDetails/components/GameSummaryCopy.vue'
@@ -21,6 +22,7 @@ const { game } = defineProps<{
   game: Game
 }>()
 const { t } = useI18n()
+const isCreator = useIsGameCreator(() => game)
 
 const isOngoing = computed(() => isGameOngoing(game))
 const isInOutEqual = computed(() => isGameInOutEqual(game))
@@ -73,7 +75,7 @@ function addToTransfers(transfer: Transfer) {
           class="w-0 pr-0 pl-0"
           bodyClass="!text-center !p-0"
         />
-        <Column class="w-0">
+        <Column class="w-0" v-if="isCreator">
           <template #body="slotProps">
             <SecondaryButton
               outlined

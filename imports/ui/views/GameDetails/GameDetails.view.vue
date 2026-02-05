@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { GamesCollection } from '@/api/collections'
 import { removeGame as removeGameMethod } from '@/api/methods/games.methods'
-import { useFormattedDate } from '@/composables'
+import { useFormattedDate, useIsGameCreator } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
@@ -28,13 +28,14 @@ subscribe('game', id)
 
 const game = autorun(() => GamesCollection.findOne(id)).result
 const date = useFormattedDate(game.value?.date, 'dd.MM.yyyy')
+const isCreator = useIsGameCreator(game)
 const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
 </script>
 
 <template>
   <div>
     <NavigationHeader :title="game?.title" :subtitle="date">
-      <template #icon>
+      <template #icon v-if="isCreator">
         <SecondaryButton
           @click="confirmRemoveGame"
           variant="outlined"

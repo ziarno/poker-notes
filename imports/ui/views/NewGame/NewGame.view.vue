@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router'
 
 import { createGame } from '@/api/methods/games.methods.ts'
 import { NewPlayer } from '@/types'
+import { getCreatorId } from '@/utils/creatorId.ts'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
@@ -66,7 +67,7 @@ async function onSubmit() {
   // cloneDeep is needed for jam:offline - it removes Proxied objects.
   // Proxies can't be saved in IndexedDB and vue creates proxies for refs.
   // In this case, the players array was Proxies
-  await createGame(cloneDeep({ ...formData.value, _id }))
+  await createGame(cloneDeep({ ...formData.value, _id, creatorId: getCreatorId() }))
   router.replace(`/games/${_id}`)
 }
 </script>

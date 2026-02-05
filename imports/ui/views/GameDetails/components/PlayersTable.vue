@@ -9,6 +9,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
+import { useIsGameCreator } from '@/composables'
 import { Game, Player } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
@@ -20,6 +21,7 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
+const isCreator = useIsGameCreator(() => game)
 
 const isAddingNewPlayer = ref(false)
 const editingPlayer = ref<Player | null>(null)
@@ -45,13 +47,14 @@ function addPlayer(name: string) {
 }
 
 function onRowClick(e: DataTableRowSelectEvent<Player>) {
+  if (!isCreator.value) return
   editingPlayer.value = e.data
 }
 </script>
 
 <template>
   <DataTable
-    selection-mode="single"
+    :selection-mode="isCreator ? 'single' : undefined"
     @row-select="onRowClick"
     dataKey="name"
     ref="data-table"
@@ -90,7 +93,7 @@ function onRowClick(e: DataTableRowSelectEvent<Player>) {
       </template>
     </Column>
     <ColumnGroup type="footer">
-      <Row>
+      <Row v-if="isCreator">
         <Column :colspan="4" footer-class="pl-0 pr-0 pt-2 pb-2">
           <template #footer>
             <SecondaryButton

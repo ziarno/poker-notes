@@ -9,6 +9,7 @@ import {
   addTransfer as addTransferMethod,
   removeTransfer as removeTransferMethod,
 } from '@/api/methods/games.methods.ts'
+import { useIsGameCreator } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
@@ -19,6 +20,7 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
+const isCreator = useIsGameCreator(() => game)
 const isAddingNewTransfer = ref(false)
 
 async function addTransfer(transfer: Transfer) {
@@ -61,7 +63,7 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       class="w-0 pr-0 pl-0"
       bodyClass="!text-center !p-0"
     />
-    <Column class="w-0">
+    <Column class="w-0" v-if="isCreator">
       <template #body="{ data }">
         <SecondaryButton
           outlined
@@ -71,21 +73,23 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       </template>
     </Column>
   </DataTable>
-  <SecondaryButton
-    class="mb-2"
-    size="small"
-    @click="isAddingNewTransfer = true"
-    v-if="!isAddingNewTransfer"
-    icon="pi pi-plus"
-    icon-pos="right"
-    :label="t('add_transfer')"
-  />
+  <template v-if="isCreator">
+    <SecondaryButton
+      class="mb-2"
+      size="small"
+      @click="isAddingNewTransfer = true"
+      v-if="!isAddingNewTransfer"
+      icon="pi pi-plus"
+      icon-pos="right"
+      :label="t('add_transfer')"
+    />
 
-  <InputNewTransfer
-    v-if="isAddingNewTransfer"
-    :game="game"
-    class=""
-    @add="addTransfer"
-    @cancel="isAddingNewTransfer = false"
-  />
+    <InputNewTransfer
+      v-if="isAddingNewTransfer"
+      :game="game"
+      class=""
+      @add="addTransfer"
+      @cancel="isAddingNewTransfer = false"
+    />
+  </template>
 </template>
