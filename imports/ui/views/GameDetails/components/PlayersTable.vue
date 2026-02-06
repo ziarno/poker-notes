@@ -59,7 +59,7 @@ function onRowClick(e: DataTableRowSelectEvent<Player>) {
     dataKey="name"
     ref="data-table"
     :value="tableData"
-    class="mt-4"
+    class="mt-4 mb-15"
   >
     <Column
       field="name"

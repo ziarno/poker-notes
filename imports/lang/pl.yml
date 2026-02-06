@@ -23,6 +23,7 @@ cancel: Anuluj
 add_player: Dodaj gracza
 transfers: Transfery
 add_transfer: Dodaj transfer
+no_transfers: Brak transferów
 from: Od
 to: Do
 value: Wartość

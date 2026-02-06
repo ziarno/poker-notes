@@ -39,6 +39,10 @@ function addToTransfers(transfer: Transfer) {
 
 <template>
   <div class="mb-10">
+    <h2 class="text-surface-700 dark:text-surface-0 mb-4 text-lg font-semibold">
+      {{ t('settlement') }}
+    </h2>
+
     <p v-if="isOngoing" class="text-surface-400 text-center text-sm">
       {{ t('settlement_info') }}
     </p>

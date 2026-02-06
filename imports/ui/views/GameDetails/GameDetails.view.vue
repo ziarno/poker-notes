@@ -52,18 +52,8 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
       />
       <PlayersTable :game="game" />
 
-      <h2
-        class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
-      >
-        {{ t('transfers') }}
-      </h2>
       <Transfers :game="game" />
 
-      <h2
-        class="text-surface-700 dark:text-surface-0 mt-15 mb-4 text-lg font-semibold"
-      >
-        {{ t('settlement') }}
-      </h2>
       <Settlement :game="game" />
     </template>
   </div>

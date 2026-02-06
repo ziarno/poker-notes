@@ -36,6 +36,10 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
 </script>
 
 <template>
+  <h2 class="text-surface-700 dark:text-surface-0 mb-4 text-lg font-semibold">
+    {{ t('transfers') }}
+  </h2>
+
   <DataTable
     :value="game.transfers"
     v-if="game.transfers.length"
@@ -73,7 +77,13 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       </template>
     </Column>
   </DataTable>
-  <template v-if="isCreator">
+  <p
+    v-if="!game.transfers.length && !isCreator"
+    class="text-surface-400 mb-6 text-center text-sm"
+  >
+    {{ t('no_transfers') }}
+  </p>
+  <div v-if="isCreator" class="mb-15">
     <SecondaryButton
       class="mb-2"
       size="small"
@@ -91,5 +101,5 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       @add="addTransfer"
       @cancel="isAddingNewTransfer = false"
     />
-  </template>
+  </div>
 </template>
