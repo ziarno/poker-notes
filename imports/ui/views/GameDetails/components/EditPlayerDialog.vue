@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import Button from '@volt/Button.vue'
-import DangerButton from '@volt/DangerButton.vue'
 import Dialog from '@volt/Dialog.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -29,16 +28,19 @@ const excludedNames = ref<string[]>()
 const checkIsNameExcluded = useCheckExcludedName(excludedNames)
 const confirmRemove = useDeleteConfirmationDialog(removePlayer)
 
-watchEffect(() => {
-  if (!player) return
-  visible.value = !!player
-  buyIn.value = player.in
-  buyOut.value = player.out
-  name.value = player.name
-  excludedNames.value = game.players
-    .map(p => p.name)
-    .filter(n => n !== player.name)
-})
+watch(
+  () => player,
+  () => {
+    if (!player) return
+    visible.value = !!player
+    buyIn.value = player.in
+    buyOut.value = player.out
+    name.value = player.name
+    excludedNames.value = game.players
+      .map(p => p.name)
+      .filter(n => n !== player.name)
+  }
+)
 
 async function removePlayer() {
   await removePlayerMethod({ gameId: game._id, playerName: player!.name })
