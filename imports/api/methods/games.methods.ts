@@ -96,7 +96,7 @@ export const setPlayer = createMethod({
         newValue: player.in,
       })
     }
-    if (oldPlayer.out !== player.out) {
+    if (oldPlayer.out !== player.out && player.out !== null) {
       historyItems.push({
         type: 'player_out_changed',
         timestamp,
