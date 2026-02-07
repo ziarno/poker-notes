@@ -91,12 +91,7 @@ async function setPlayer() {
 
     <template #footer>
       <div class="flex w-full justify-between">
-        <DangerButton
-          outlined
-          :label="t('remove_player')"
-          icon="pi pi-trash"
-          @click="confirmRemove"
-        />
+        <SecondaryButton outlined icon="pi pi-trash" @click="confirmRemove" />
         <div class="space-x-2">
           <SecondaryButton :label="t('cancel')" @click="visible = false" />
           <Button :label="t('save')" @click="setPlayer" />

@@ -38,7 +38,6 @@ summary: Summary
 error_duplicate_name: This name already exists
 error_no_title: Please enter a title
 error_no_players: Please add players
-remove_player: Remove player
 save: Save
 history: History
 no_history: No changes yet
