@@ -8,7 +8,7 @@ import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { useGetName } from '@/composables/useGetName.ts'
 import { FinishedGame, FinishedPlayer, Transfer } from '@/types'
 import { getGameSettlement } from '@/utils/game.utils.ts'
 import { balanceToString } from '@/utils/string.utils.ts'
@@ -20,6 +20,7 @@ const { t } = useI18n()
 const date = useFormattedDate(game.date, 'E, dd.MM.yyyy')
 const summaryRef = useTemplateRef('summary')
 const toast = useToast()
+const name = useGetName()
 
 const source = ref('text-to-copy')
 const { copy, isSupported } = useClipboard({ source })
@@ -37,10 +38,6 @@ function copyToClipboard() {
 }
 
 function generateCopyText() {
-  function name(n: string) {
-    return n === POT_KEY_NAME ? t('pot').toUpperCase() : n
-  }
-
   const playersText = flow(
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {

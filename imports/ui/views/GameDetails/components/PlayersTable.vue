@@ -137,6 +137,10 @@ function onRowClick(e: DataTableRowSelectEvent<Player>) {
 </template>
 
 <style>
+.game-details-footer-row > span {
+  font-weight: normal !important;
+}
+
 .thead-center > div {
   justify-content: center;
 }

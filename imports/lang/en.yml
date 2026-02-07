@@ -21,6 +21,8 @@ error: Error
 something_wrong: Something went wrong :(
 cancel: Cancel
 add_player: Add player
+transfer: Transfer
+transfer_removed: Transfer removed
 transfers: Transfers
 add_transfer: Add transfer
 no_transfers: No transfers
@@ -38,3 +40,9 @@ error_no_title: Please enter a title
 error_no_players: Please add players
 remove_player: Remove player
 save: Save
+history: History
+no_history: No changes yet
+player_added: "{name} joined"
+player_removed: "{name} removed"
+player_in_changed: "{name} {diff}\n{oldValue} → {newValue}"
+player_out_changed: "{name} cashed out: {newValue}\nBalance: {balance}"

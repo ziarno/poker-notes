@@ -15,6 +15,7 @@ describe('getGameSettlement', function () {
       date: new Date(),
       players,
       transfers,
+      history: [],
     }
   }
 

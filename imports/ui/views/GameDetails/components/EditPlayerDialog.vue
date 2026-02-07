@@ -46,7 +46,7 @@ async function removePlayer() {
 }
 
 async function setPlayer() {
-  if (checkIsNameExcluded(name.value)) {
+  if (checkIsNameExcluded(name.value) || !buyIn.value) {
     return
   }
 
@@ -75,7 +75,7 @@ async function setPlayer() {
     <div class="m-7">
       <div class="my-5 flex items-center justify-between">
         <p class="text-lg">{{ t('buy_in') }}</p>
-        <InputNumberStep v-model="buyIn" />
+        <InputNumberStep v-model="buyIn" :min="game.buyIn" />
       </div>
       <div class="my-5 flex items-center justify-between">
         <p class="text-lg">{{ t('buy_out') }}</p>

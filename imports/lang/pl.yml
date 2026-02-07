@@ -21,6 +21,8 @@ error: Błąd
 something_wrong: Coś się skopało :(
 cancel: Anuluj
 add_player: Dodaj gracza
+transfer: Transfer
+transfer_removed: Transfer usunięty
 transfers: Transfery
 add_transfer: Dodaj transfer
 no_transfers: Brak transferów
@@ -38,3 +40,9 @@ error_no_title: Podaj tytuł
 error_no_players: Dodaj graczy
 remove_player: Usuń gracza
 save: Zapisz
+history: Historia
+no_history: Brak zmian
+player_added: "{name} dołączył"
+player_removed: "{name} został usunięty"
+player_in_changed: "{name}: {diff}\n{oldValue} → {newValue}"
+player_out_changed: "{name} wyjście: {newValue}\nStan: {balance}"

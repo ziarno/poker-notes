@@ -1,3 +1,4 @@
+import { HistoryItem } from '@/types/History.type.ts'
 import { FinishedPlayer, NewPlayer, Player } from '@/types/Player.type.ts'
 import { Transfer } from '@/types/Transfer.type.ts'
 
@@ -9,6 +10,7 @@ export interface Game {
   date: Date
   players: Player[]
   transfers: Transfer[]
+  history: HistoryItem[]
 }
 
 export interface NewGame {
