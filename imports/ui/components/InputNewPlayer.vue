@@ -41,7 +41,7 @@ onClickOutside(formRef, () => props.showCancel && emit('cancel'))
       ref="name-input"
       class="w-0 flex-grow"
       inputId="player_name"
-      v-model="name"
+      v-model.trim="name"
       :placeholder="t('name')"
     />
     <Button type="submit" icon="pi pi-plus" class="shrink-0"></Button>

@@ -87,7 +87,7 @@ async function setPlayer() {
         <label for="name" class="mr-10 inline-block text-lg">{{
           t('name')
         }}</label>
-        <InputText id="name" v-model="name" fluid size="large" />
+        <InputText id="name" v-model.trim="name" fluid size="large" />
       </div>
     </div>
 
