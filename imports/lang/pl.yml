@@ -39,6 +39,7 @@ error_duplicate_name: To imię już istnieje
 error_no_title: Podaj tytuł
 error_no_players: Dodaj graczy
 save: Zapisz
+delete_game: Usuń grę
 history: Historia
 no_history: Brak zmian
 player_added: "{name} dołączył"

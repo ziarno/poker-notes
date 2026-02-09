@@ -39,6 +39,7 @@ error_duplicate_name: This name already exists
 error_no_title: Please enter a title
 error_no_players: Please add players
 save: Save
+delete_game: Delete game
 history: History
 no_history: No changes yet
 player_added: "{name} joined"

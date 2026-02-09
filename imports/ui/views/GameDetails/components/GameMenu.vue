@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import Drawer from '@volt/Drawer.vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
 import Timeline from '@volt/Timeline.vue'
 import { toNumber } from 'lodash'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
-import { useFormattedDate } from '@/composables'
+import { removeGame as removeGameMethod } from '@/api/methods/games.methods'
+import { useFormattedDate, useIsGameCreator } from '@/composables'
+import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { useGetName } from '@/composables/useGetName.ts'
 import { NBSP } from '@/constants/string.const.ts'
 import { Game, HistoryItem } from '@/types'
@@ -15,8 +19,17 @@ const { game } = defineProps<{
   game: Game
 }>()
 
+const router = useRouter()
 const { t } = useI18n()
 const getName = useGetName()
+const isCreator = useIsGameCreator(() => game)
+
+async function removeGame() {
+  router.replace('/')
+  await removeGameMethod(game._id)
+}
+
+const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
 
 const sortedHistory = computed(() => {
   if (!game.history?.length) return []
@@ -66,7 +79,11 @@ function formatTime(timestamp: Date): string {
 </script>
 
 <template>
-  <Drawer :header="t('history')" position="right">
+  <Drawer position="right">
+    <h3 class="text-surface-700 dark:text-surface-0 mb-4 font-semibold">
+      {{ t('history') }}
+    </h3>
+
     <p
       v-if="!sortedHistory.length"
       class="text-surface-400 text-center text-sm"
@@ -85,5 +102,15 @@ function formatTime(timestamp: Date): string {
         }}</span>
       </template>
     </Timeline>
+
+    <template #footer v-if="isCreator">
+      <SecondaryButton
+        outlined
+        :label="t('delete_game')"
+        icon="pi pi-trash"
+        class="w-full"
+        @click="confirmRemoveGame"
+      />
+    </template>
   </Drawer>
 </template>
