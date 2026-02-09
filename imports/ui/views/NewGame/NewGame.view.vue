@@ -12,10 +12,10 @@ import { useRouter } from 'vue-router'
 
 import { createGame } from '@/api/methods/games.methods.ts'
 import { NewPlayer } from '@/types'
-import { getCreatorId } from '@/utils/creatorId.ts'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
+import { generatePinCode, savePinCode } from '@/utils/pinCode.utils.ts'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -64,10 +64,13 @@ async function onSubmit() {
   // after the user gets back online and calls this method, so the method
   // remembered by jam:offline in IndexDB should include the id
   const _id = Random.id(8)
-  // cloneDeep is needed for jam:offline - it removes Proxied objects.
+  const pinCode = generatePinCode()
+  // cloneDeep is needed for jam:offline - it removes Proxied objects create by Vue.
   // Proxies can't be saved in IndexedDB and vue creates proxies for refs.
   // In this case, the players array was Proxies
-  await createGame(cloneDeep({ ...formData.value, _id, creatorId: getCreatorId() }))
+  const gameData = cloneDeep(formData.value)
+  await createGame({ ...gameData, _id, pinCode })
+  savePinCode(_id, pinCode)
   router.replace(`/games/${_id}`)
 }
 </script>

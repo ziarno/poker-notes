@@ -4,7 +4,7 @@ import { Transfer } from '@/types/Transfer.type.ts'
 
 export interface Game {
   _id?: string
-  creatorId?: string
+  pinCode: string
   buyIn: number
   title: string
   date: Date
@@ -15,7 +15,7 @@ export interface Game {
 
 export interface NewGame {
   _id?: string
-  creatorId?: string
+  pinCode: string
   buyIn: Game['buyIn']
   title: Game['title']
   players: NewPlayer[]
