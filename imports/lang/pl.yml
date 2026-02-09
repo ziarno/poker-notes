@@ -46,3 +46,13 @@ player_added: "{name} dołączył"
 player_removed: "{name} został usunięty"
 player_in_changed: "{name}: {diff}\n{oldValue} → {newValue}"
 player_out_changed: "{name} wyjście: {newValue}\nStan: {balance}"
+add_editor: Dodaj edytora
+add_editor_description: Udostępnij ten kod PIN, aby ktoś mógł edytować tę grę
+pin_code: Kod PIN
+enter_pin: Podaj PIN
+enter_pin_description: Podaj kod PIN, aby edytować tę grę
+invalid_pin: Nieprawidłowy kod PIN
+become_editor: Zostań edytorem
+editor_added: Jesteś teraz edytorem
+close: Zamknij
+ok: OK

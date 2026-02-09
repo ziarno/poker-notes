@@ -3,7 +3,7 @@ import Drawer from '@volt/Drawer.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import Timeline from '@volt/Timeline.vue'
 import { toNumber } from 'lodash'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -13,16 +13,23 @@ import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmation
 import { useGetName } from '@/composables/useGetName.ts'
 import { NBSP } from '@/constants/string.const.ts'
 import { Game, HistoryItem } from '@/types'
+import EnterPinDialog from '@/ui/views/GameDetails/components/EnterPinDialog.vue'
+import SharePinDialog from '@/ui/views/GameDetails/components/SharePinDialog.vue'
 import { balanceToString } from '@/utils'
 
 const { game } = defineProps<{
   game: Game
 }>()
 
+const visible = defineModel<boolean>('visible', { default: false })
+
 const router = useRouter()
 const { t } = useI18n()
 const getName = useGetName()
 const isCreator = useIsGameCreator(() => game)
+
+const showSharePinDialog = ref(false)
+const showEnterPinDialog = ref(false)
 
 async function removeGame() {
   router.replace('/')
@@ -79,7 +86,7 @@ function formatTime(timestamp: Date): string {
 </script>
 
 <template>
-  <Drawer position="right">
+  <Drawer v-model:visible="visible" position="right">
     <h3 class="text-surface-700 dark:text-surface-0 mb-4 font-semibold">
       {{ t('history') }}
     </h3>
@@ -103,14 +110,44 @@ function formatTime(timestamp: Date): string {
       </template>
     </Timeline>
 
-    <template #footer v-if="isCreator">
-      <SecondaryButton
-        outlined
-        :label="t('delete_game')"
-        icon="pi pi-trash"
-        class="w-full"
-        @click="confirmRemoveGame"
-      />
+    <template #footer>
+      <div class="flex justify-center gap-3">
+        <SecondaryButton
+          size="small"
+          v-if="isCreator"
+          outlined
+          :label="t('add_editor')"
+          icon="pi pi-user-plus"
+          @click="showSharePinDialog = true"
+        />
+        <SecondaryButton
+          v-else
+          size="small"
+          outlined
+          :label="t('become_editor')"
+          icon="pi pi-pencil"
+          @click="showEnterPinDialog = true"
+        />
+        <SecondaryButton
+          v-if="isCreator"
+          size="small"
+          outlined
+          :label="t('delete_game')"
+          icon="pi pi-trash"
+          @click="confirmRemoveGame"
+        />
+      </div>
     </template>
   </Drawer>
+
+  <SharePinDialog
+    :pin-code="game.pinCode"
+    v-model:visible="showSharePinDialog"
+  />
+  <EnterPinDialog
+    :game-id="game._id!"
+    :pin-code="game.pinCode"
+    v-model:visible="showEnterPinDialog"
+    @saved="visible = false"
+  />
 </template>

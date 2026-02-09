@@ -10,6 +10,7 @@ describe('getGameSettlement', function () {
   ): FinishedGame {
     return {
       _id: 'test-game',
+      pinCode: '1234',
       buyIn: 10,
       title: 'Test Game',
       date: new Date(),

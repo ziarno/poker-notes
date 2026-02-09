@@ -77,7 +77,7 @@ async function setPlayer() {
     <div class="m-7">
       <div class="my-5 flex items-center justify-between">
         <p class="text-lg">{{ t('buy_in') }}</p>
-        <InputNumberStep v-model="buyIn" :min="game.buyIn" />
+        <InputNumberStep v-model="buyIn" :min="game.buyIn" :step="game.buyIn" />
       </div>
       <div class="my-5 flex items-center justify-between">
         <p class="text-lg">{{ t('buy_out') }}</p>
