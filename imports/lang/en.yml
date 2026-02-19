@@ -56,3 +56,6 @@ become_editor: Become editor
 editor_added: You are now an editor
 close: Close
 ok: OK
+games: Games
+odds: Odds
+coming_soon: Coming soon

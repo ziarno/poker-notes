@@ -3,6 +3,7 @@ import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import GameDetailsView from '@/ui/views/GameDetails'
 import GamesListView from '@/ui/views/GamesList'
 import NewGameView from '@/ui/views/NewGame'
+import OddsView from '@/ui/views/Odds'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -25,6 +26,11 @@ const routes: RouteRecordRaw[] = [
     path: '/new',
     component: NewGameView,
     meta: { depthForAnimation: 1 },
+  },
+  {
+    path: '/odds',
+    component: OddsView,
+    meta: { depthForAnimation: 5 },
   },
 ]
 
