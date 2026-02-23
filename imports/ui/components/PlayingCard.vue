@@ -2,25 +2,15 @@
 import { computed } from 'vue'
 
 import { PLAYING_CARDS } from '@/constants/playingCrads.const.ts'
-import { CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
+import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
 
-type PropsWithRank = {
-  number: number
-  suit: never
-  rank: never
+type Props = {
+  card: Card
 }
 
-type PropsWithRankAndSuit = {
-  number: never
-  suit: CardSuit
-  rank: CardRank
-}
+const { card } = defineProps<Props>()
 
-type Props = PropsWithRank | PropsWithRankAndSuit
-
-const { number, rank, suit } = defineProps<Props>()
-
-function getNumber(rank: CardRank, suit: CardSuit) {
+function getNumber({ suit, rank }: Card) {
   const RANK_MAP: Record<CardRank, number> = {
     A: 0,
     2: 1,
@@ -31,7 +21,7 @@ function getNumber(rank: CardRank, suit: CardSuit) {
     7: 6,
     8: 7,
     9: 8,
-    10: 9,
+    T: 9,
     J: 10,
     Q: 11,
     K: 12,
@@ -45,13 +35,14 @@ function getNumber(rank: CardRank, suit: CardSuit) {
   return RANK_MAP[rank] + SUIT_MULTIPLIER[suit] * 13
 }
 
-const cardNumber = computed(() => number ?? getNumber(rank, suit))
-const card = computed(() => PLAYING_CARDS[cardNumber.value])
+const cardNumber = computed(() => getNumber(card))
+console.log(cardNumber.value)
+const cardAscii = computed(() => PLAYING_CARDS[cardNumber.value])
 const cardColorClass = computed(() =>
-  number <= 25 ? 'text-red-700' : 'text-black'
+  cardNumber.value <= 25 ? 'text-red-700' : 'text-black'
 )
 </script>
 
 <template>
-  <span :class="['text-3xl', cardColorClass]">{{ card }}</span>
+  <span :class="['text-7xl', cardColorClass]">{{ cardAscii }}</span>
 </template>

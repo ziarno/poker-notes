@@ -1,4 +1,8 @@
+import { FirstLetter } from '@/types/Utils.type.ts'
+
+export type CardSuitIcon = '♠' | '♥' | '♣' | '♦'
 export type CardSuit = 'hearts' | 'diamonds' | 'clubs' | 'spades'
+export type CardSuitShort = FirstLetter<CardSuit>
 
 export type CardRank =
   | 'A'
@@ -10,12 +14,17 @@ export type CardRank =
   | '7'
   | '8'
   | '9'
-  | '10'
+  | 'T'
   | 'J'
   | 'Q'
   | 'K'
 
-export type SuitAndRank = {
+export type Card = {
   suit: CardSuit
+  rank: CardRank
+}
+
+export type CardShort = {
+  suit: CardSuitShort
   rank: CardRank
 }
