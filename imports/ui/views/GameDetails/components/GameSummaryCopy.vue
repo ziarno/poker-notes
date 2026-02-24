@@ -57,6 +57,7 @@ function generateCopyText() {
   )(getGameSettlement(game))
 
   return `${game.title} | ${date.value}
+${document.URL}
 
 ${playersText}
 
