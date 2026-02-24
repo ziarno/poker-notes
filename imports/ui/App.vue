@@ -18,7 +18,7 @@ const { visible, handleSelect } = useCardKeyboard()
     <div id="main-scroll" class="flex-1 overflow-y-auto">
       <Router />
     </div>
-    <TabBar />
+    <TabBar v-if="false" />
   </div>
   <CardKeyboard v-model:visible="visible" @select="handleSelect" />
   <ConfirmDialog />
