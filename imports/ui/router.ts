@@ -40,7 +40,8 @@ export const router = createRouter({
   scrollBehavior() {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve({ top: 0 })
+        document.getElementById('main-scroll')?.scrollTo({ top: 0 })
+        resolve(false)
       }, 160)
     })
   },

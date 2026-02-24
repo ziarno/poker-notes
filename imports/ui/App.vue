@@ -15,7 +15,7 @@ const { visible, handleSelect } = useCardKeyboard()
 
 <template>
   <div class="flex h-dvh flex-col">
-    <div class="flex-1 overflow-y-auto">
+    <div id="main-scroll" class="flex-1 overflow-y-auto">
       <Router />
     </div>
     <TabBar />
