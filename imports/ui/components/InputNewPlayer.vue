@@ -3,36 +3,54 @@ import Button from '@volt/Button.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
-import { ref, useTemplateRef } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useCheckExcludedName } from '@/composables'
+import { NewPlayer } from '@/types'
+import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 
 const emit = defineEmits<{
-  (e: 'add', name: string): void
+  (e: 'add', player: NewPlayer): void
   (e: 'cancel'): void
 }>()
 const props = defineProps<{
   excludeNames?: string[]
+  buyIn: number
   showCancel?: boolean
+  showBuyIn?: boolean
 }>()
 const { t } = useI18n()
 const inputRef = useTemplateRef('name-input')
 const formRef = useTemplateRef('form')
 const checkIsNameExcluded = useCheckExcludedName(() => props.excludeNames)
-const name = ref('')
+
+const getDefaultValue = () => ({
+  name: '',
+  in: props.buyIn,
+})
+
+const playerFormData = ref(getDefaultValue())
 
 const onSubmit = () => {
-  if (checkIsNameExcluded(name.value)) {
+  debugger
+  if (checkIsNameExcluded(playerFormData.value.name)) {
     return
   }
 
-  emit('add', name.value)
-  name.value = ''
+  emit('add', { ...playerFormData.value })
+  Object.assign(playerFormData.value, getDefaultValue())
   inputRef.value?.$el?.focus()
 }
 
 onClickOutside(formRef, () => props.showCancel && emit('cancel'))
+
+watch(
+  () => props.buyIn,
+  () => {
+    playerFormData.value.in = props.buyIn
+  }
+)
 </script>
 
 <template>
@@ -41,16 +59,23 @@ onClickOutside(formRef, () => props.showCancel && emit('cancel'))
       ref="name-input"
       class="w-0 flex-grow"
       inputId="player_name"
-      v-model.trim="name"
+      v-model.trim="playerFormData.name"
       :placeholder="t('name')"
     />
-    <Button type="submit" icon="pi pi-plus" class="shrink-0"></Button>
+    <InputNumberStep
+      v-if="showBuyIn"
+      :min="buyIn"
+      :step="buyIn"
+      v-model="playerFormData.in"
+      @keydown.prevent.enter="onSubmit"
+    />
     <SecondaryButton
       outlined
       v-if="showCancel"
       icon="pi pi-times"
       class="shrink-0"
       @click="emit('cancel')"
-    ></SecondaryButton>
+    />
+    <Button type="submit" icon="pi pi-check" class="shrink-0" />
   </form>
 </template>

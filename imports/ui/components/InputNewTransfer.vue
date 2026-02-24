@@ -57,26 +57,32 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <form
-    @submit.prevent="onSubmit"
-    class="flex w-full justify-between space-x-2"
-  >
-    <Select
-      :placeholder="t('from')"
-      optionLabel="name"
-      v-model="formData.from"
-      :options="optionsFrom"
-      class="shrink-1 grow-1 basis-0 overflow-hidden"
-    />
-    <Select
-      :placeholder="t('to')"
-      optionLabel="name"
-      v-model="formData.to"
-      :options="optionsTo"
-      class="shrink-1 grow-1 basis-0 overflow-hidden"
-    />
-    <InputNumberStep v-model="formData.value" />
-    <Button @click="onSubmit" icon="pi pi-check" />
-    <SecondaryButton @click="emit('cancel')" outlined icon="pi pi-times" />
+  <form @submit.prevent="onSubmit">
+    <div class="mb-2 flex w-full justify-between space-x-2">
+      <Select
+        :placeholder="t('from')"
+        optionLabel="name"
+        v-model="formData.from"
+        :options="optionsFrom"
+        class="shrink-1 grow-1 basis-0 overflow-hidden"
+      />
+      <Select
+        :placeholder="t('to')"
+        optionLabel="name"
+        v-model="formData.to"
+        :options="optionsTo"
+        class="shrink-1 grow-1 basis-0 overflow-hidden"
+      />
+      <InputNumberStep v-model="formData.value" />
+    </div>
+    <div class="flex w-full justify-end space-x-2">
+      <SecondaryButton
+        size="large"
+        @click="emit('cancel')"
+        outlined
+        icon="pi pi-times"
+      />
+      <Button @click="onSubmit" icon="pi pi-check" />
+    </div>
   </form>
 </template>

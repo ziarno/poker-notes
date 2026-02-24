@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n'
 
 import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
 import { useIsGameCreator } from '@/composables'
-import { Game, Player } from '@/types'
+import { Game, NewPlayer, Player } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
@@ -35,13 +35,10 @@ const tableData = computed(() => {
 const totalIn = computed(() => getTotalIn(game).toString() ?? '')
 const totalOut = computed(() => getTotalOut(game).toString() ?? '')
 
-function addPlayer(name: string) {
+function addPlayer(player: NewPlayer) {
   addPlayerMethod({
     gameId: game._id!,
-    player: {
-      name,
-      in: game.buyIn,
-    },
+    player,
   })
   isAddingNewPlayer.value = false
 }
@@ -107,6 +104,8 @@ function onRowClick(e: DataTableRowSelectEvent<Player>) {
             />
             <InputNewPlayer
               show-cancel
+              show-buy-in
+              :buy-in="game.buyIn"
               v-else
               :exclude-names="game.players.map(p => p.name)"
               @add="addPlayer"

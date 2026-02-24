@@ -83,9 +83,9 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
   >
     {{ t('no_transfers') }}
   </p>
-  <div v-if="isCreator" class="mb-15">
+  <div v-if="isCreator">
     <SecondaryButton
-      class="mb-2"
+      class="mb-14"
       size="small"
       @click="isAddingNewTransfer = true"
       v-if="!isAddingNewTransfer"
