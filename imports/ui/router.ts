@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     meta: { depthForAnimation: 0 },
   },
   {
-    path: '/games/:id',
+    path: '/:id',
     component: GameDetailsView,
     meta: { depthForAnimation: 2 },
   },

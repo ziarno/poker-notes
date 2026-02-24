@@ -14,11 +14,7 @@ const tabs = computed(() => [
 
 function isActive(path: string): boolean {
   if (path === '/') {
-    return (
-      route.path === '/' ||
-      route.path.startsWith('/games') ||
-      route.path === '/new'
-    )
+    return route.path === '/' || route.path !== '/odds'
   }
   return route.path.startsWith(path)
 }

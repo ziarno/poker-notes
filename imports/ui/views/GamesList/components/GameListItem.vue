@@ -13,7 +13,7 @@ const date = useFormattedDate(props.game.date, 'E, dd.MM.yyyy')
 </script>
 
 <template>
-  <RouterLink class="cursor-pointer" :to="`/games/${game._id}`">
+  <RouterLink class="cursor-pointer" :to="`/${game._id}`">
     <Panel class="border-surface-200 mb-5 border-1 shadow-md">
       <template #header>
         <div class="flex w-full justify-between">

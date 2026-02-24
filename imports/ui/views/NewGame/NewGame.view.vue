@@ -71,7 +71,7 @@ async function onSubmit() {
   const gameData = cloneDeep(formData.value)
   await createGame({ ...gameData, _id, pinCode })
   savePinCode(_id, pinCode)
-  router.replace(`/games/${_id}`)
+  router.replace(`/${_id}`)
 }
 </script>
 
