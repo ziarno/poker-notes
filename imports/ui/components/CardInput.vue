@@ -11,7 +11,6 @@ const { show } = useCardKeyboard()
 
 function openKeyboard() {
   show((selectedCard: Card) => {
-    console.log(selectedCard)
     card.value = selectedCard
   })
 }

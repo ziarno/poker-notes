@@ -3,14 +3,11 @@ import TimesIcon from '@primevue/icons/times'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { computed, ref } from 'vue'
 
+import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import { SUITS_ICONS, SUIT_ICONS_TO_SUIT } from '@/constants/playingCrads.const'
 import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
 
-const visible = defineModel<boolean>('visible', { default: false })
-
-const emit = defineEmits<{
-  select: [card: Card]
-}>()
+const { visible, handleSelect, hide } = useCardKeyboard()
 
 const ranksTopRow = ['A', 'K', 'Q', 'J', 'T'] as const
 const ranksBottomRow = ['9', '8', '7', '6', '5', '4', '3', '2'] as const
@@ -27,7 +24,7 @@ const card = computed(() => ({
 function checkEmit() {
   if (card.value.rank && card.value.suit) {
     setTimeout(() => {
-      emit('select', card.value as Card)
+      handleSelect(card.value as Card)
       reset()
     }, 100)
   }
@@ -50,7 +47,7 @@ function reset() {
 
 function close() {
   reset()
-  visible.value = false
+  hide()
 }
 
 function getSuitColor(suit: string): string {

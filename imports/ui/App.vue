@@ -3,14 +3,11 @@ import ConfirmDialog from '@volt/ConfirmDialog.vue'
 import Toast from '@volt/Toast.vue'
 import { subscribe } from 'vue-meteor-tracker'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import CardKeyboard from '@/ui/components/CardKeyboard.vue'
 import TabBar from '@/ui/components/TabBar.vue'
 import Router from '@/ui/views/Router.vue'
 
 subscribe('games')
-
-const { visible, handleSelect } = useCardKeyboard()
 </script>
 
 <template>
@@ -20,7 +17,7 @@ const { visible, handleSelect } = useCardKeyboard()
     </div>
     <TabBar v-if="false" />
   </div>
-  <CardKeyboard v-model:visible="visible" @select="handleSelect" />
+  <CardKeyboard />
   <ConfirmDialog />
   <Toast />
 </template>
