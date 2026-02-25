@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
+import { useRouter } from 'vue-router'
 
 defineProps<{
   title?: string
@@ -8,12 +9,25 @@ defineProps<{
 defineSlots<{
   icon(): any
 }>()
+
+const router = useRouter()
+
+function goBack() {
+  const { currentRoute } = router
+  router.back()
+  setTimeout(() => {
+    // check if it worked - it's possible that we couldn't go back
+    if (router.currentRoute === currentRoute) {
+      router.push('/')
+    }
+  })
+}
 </script>
 
 <template>
   <div class="mb-4 flex w-full items-center space-x-2">
     <SecondaryButton
-      @click="$router.back()"
+      @click="goBack"
       icon="pi pi-chevron-left"
       variant="text"
       rounded
