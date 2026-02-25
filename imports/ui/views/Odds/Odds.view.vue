@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import CardInput, { Card } from '@/ui/components/CardInput.vue'
+import { Card } from '@/types/PlayingCards.type.ts'
+import CardInput from '@/ui/components/CardInput.vue'
 
 const { t } = useI18n()
 

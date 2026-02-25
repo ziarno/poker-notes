@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash'
 import { Random } from 'meteor/random'
 import Column from 'primevue/column'
 import { useToast } from 'primevue/usetoast'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -31,11 +31,8 @@ const formData = ref<{
   players: [],
 })
 
-function addPlayer(name: string) {
-  formData.value.players.push({
-    name: name,
-    in: formData.value.buyIn,
-  })
+function addPlayer(player: NewPlayer) {
+  formData.value.players.push(player)
 }
 function removePlayer(index: number) {
   formData.value.players.splice(index, 1)
@@ -73,6 +70,15 @@ async function onSubmit() {
   savePinCode(_id, pinCode)
   router.replace(`/${_id}`)
 }
+
+watch(
+  () => formData.value.buyIn,
+  () => {
+    formData.value.players.forEach((player: NewPlayer) => {
+      player.in = formData.value.buyIn
+    })
+  }
+)
 </script>
 
 <template>
@@ -124,6 +130,7 @@ async function onSubmit() {
           </Column>
         </DataTable>
         <InputNewPlayer
+          :buy-in="formData.buyIn"
           :exclude-names="formData.players.map(p => p.name)"
           class="mt-5"
           @add="addPlayer"
