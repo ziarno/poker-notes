@@ -20,7 +20,7 @@ function goBack() {
     if (router.currentRoute === currentRoute) {
       router.push('/')
     }
-  })
+  }, 50)
 }
 </script>
 
