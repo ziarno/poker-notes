@@ -16,15 +16,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.5",
-    "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@swc/helpers": "^0.5.17",
-    "@tailwindcss/vite": "^4.1.11",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.1",
-    "@types/lodash": "^4.17.23",
-    "@types/meteor": "^2.9.7",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^25.0.3",
-    "@vitejs/plugin-vue": "^5.2.1",
     "@vueuse/core": "^14.1.0",
     "date-fns": "^4.1.0",
     "js-cookie": "^3.0.5",
@@ -33,20 +25,13 @@
     "meteor-vite": "^3.2.1",
     "patch-package": "^8.0.1",
     "poker-odds-calc": "^0.0.14",
-    "prettier": "^3.8.0",
-    "prettier-plugin-tailwindcss": "^0.7.2",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.4",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.11",
-    "tailwindcss-primeui": "^0.6.1",
-    "typescript": "^5.9.3",
-    "vite": "^6.0.11",
     "vue": "^3.3.9",
     "vue-i18n": "^11.2.8",
     "vue-meteor-tracker": "^3.0.0-beta.7",
-    "vue-router": "^4.2.5",
-    "vue-tsc": "^3.2.1"
+    "vue-router": "^4.2.5"
   },
   "meteor": {
     "modern": true,
@@ -57,6 +42,21 @@
     "testModule": "tests/main.ts"
   },
   "devDependencies": {
-    "@types/js-cookie": "^3.0.6"
+    "@modyfi/vite-plugin-yaml": "^1.1.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.1",
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.23",
+    "@types/meteor": "^2.9.7",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.0.3",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "prettier": "^3.8.0",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.1.11",
+    "tailwindcss-primeui": "^0.6.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.0.11",
+    "vue-tsc": "^3.2.1"
   }
 }
