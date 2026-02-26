@@ -10,7 +10,8 @@ import {
 import CardInput from '@/ui/components/CardInput.vue'
 
 const { t } = useI18n()
-const { players, board, addPlayer, removeLastPlayer, reset } = useSelectedCards()
+const { players, board, odds, addPlayer, removeLastPlayer, reset } =
+  useSelectedCards()
 </script>
 
 <template>
@@ -32,7 +33,20 @@ const { players, board, addPlayer, removeLastPlayer, reset } = useSelectedCards(
         >
           {{ t('player', { n: i + 1 }) }}
         </h2>
-        <CardInput v-model="player.cards" :max="PLAYER_MAX_CARDS" />
+        <CardInput
+          v-model="player.cards"
+          :max="PLAYER_MAX_CARDS"
+          class="shrink-0"
+        />
+        <div v-if="odds?.[i]" class="grow-1 text-right text-sm">
+          <p class="font-semibold text-green-600 dark:text-green-400">
+            {{ odds[i]!.wins }}
+          </p>
+
+          <p class="text-surface-500 dark:text-surface-400">
+            {{ odds[i]!.ties }}
+          </p>
+        </div>
       </div>
     </div>
 

@@ -1,7 +1,4 @@
-import { invert } from 'lodash'
-
 import { CardSuit, CardSuitIcon } from '@/types/PlayingCards.type.ts'
-import { Invert } from '@/types/Utils.type.ts'
 
 export const PLAYING_CARDS = [
   '🂱',
@@ -65,6 +62,9 @@ export const SUITS_ICONS: Record<CardSuit, CardSuitIcon> = {
   diamonds: '♦',
 } as const
 
-export const SUIT_ICONS_TO_SUIT = invert(SUITS_ICONS) as Invert<
-  typeof SUITS_ICONS
->
+export const SUIT_TO_LETTER: Record<CardSuit, string> = {
+  hearts: 'h',
+  clubs: 'c',
+  diamonds: 'd',
+  spades: 's',
+}
