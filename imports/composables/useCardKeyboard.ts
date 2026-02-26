@@ -44,9 +44,16 @@ export function useCardKeyboard(
     return registrations.find(r => r.id === activeId.value) ?? null
   }
 
+  function isCardTaken(card: Card) {
+    return registrations.some((r) =>
+      r.cards.value.some((c) => c.rank === card.rank && c.suit === card.suit),
+    )
+  }
+
   function addCard(card: Card) {
     const active = getActive()
     if (!active) return
+    if (isCardTaken(card)) return
 
     let nextCards = [...active.cards.value, card]
     if (nextCards.length > active.max) {
