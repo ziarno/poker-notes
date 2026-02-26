@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 import { Card } from '@/types/PlayingCards.type.ts'
 
-const visible = ref(true)
+const visible = ref(false)
 let onSelectCallback: ((card: Card) => void) | null = null
 let onDeleteCallback: (() => void) | null = null
 

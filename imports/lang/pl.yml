@@ -21,6 +21,7 @@ error: Błąd
 something_wrong: Coś się skopało :(
 cancel: Anuluj
 add_player: Dodaj gracza
+remove_player: Usuń gracza
 transfer: Transfer
 transfer_removed: Transfer usunięty
 transfers: Transfery
@@ -57,6 +58,9 @@ editor_added: Jesteś teraz edytorem
 close: Zamknij
 ok: OK
 games: Gry
-odds: Szanse
+odds: Kalkulator
 coming_soon: Już wkrótce
 add_card: Dodaj kartę
+reset: Resetuj
+player: "Gracz {n}"
+board: Stół

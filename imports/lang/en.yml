@@ -21,6 +21,7 @@ error: Error
 something_wrong: Something went wrong :(
 cancel: Cancel
 add_player: Add player
+remove_player: Remove player
 transfer: Transfer
 transfer_removed: Transfer removed
 transfers: Transfers
@@ -57,6 +58,9 @@ editor_added: You are now an editor
 close: Close
 ok: OK
 games: Games
-odds: Odds
+odds: Calculator
 coming_soon: Coming soon
 add_card: Add card
+reset: Reset
+player: "Player {n}"
+board: Board

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
-import { computed, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 
 import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import { SUITS_ICONS } from '@/constants/playingCrads.const'
@@ -49,11 +50,15 @@ function close() {
   reset()
   hide()
 }
+
+const refContainer = useTemplateRef('container')
+onClickOutside(refContainer, close)
 </script>
 
 <template>
   <Transition name="slide-up">
     <div
+      ref="container"
       v-if="visible"
       class="bg-surface-0 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-3"
     >
