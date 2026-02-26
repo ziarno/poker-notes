@@ -36,7 +36,6 @@ function getNumber({ suit, rank }: Card) {
 }
 
 const cardNumber = computed(() => getNumber(card))
-console.log(cardNumber.value)
 const cardAscii = computed(() => PLAYING_CARDS[cardNumber.value])
 const cardColorClass = computed(() =>
   cardNumber.value <= 25 ? 'text-red-700' : 'text-black'

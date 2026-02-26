@@ -34,7 +34,7 @@ function navigate(path: string) {
       class="flex flex-1 cursor-pointer flex-col items-center gap-1 py-3 transition-colors"
       :class="
         isActive(tab.path)
-          ? 'text-primary'
+          ? 'text-bold'
           : 'text-surface-500 dark:text-surface-400'
       "
       @click="navigate(tab.path)"

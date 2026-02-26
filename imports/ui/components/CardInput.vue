@@ -1,27 +1,50 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import { Card } from '@/types/PlayingCards.type.ts'
-import PlayingCard from '@/ui/components/PlayingCard.vue'
+import { CARD_TEXT_WIDTH_REM } from '@/ui/components/PlayingCardText.vue'
+import PlayingCardText from '@/ui/components/PlayingCardText.vue'
 
-const card = ref<Card | null>(null)
+const props = defineProps<{ max: number }>()
+const cards = defineModel<Card[]>({ default: [] })
 
-const { show } = useCardKeyboard()
+const { show, hide } = useCardKeyboard()
+
+const width = computed(() => {
+  const cards = props.max * CARD_TEXT_WIDTH_REM
+  const gaps = (props.max - 1) * 0.5
+  const padding = 1.7
+  return `${cards + gaps + padding}rem`
+})
 
 function openKeyboard() {
-  show((selectedCard: Card) => {
-    card.value = selectedCard
+  show({
+    onSelect: (selectedCard: Card) => {
+      const nextCards =
+        cards.value.length === props.max
+          ? [selectedCard]
+          : [...cards.value, selectedCard]
+      cards.value = nextCards
+      if (nextCards.length >= props.max) {
+        hide()
+      }
+    },
+    onDelete: () => {
+      cards.value = cards.value.slice(0, -1)
+    },
   })
 }
 </script>
 
 <template>
   <button
-    class="bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 border-surface-300 dark:border-surface-600 flex h-20 w-14 items-center justify-center rounded-lg border-2 border-dashed transition-colors"
+    class="border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 hover:border-surface-400 dark:hover:border-surface-500 flex h-12 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors"
+    :style="{ width }"
     @click="openKeyboard"
   >
-    <PlayingCard v-if="card" :card="card" />
-    <i v-else class="pi pi-plus text-surface-400 text-xl"></i>
+    <span v-if="cards.length" class="flex flex-wrap gap-2">
+      <PlayingCardText v-for="(card, i) in cards" :key="i" :card="card" />
+    </span>
   </button>
 </template>

@@ -7,7 +7,7 @@ import CardInput from '@/ui/components/CardInput.vue'
 
 const { t } = useI18n()
 
-const selectedCard = ref<Card | null>(null)
+const selectedCards = ref<Card[]>([])
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const selectedCard = ref<Card | null>(null)
     </h1>
 
     <div class="mt-4 flex justify-center">
-      <CardInput v-model="selectedCard" />
+      <CardInput v-model="selectedCards" :max="2" />
     </div>
   </div>
 </template>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import TimesIcon from '@primevue/icons/times'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { computed, ref } from 'vue'
 
 import { useCardKeyboard } from '@/composables/useCardKeyboard'
-import { SUITS_ICONS, SUIT_ICONS_TO_SUIT } from '@/constants/playingCrads.const'
+import { SUITS_ICONS } from '@/constants/playingCrads.const'
 import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
+import SuitIcon from '@/ui/components/SuitIcon.vue'
 
-const { visible, handleSelect, hide } = useCardKeyboard()
+const { visible, handleSelect, handleDelete, hide } = useCardKeyboard()
 
 const ranksTopRow = ['A', 'K', 'Q', 'J', 'T'] as const
 const ranksBottomRow = ['9', '8', '7', '6', '5', '4', '3', '2'] as const
 const ranksRows = [ranksBottomRow, ranksTopRow]
-const suitsIcons = Object.values(SUITS_ICONS)
+const suits = Object.keys(SUITS_ICONS) as CardSuit[]
 
 const selectedRank = ref<CardRank | null>(null)
 const selectedSuit = ref<CardSuit | null>(null)
@@ -49,34 +49,17 @@ function close() {
   reset()
   hide()
 }
-
-function getSuitColor(suit: string): string {
-  return suit === SUITS_ICONS.hearts || suit === SUITS_ICONS.diamonds
-    ? 'text-red-500!'
-    : 'text-black dark:text-white!'
-}
 </script>
 
 <template>
   <Transition name="slide-up">
     <div
       v-if="visible"
-      class="bg-surface-0 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t px-2 pt-10 pb-10"
+      class="bg-surface-0 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-3"
     >
-      <SecondaryButton
-        variant="text"
-        rounded
-        @click="close"
-        class="absolute! top-2 right-2 p-2"
-      >
-        <template #icon>
-          <TimesIcon />
-        </template>
-      </SecondaryButton>
-
       <div
         v-for="row in ranksRows"
-        class="flex flex-wrap justify-center gap-1 pt-4"
+        class="mt-3 flex flex-wrap justify-center gap-1"
       >
         <SecondaryButton
           outlined
@@ -90,21 +73,29 @@ function getSuitColor(suit: string): string {
         </SecondaryButton>
       </div>
 
-      <div class="mt-5 flex justify-center gap-3">
+      <div class="mt-5 flex justify-center gap-3 p-1">
+        <SecondaryButton
+          @click="close"
+          icon="pi pi-chevron-down"
+          class="h-12 w-14!"
+        />
+
         <SecondaryButton
           outlined
-          v-for="suitIcon in suitsIcons"
-          :key="suitIcon"
+          v-for="suit in suits"
+          :key="suit"
           class="h-12 w-14 text-2xl text-black! transition-colors"
-          :class="[
-            getSuitColor(suitIcon),
-            selectedSuit === SUIT_ICONS_TO_SUIT[suitIcon] &&
-              'border-2 border-gray-500!',
-          ]"
-          @click="selectSuit(SUIT_ICONS_TO_SUIT[suitIcon])"
+          :class="[selectedSuit === suit && 'border-2 border-gray-500!']"
+          @click="selectSuit(suit)"
         >
-          {{ suitIcon }}
+          <SuitIcon :suit="suit" />
         </SecondaryButton>
+
+        <SecondaryButton
+          @click="handleDelete"
+          icon="pi pi-delete-left"
+          class="h-12 w-14!"
+        />
       </div>
     </div>
   </Transition>
