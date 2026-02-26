@@ -65,7 +65,6 @@ export function useSelectedCards() {
         return {
           wins: rp.getWinsPercentageString(),
           ties: rp.getTiesPercentageString(),
-          ranks: rp.getRanks(),
         }
       })
     } catch {

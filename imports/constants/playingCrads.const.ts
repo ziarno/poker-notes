@@ -1,4 +1,8 @@
-import { CardSuit, CardSuitIcon } from '@/types/PlayingCards.type.ts'
+import {
+  CardSuit,
+  CardSuitIcon,
+  CardSuitShort,
+} from '@/types/PlayingCards.type.ts'
 
 export const PLAYING_CARDS = [
   '🂱',
@@ -62,7 +66,7 @@ export const SUITS_ICONS: Record<CardSuit, CardSuitIcon> = {
   diamonds: '♦',
 } as const
 
-export const SUIT_TO_LETTER: Record<CardSuit, string> = {
+export const SUIT_TO_LETTER: Record<CardSuit, CardSuitShort> = {
   hearts: 'h',
   clubs: 'c',
   diamonds: 'd',

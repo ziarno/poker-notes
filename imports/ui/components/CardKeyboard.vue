@@ -8,7 +8,8 @@ import { SUITS_ICONS } from '@/constants/playingCrads.const'
 import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
 import SuitIcon from '@/ui/components/SuitIcon.vue'
 
-const { visible, addCard, removeLastCard, hide } = useCardKeyboard()
+const { visible, activeLabel, addCard, removeLastCard, hide } =
+  useCardKeyboard()
 
 const ranksTopRow = ['A', 'K', 'Q', 'J', 'T'] as const
 const ranksBottomRow = ['9', '8', '7', '6', '5', '4', '3', '2'] as const
@@ -60,17 +61,24 @@ onClickOutside(refContainer, close)
     <div
       ref="container"
       v-if="visible"
-      class="bg-surface-0 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-3"
+      class="bg-surface-50 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-4"
     >
+      <h2
+        v-if="activeLabel"
+        class="text-surface-600 dark:text-surface-300 text-center text-lg font-medium"
+      >
+        {{ activeLabel }}
+      </h2>
+
       <div
         v-for="row in ranksRows"
-        class="mt-3 flex flex-wrap justify-center gap-1"
+        class="mt-4 flex flex-wrap justify-center gap-2"
       >
         <SecondaryButton
           outlined
           v-for="rank in row"
           :key="rank"
-          class="h-10 w-10 text-lg font-semibold transition-colors"
+          class="h-10 w-10 bg-white! text-lg font-semibold transition-colors"
           :class="selectedRank === rank && 'border-2 border-gray-500!'"
           @click="selectRank(rank)"
         >
@@ -78,18 +86,18 @@ onClickOutside(refContainer, close)
         </SecondaryButton>
       </div>
 
-      <div class="mt-5 flex justify-center gap-3 p-1">
+      <div class="mt-6 flex justify-center gap-3 p-1">
         <SecondaryButton
           @click="close"
           icon="pi pi-chevron-down"
-          class="h-12 w-14!"
+          class="bg-surface-200! h-12 w-14!"
         />
 
         <SecondaryButton
           outlined
           v-for="suit in suits"
           :key="suit"
-          class="h-12 w-14 text-2xl text-black! transition-colors"
+          class="h-12 w-14 bg-white! text-2xl text-black! transition-colors"
           :class="[selectedSuit === suit && 'border-2 border-gray-500!']"
           @click="selectSuit(suit)"
         >
@@ -97,9 +105,10 @@ onClickOutside(refContainer, close)
         </SecondaryButton>
 
         <SecondaryButton
+          outlined
           @click="removeLastCard"
           icon="pi pi-delete-left"
-          class="h-12 w-14!"
+          class="bg-surface-200! h-12 w-14!"
         />
       </div>
     </div>

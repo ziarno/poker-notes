@@ -36,6 +36,7 @@ const { players, board, odds, addPlayer, removeLastPlayer, reset } =
         <CardInput
           v-model="player.cards"
           :max="PLAYER_MAX_CARDS"
+          :label="t('player', { n: i + 1 })"
           class="shrink-0"
         />
         <div v-if="odds?.[i]" class="grow-1 text-right text-sm">
@@ -68,11 +69,11 @@ const { players, board, odds, addPlayer, removeLastPlayer, reset } =
       />
     </div>
 
-    <div class="mt-6 flex flex-col items-center gap-3">
+    <div class="mt-10 flex flex-col items-center gap-3">
       <h2 class="text-surface-600 dark:text-surface-300 text-lg font-medium">
         {{ t('board') }}
       </h2>
-      <CardInput v-model="board" :max="BOARD_MAX_CARDS" />
+      <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
     </div>
 
     <div class="mt-8 flex justify-end gap-2">

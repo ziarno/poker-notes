@@ -23,8 +23,3 @@ export type Card = {
   suit: CardSuit
   rank: CardRank
 }
-
-export type CardShort = {
-  suit: CardSuitShort
-  rank: CardRank
-}

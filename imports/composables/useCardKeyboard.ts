@@ -6,18 +6,26 @@ type InputRegistration = {
   id: symbol
   cards: Ref<Card[]>
   max: number
+  label: string
 }
 
 const activeId = ref<symbol | null>(null)
 const registrations: InputRegistration[] = []
 
-export function useCardKeyboard(cards?: Ref<Card[]>, max?: number) {
+export function useCardKeyboard(
+  cards?: Ref<Card[]>,
+  max?: number,
+  label?: string
+) {
   const id = Symbol()
   const visible = computed(() => activeId.value !== null)
   const isActive = computed(() => activeId.value === id)
+  const activeLabel = computed(
+    () => registrations.find(r => r.id === activeId.value)?.label ?? null
+  )
 
   if (cards && max) {
-    onMounted(() => registrations.push({ id, cards, max }))
+    onMounted(() => registrations.push({ id, cards, max, label: label ?? '' }))
     onUnmounted(() => {
       const idx = registrations.findIndex(r => r.id === id)
       if (idx !== -1) registrations.splice(idx, 1)
@@ -40,7 +48,10 @@ export function useCardKeyboard(cards?: Ref<Card[]>, max?: number) {
     const active = getActive()
     if (!active) return
 
-    const nextCards = [...active.cards.value, card]
+    let nextCards = [...active.cards.value, card]
+    if (nextCards.length > active.max) {
+      nextCards = [card]
+    }
     active.cards.value = nextCards
     if (nextCards.length >= active.max) {
       const currentIdx = registrations.indexOf(active)
@@ -65,6 +76,7 @@ export function useCardKeyboard(cards?: Ref<Card[]>, max?: number) {
   return {
     visible,
     isActive,
+    activeLabel,
     show,
     hide,
     addCard,
