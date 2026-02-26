@@ -1,20 +1,14 @@
-import { TexasHoldem } from 'poker-odds-calc'
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import { SUIT_TO_LETTER } from '@/constants/playingCrads.const'
-import { Card } from '@/types/PlayingCards.type.ts'
+import {
+  Card,
+  PlayerInOddsCalculator,
+  PlayerOdds,
+} from '@/types/PlayingCards.type.ts'
 
 export const PLAYER_MAX_CARDS = 2
 export const BOARD_MAX_CARDS = 5
-
-export type PlayerInOddsCalculator = {
-  cards: Card[]
-}
-
-export type PlayerOdds = {
-  wins: string
-  ties: string
-}
 
 function toLibCard(card: Card): string {
   return `${card.rank}${SUIT_TO_LETTER[card.suit]}`
@@ -22,6 +16,61 @@ function toLibCard(card: Card): string {
 
 const players = ref<PlayerInOddsCalculator[]>([{ cards: [] }, { cards: [] }])
 const board = ref<Card[]>([])
+const odds = ref<(PlayerOdds | null)[] | null>(null)
+
+let currentRequestId = 0
+const worker = new Worker(
+  new URL('../workers/oddsWorker.ts', import.meta.url),
+  { type: 'module' }
+)
+
+function getActivePlayers() {
+  return players.value.filter(p => p.cards.length === PLAYER_MAX_CARDS)
+}
+
+function resetOdds() {
+  odds.value = null
+}
+
+worker.onmessage = (
+  event: MessageEvent<{ requestId: number; result: PlayerOdds[] | null }>
+) => {
+  const { requestId, result } = event.data
+  if (requestId !== currentRequestId) return
+
+  if (!result) {
+    resetOdds()
+    return
+  }
+
+  const activePlayers = getActivePlayers()
+  odds.value = players.value.map(player => {
+    if (player.cards.length < PLAYER_MAX_CARDS) return null
+    return result[activePlayers.indexOf(player)] ?? null
+  })
+}
+
+watch(
+  [players, board],
+  () => {
+    const activePlayers = getActivePlayers()
+    if (
+      activePlayers.length < 2 ||
+      (board.value.length !== 0 && board.value.length < 3)
+    ) {
+      resetOdds()
+      return
+    }
+
+    const requestId = ++currentRequestId
+    worker.postMessage({
+      requestId,
+      players: activePlayers.map(p => p.cards.map(toLibCard)),
+      board: board.value.map(toLibCard),
+    })
+  },
+  { deep: true }
+)
 
 export function useSelectedCards() {
   function addPlayer() {
@@ -38,39 +87,6 @@ export function useSelectedCards() {
     players.value = [{ cards: [] }, { cards: [] }]
     board.value = []
   }
-
-  const odds = computed<(PlayerOdds | null)[] | null>(() => {
-    const activePlayers = players.value.filter(
-      p => p.cards.length === PLAYER_MAX_CARDS
-    )
-    if (activePlayers.length < 2) return null
-    if (board.value.length !== 0 && board.value.length < 3) return null
-
-    try {
-      const table = new TexasHoldem()
-      activePlayers.forEach(p => {
-        table.addPlayer(p.cards.map(toLibCard) as [string, string])
-      })
-      if (board.value.length > 0) {
-        table.setBoard(board.value.map(toLibCard))
-      }
-
-      const result = table.calculate()
-      const resultPlayers = result.getPlayers()
-
-      return players.value.map(player => {
-        if (player.cards.length < PLAYER_MAX_CARDS) return null
-        const activeIdx = activePlayers.indexOf(player)
-        const rp = resultPlayers[activeIdx]!
-        return {
-          wins: rp.getWinsPercentageString(),
-          ties: rp.getTiesPercentageString(),
-        }
-      })
-    } catch {
-      return null
-    }
-  })
 
   return {
     players,

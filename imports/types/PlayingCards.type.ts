@@ -23,3 +23,12 @@ export type Card = {
   suit: CardSuit
   rank: CardRank
 }
+
+export type PlayerInOddsCalculator = {
+  cards: Card[]
+}
+
+export type PlayerOdds = {
+  wins: string
+  ties: string
+}
