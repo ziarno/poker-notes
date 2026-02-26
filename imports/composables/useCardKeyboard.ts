@@ -1,44 +1,73 @@
-import { ref } from 'vue'
+import { Ref, computed, onMounted, onUnmounted, ref } from 'vue'
 
 import { Card } from '@/types/PlayingCards.type.ts'
 
-const visible = ref(false)
-let onSelectCallback: ((card: Card) => void) | null = null
-let onDeleteCallback: (() => void) | null = null
+type InputRegistration = {
+  id: symbol
+  cards: Ref<Card[]>
+  max: number
+}
 
-export function useCardKeyboard() {
-  function show(callbacks: {
-    onSelect: (card: Card) => void
-    onDelete: () => void
-  }) {
-    onSelectCallback = callbacks.onSelect
-    onDeleteCallback = callbacks.onDelete
-    visible.value = true
+const activeId = ref<symbol | null>(null)
+const registrations: InputRegistration[] = []
+
+export function useCardKeyboard(cards?: Ref<Card[]>, max?: number) {
+  const id = Symbol()
+  const visible = computed(() => activeId.value !== null)
+  const isActive = computed(() => activeId.value === id)
+
+  if (cards && max) {
+    onMounted(() => registrations.push({ id, cards, max }))
+    onUnmounted(() => {
+      const idx = registrations.findIndex(r => r.id === id)
+      if (idx !== -1) registrations.splice(idx, 1)
+    })
+  }
+
+  function show() {
+    activeId.value = id
   }
 
   function hide() {
-    visible.value = false
-    onSelectCallback = null
-    onDeleteCallback = null
+    activeId.value = null
   }
 
-  function handleSelect(card: Card) {
-    if (onSelectCallback) {
-      onSelectCallback(card)
+  function getActive() {
+    return registrations.find(r => r.id === activeId.value) ?? null
+  }
+
+  function addCard(card: Card) {
+    const active = getActive()
+    if (!active) return
+
+    const nextCards = [...active.cards.value, card]
+    active.cards.value = nextCards
+    if (nextCards.length >= active.max) {
+      const currentIdx = registrations.indexOf(active)
+      const next = registrations
+        .slice(currentIdx + 1)
+        .find(r => r.cards.value.length < r.max)
+      if (next) {
+        activeId.value = next.id
+      } else {
+        hide()
+      }
     }
   }
 
-  function handleDelete() {
-    if (onDeleteCallback) {
-      onDeleteCallback()
+  function removeLastCard() {
+    const active = getActive()
+    if (active) {
+      active.cards.value = active.cards.value.slice(0, -1)
     }
   }
 
   return {
     visible,
+    isActive,
     show,
     hide,
-    handleSelect,
-    handleDelete,
+    addCard,
+    removeLastCard,
   }
 }

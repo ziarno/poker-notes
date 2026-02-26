@@ -9,39 +9,26 @@ import PlayingCardText from '@/ui/components/PlayingCardText.vue'
 const props = defineProps<{ max: number }>()
 const cards = defineModel<Card[]>({ default: [] })
 
-const { show, hide } = useCardKeyboard()
+const { show, isActive } = useCardKeyboard(cards, props.max)
 
 const width = computed(() => {
-  const cards = props.max * CARD_TEXT_WIDTH_REM
+  const cardsWidth = props.max * CARD_TEXT_WIDTH_REM
   const gaps = (props.max - 1) * 0.5
   const padding = 1.7
-  return `${cards + gaps + padding}rem`
+  return `${cardsWidth + gaps + padding}rem`
 })
-
-function openKeyboard() {
-  show({
-    onSelect: (selectedCard: Card) => {
-      const nextCards =
-        cards.value.length === props.max
-          ? [selectedCard]
-          : [...cards.value, selectedCard]
-      cards.value = nextCards
-      if (nextCards.length >= props.max) {
-        hide()
-      }
-    },
-    onDelete: () => {
-      cards.value = cards.value.slice(0, -1)
-    },
-  })
-}
 </script>
 
 <template>
   <button
-    class="border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 hover:border-surface-400 dark:hover:border-surface-500 flex h-12 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors"
+    class="border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 flex h-12 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors"
+    :class="
+      isActive
+        ? 'border-primary-500! dark:border-primary-400!'
+        : 'hover:border-surface-400 dark:hover:border-surface-500'
+    "
     :style="{ width }"
-    @click="openKeyboard"
+    @click="show"
   >
     <span v-if="cards.length" class="flex flex-wrap gap-2">
       <PlayingCardText v-for="(card, i) in cards" :key="i" :card="card" />

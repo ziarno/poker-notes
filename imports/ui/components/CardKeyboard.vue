@@ -8,7 +8,7 @@ import { SUITS_ICONS } from '@/constants/playingCrads.const'
 import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
 import SuitIcon from '@/ui/components/SuitIcon.vue'
 
-const { visible, handleSelect, handleDelete, hide } = useCardKeyboard()
+const { visible, addCard, removeLastCard, hide } = useCardKeyboard()
 
 const ranksTopRow = ['A', 'K', 'Q', 'J', 'T'] as const
 const ranksBottomRow = ['9', '8', '7', '6', '5', '4', '3', '2'] as const
@@ -22,10 +22,10 @@ const card = computed(() => ({
   suit: selectedSuit.value,
 }))
 
-function checkEmit() {
+function maybeAddCard() {
   if (card.value.rank && card.value.suit) {
     setTimeout(() => {
-      handleSelect(card.value as Card)
+      addCard(card.value as Card)
       reset()
     }, 100)
   }
@@ -33,12 +33,12 @@ function checkEmit() {
 
 function selectRank(rank: CardRank) {
   selectedRank.value = rank
-  checkEmit()
+  maybeAddCard()
 }
 
 function selectSuit(suit: CardSuit) {
   selectedSuit.value = suit
-  checkEmit()
+  maybeAddCard()
 }
 
 function reset() {
@@ -97,7 +97,7 @@ onClickOutside(refContainer, close)
         </SecondaryButton>
 
         <SecondaryButton
-          @click="handleDelete"
+          @click="removeLastCard"
           icon="pi pi-delete-left"
           class="h-12 w-14!"
         />
