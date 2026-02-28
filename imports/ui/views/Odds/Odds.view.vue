@@ -21,7 +21,11 @@ const { players, board, addPlayer, removeLastPlayer, reset } =
   <div
     class="xs:p-4"
     :class="keyboardVisible && 'pb-60!'"
-    :style="{ transition: 'padding-bottom 0.3s ease' }"
+    :style="{
+      transitionProperty: 'padding-bottom opacity transform',
+      transitionDuration: '0.3s',
+      transitionTimingFunction: 'ease',
+    }"
   >
     <h1
       class="text-surface-700 dark:text-surface-0 mb-8 text-center text-2xl font-semibold"
