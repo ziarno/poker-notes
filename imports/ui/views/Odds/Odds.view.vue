@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
+import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import pokerTableUrl from '@/assets/poker-table.svg'
@@ -13,6 +14,12 @@ import PlayerCards from '@/ui/components/PlayerCards.vue'
 const { t } = useI18n()
 const { players, board, addPlayer, removeLastPlayer, reset } =
   useSelectedCards()
+
+const boardRef = useTemplateRef('boardRef')
+
+function onBoardClick() {
+  boardRef.value?.$el?.click()
+}
 </script>
 
 <template>
@@ -25,16 +32,19 @@ const { players, board, addPlayer, removeLastPlayer, reset } =
 
     <div class="relative my-10">
       <img :src="pokerTableUrl" class="w-full" alt="Poker table" />
-      <div class="absolute inset-0 flex items-center justify-center">
-        <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
+      <div
+        @click="onBoardClick"
+        class="absolute inset-0 flex items-center justify-center"
+      >
+        <CardInput
+          ref="boardRef"
+          v-model="board"
+          :max="BOARD_MAX_CARDS"
+          :label="t('board')"
+        />
       </div>
     </div>
-
-    <div class="flex flex-col gap-3">
-      <PlayerCards v-for="(_, i) in players" :index="i" />
-    </div>
-
-    <div class="mt-8 flex justify-end gap-2">
+    <div class="my-6 flex justify-end gap-2">
       <SecondaryButton
         v-if="players.length > 2"
         size="small"
@@ -56,6 +66,14 @@ const { players, board, addPlayer, removeLastPlayer, reset } =
         icon="pi pi-trash"
         icon-pos="right"
         :label="t('reset')"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <PlayerCards
+        class="flex-grow-1 basis-0"
+        v-for="(_, i) in players"
+        :index="i"
       />
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComputedRef, computed } from 'vue'
+import { ComputedRef, computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSelectedCards } from '@/composables/useSelectedCards.ts'
@@ -15,28 +15,35 @@ const player = computed(
 ) as ComputedRef<PlayerInOddsCalculator>
 const label = computed(() => t('player', { n: props.index + 1 }))
 const playerOdds = computed(() => odds.value?.[props.index])
+
+const cardInputRef = useTemplateRef('cardInput')
+
+function onClick() {
+  cardInputRef.value?.$el?.click()
+}
 </script>
 
 <template>
-  <div class="flex items-center gap-3">
+  <button
+    @click="onClick"
+    class="border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2 rounded-lg border p-3"
+  >
     <h2
-      class="text-surface-600 dark:text-surface-300 w-24 shrink-0 text-lg font-medium"
+      class="text-surface-500 dark:text-surface-400 text-xs font-medium tracking-wide uppercase"
     >
       {{ label }}
     </h2>
-    <CardInput
-      v-model="player.cards"
-      :max="2"
-      :label="label"
-      class="shrink-0"
-    />
-    <div v-if="playerOdds" class="grow-1 text-right text-sm">
-      <p class="font-semibold text-green-600 dark:text-green-400">
+    <CardInput ref="cardInput" v-model="player.cards" :max="2" :label="label" />
+    <div class="flex h-4 gap-3 text-sm">
+      <p
+        v-if="playerOdds"
+        class="font-semibold text-green-600 dark:text-green-400"
+      >
         {{ playerOdds.wins }}
       </p>
-      <p class="text-surface-500 dark:text-surface-400">
+      <p v-if="playerOdds" class="text-surface-500 dark:text-surface-400">
         {{ playerOdds.ties }}
       </p>
     </div>
-  </div>
+  </button>
 </template>
