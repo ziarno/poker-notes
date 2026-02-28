@@ -17,6 +17,7 @@ function toLibCard(card: Card): string {
 const players = ref<PlayerInOddsCalculator[]>([{ cards: [] }, { cards: [] }])
 const board = ref<Card[]>([])
 const odds = ref<(PlayerOdds | null)[] | null>(null)
+const isLoading = ref(false)
 
 let currentRequestId = 0
 const worker = new Worker(
@@ -30,6 +31,7 @@ function getActivePlayers() {
 
 function resetOdds() {
   odds.value = null
+  isLoading.value = false
 }
 
 worker.onmessage = (
@@ -37,6 +39,8 @@ worker.onmessage = (
 ) => {
   const { requestId, result } = event.data
   if (requestId !== currentRequestId) return
+
+  isLoading.value = false
 
   if (!result) {
     resetOdds()
@@ -62,6 +66,7 @@ watch(
       return
     }
 
+    isLoading.value = true
     const requestId = ++currentRequestId
     worker.postMessage({
       requestId,
@@ -92,6 +97,7 @@ export function useSelectedCards() {
     players,
     board,
     odds,
+    calculating: isLoading,
     addPlayer,
     removeLastPlayer,
     reset,
