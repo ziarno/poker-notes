@@ -15,7 +15,7 @@ subscribe('games')
     <div id="main-scroll" class="flex-1 overflow-y-auto">
       <Router />
     </div>
-    <TabBar v-if="false" />
+    <TabBar />
   </div>
   <CardKeyboard />
   <ConfirmDialog />

@@ -2,53 +2,36 @@
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useI18n } from 'vue-i18n'
 
+import pokerTableUrl from '@/assets/poker-table.svg'
 import {
   BOARD_MAX_CARDS,
-  PLAYER_MAX_CARDS,
   useSelectedCards,
 } from '@/composables/useSelectedCards'
 import CardInput from '@/ui/components/CardInput.vue'
+import PlayerCards from '@/ui/components/PlayerCards.vue'
 
 const { t } = useI18n()
-const { players, board, odds, addPlayer, removeLastPlayer, reset } =
+const { players, board, addPlayer, removeLastPlayer, reset } =
   useSelectedCards()
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="xs:p-4">
     <h1
-      class="text-surface-700 dark:text-surface-0 mb-8 text-2xl font-semibold"
+      class="text-surface-700 dark:text-surface-0 mb-8 text-center text-2xl font-semibold"
     >
       {{ t('odds') }}
     </h1>
 
-    <div class="flex flex-col gap-3">
-      <div
-        v-for="(player, i) in players"
-        :key="i"
-        class="flex items-center gap-3"
-      >
-        <h2
-          class="text-surface-600 dark:text-surface-300 w-24 shrink-0 text-lg font-medium"
-        >
-          {{ t('player', { n: i + 1 }) }}
-        </h2>
-        <CardInput
-          v-model="player.cards"
-          :max="PLAYER_MAX_CARDS"
-          :label="t('player', { n: i + 1 })"
-          class="shrink-0"
-        />
-        <div v-if="odds?.[i]" class="grow-1 text-right text-sm">
-          <p class="font-semibold text-green-600 dark:text-green-400">
-            {{ odds[i]!.wins }}
-          </p>
-
-          <p class="text-surface-500 dark:text-surface-400">
-            {{ odds[i]!.ties }}
-          </p>
-        </div>
+    <div class="relative my-10">
+      <img :src="pokerTableUrl" class="w-full" alt="Poker table" />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
       </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <PlayerCards v-for="(_, i) in players" :index="i" />
     </div>
 
     <div class="mt-8 flex justify-end gap-2">
@@ -67,16 +50,6 @@ const { players, board, odds, addPlayer, removeLastPlayer, reset } =
         icon-pos="right"
         :label="t('add_player')"
       />
-    </div>
-
-    <div class="mt-10 flex flex-col items-center gap-3">
-      <h2 class="text-surface-600 dark:text-surface-300 text-lg font-medium">
-        {{ t('board') }}
-      </h2>
-      <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
-    </div>
-
-    <div class="mt-8 flex justify-end gap-2">
       <SecondaryButton
         size="small"
         @click="reset"

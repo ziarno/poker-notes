@@ -72,7 +72,7 @@ onClickOutside(refContainer, close)
 
       <div
         v-for="row in ranksRows"
-        class="mt-4 flex flex-wrap justify-center gap-2"
+        class="xs:gap-2 mt-4 flex flex-wrap justify-center gap-1"
       >
         <SecondaryButton
           outlined
@@ -86,7 +86,7 @@ onClickOutside(refContainer, close)
         </SecondaryButton>
       </div>
 
-      <div class="mt-6 flex justify-center gap-3 p-1">
+      <div class="xs:gap-3 mt-6 flex justify-center gap-1 p-1">
         <SecondaryButton
           @click="close"
           icon="pi pi-chevron-down"
