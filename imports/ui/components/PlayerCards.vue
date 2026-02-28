@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ComputedRef, computed, useTemplateRef } from 'vue'
+import { ComputedRef, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSelectedCards } from '@/composables/useSelectedCards.ts'
@@ -15,17 +15,10 @@ const player = computed(
 ) as ComputedRef<PlayerInOddsCalculator>
 const label = computed(() => t('player', { n: props.index + 1 }))
 const playerOdds = computed(() => odds.value?.[props.index])
-
-const cardInputRef = useTemplateRef('cardInput')
-
-function onClick() {
-  cardInputRef.value?.$el?.click()
-}
 </script>
 
 <template>
-  <button
-    @click="onClick"
+  <div
     class="border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2 rounded-lg border p-3"
   >
     <h2
@@ -45,5 +38,5 @@ function onClick() {
         {{ playerOdds.ties }}
       </p>
     </div>
-  </button>
+  </div>
 </template>

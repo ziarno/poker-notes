@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
-import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import pokerTableUrl from '@/assets/poker-table.svg'
+import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import {
   BOARD_MAX_CARDS,
   useSelectedCards,
@@ -12,18 +12,17 @@ import CardInput from '@/ui/components/CardInput.vue'
 import PlayerCards from '@/ui/components/PlayerCards.vue'
 
 const { t } = useI18n()
+const { visible: keyboardVisible } = useCardKeyboard()
 const { players, board, addPlayer, removeLastPlayer, reset } =
   useSelectedCards()
-
-const boardRef = useTemplateRef('boardRef')
-
-function onBoardClick() {
-  boardRef.value?.$el?.click()
-}
 </script>
 
 <template>
-  <div class="xs:p-4">
+  <div
+    class="xs:p-4"
+    :class="keyboardVisible && 'pb-60!'"
+    :style="{ transition: 'padding-bottom 0.3s ease' }"
+  >
     <h1
       class="text-surface-700 dark:text-surface-0 mb-8 text-center text-2xl font-semibold"
     >
@@ -32,16 +31,8 @@ function onBoardClick() {
 
     <div class="relative my-10">
       <img :src="pokerTableUrl" class="w-full" alt="Poker table" />
-      <div
-        @click="onBoardClick"
-        class="absolute inset-0 flex items-center justify-center"
-      >
-        <CardInput
-          ref="boardRef"
-          v-model="board"
-          :max="BOARD_MAX_CARDS"
-          :label="t('board')"
-        />
+      <div class="absolute inset-0 flex items-center justify-center">
+        <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
       </div>
     </div>
     <div class="my-6 flex justify-end gap-2">

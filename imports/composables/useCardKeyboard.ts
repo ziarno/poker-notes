@@ -1,4 +1,4 @@
-import { Ref, computed, onMounted, onUnmounted, ref } from 'vue'
+import { Ref, computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { Card } from '@/types/PlayingCards.type.ts'
 
@@ -45,8 +45,8 @@ export function useCardKeyboard(
   }
 
   function isCardTaken(card: Card) {
-    return registrations.some((r) =>
-      r.cards.value.some((c) => c.rank === card.rank && c.suit === card.suit),
+    return registrations.some(r =>
+      r.cards.value.some(c => c.rank === card.rank && c.suit === card.suit)
     )
   }
 
@@ -80,7 +80,12 @@ export function useCardKeyboard(
     }
   }
 
+  function onActiveIdChanged(func: () => void) {
+    watch(() => activeId.value, func)
+  }
+
   return {
+    onActiveIdChanged,
     visible,
     isActive,
     activeLabel,

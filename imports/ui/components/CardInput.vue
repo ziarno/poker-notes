@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 
 import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import { Card } from '@/types/PlayingCards.type.ts'
@@ -9,7 +9,21 @@ import PlayingCardText from '@/ui/components/PlayingCardText.vue'
 const props = defineProps<{ max: number; label?: string }>()
 const cards = defineModel<Card[]>({ default: [] })
 
-const { show, isActive } = useCardKeyboard(cards, props.max, props.label)
+const { show, isActive, onActiveIdChanged } = useCardKeyboard(
+  cards,
+  props.max,
+  props.label
+)
+
+const buttonRef = useTemplateRef('button')
+
+function scrollIntoView() {
+  setTimeout(() => {
+    buttonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, 300)
+}
+
+onActiveIdChanged(scrollIntoView)
 
 const width = computed(() => {
   const cardsWidth = props.max * CARD_TEXT_WIDTH_REM
@@ -21,6 +35,7 @@ const width = computed(() => {
 
 <template>
   <button
+    ref="button"
     class="border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 flex h-12 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors"
     :class="
       isActive
