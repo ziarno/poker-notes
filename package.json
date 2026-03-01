@@ -4,6 +4,7 @@
   "scripts": {
     "start": "meteor run",
     "build": "meteor build ./build --directory && cd ./build/bundle/programs/server && npm install --omit=dev",
+    "zip": "./scripts/zip.sh",
     "prod": "./scripts/run-prod.sh",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
