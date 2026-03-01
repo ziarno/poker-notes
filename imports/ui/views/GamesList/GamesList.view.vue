@@ -5,12 +5,10 @@ import { useI18n } from 'vue-i18n'
 import { autorun } from 'vue-meteor-tracker'
 
 import { GamesCollection } from '@/api/collections'
-import { getCreatorId } from '@/utils/creatorId.utils.ts'
 import GameListItem from '@/ui/views/GamesList/components/GameListItem.vue'
 
 const { t } = useI18n()
-const creatorId = getCreatorId()
-const games = autorun(() => GamesCollection.find({ creatorId }).fetch()).result
+const games = autorun(() => GamesCollection.find().fetch()).result
 const gamesSorted = computed(() =>
   games.value?.sort((g1, g2) => g2.date.getTime() - g1.date.getTime())
 )
