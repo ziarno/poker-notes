@@ -31,6 +31,7 @@ export const createGame = createMethod({
   async run(game: NewGame) {
     const newGame: Game = {
       _id: game._id,
+      creatorId: game.creatorId,
       pinCode: game.pinCode,
       title: capitalizeFirstLetter(game.title),
       buyIn: game.buyIn,

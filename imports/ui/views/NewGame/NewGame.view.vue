@@ -15,6 +15,7 @@ import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
+import { getCreatorId } from '@/utils/creatorId.utils.ts'
 import { generatePinCode, savePinCode } from '@/utils/pinCode.utils.ts'
 
 const { t } = useI18n()
@@ -66,7 +67,7 @@ async function onSubmit() {
   // Proxies can't be saved in IndexedDB and vue creates proxies for refs.
   // In this case, the players array was Proxies
   const gameData = cloneDeep(formData.value)
-  await createGame({ ...gameData, _id, pinCode })
+  await createGame({ ...gameData, _id, pinCode, creatorId: getCreatorId() })
   savePinCode(_id, pinCode)
   router.replace(`/${_id}`)
 }
