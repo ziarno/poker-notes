@@ -64,3 +64,7 @@ add_card: Dodaj kartę
 reset: Resetuj
 player: "Gracz {n}"
 board: Stół
+fast: Szybko
+precise: Dokładnie
+fast_description: Sprawdza 100 000 losowych kombinacji — szybko, ale przybliżone
+precise_description: Sprawdza wszystkie możliwe kombinacje — dokładne, ale wolniejsze

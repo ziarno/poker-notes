@@ -4,6 +4,7 @@ type WorkerInput = {
   requestId: number
   players: string[][]
   board: string[]
+  exhaustive: boolean
 }
 
 type PlayerResult = {
@@ -17,10 +18,13 @@ type WorkerOutput = {
 }
 
 self.onmessage = (event: MessageEvent<WorkerInput>) => {
-  const { requestId, players, board } = event.data
+  const { requestId, players, board, exhaustive } = event.data
 
   try {
     const table = new TexasHoldem()
+    if (exhaustive) {
+      table.exhaustive()
+    }
     players.forEach(hand => {
       table.addPlayer(hand as [string, string])
     })

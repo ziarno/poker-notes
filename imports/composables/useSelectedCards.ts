@@ -18,6 +18,7 @@ const players = ref<PlayerInOddsCalculator[]>([{ cards: [] }, { cards: [] }])
 const board = ref<Card[]>([])
 const odds = ref<(PlayerOdds | null)[] | null>(null)
 const isLoading = ref(false)
+const exhaustive = ref(false)
 
 let currentRequestId = 0
 const worker = new Worker(
@@ -55,7 +56,7 @@ worker.onmessage = (
 }
 
 watch(
-  [players, board],
+  [players, board, exhaustive],
   () => {
     const activePlayers = getActivePlayers()
     if (
@@ -72,6 +73,7 @@ watch(
       requestId,
       players: activePlayers.map(p => p.cards.map(toLibCard)),
       board: board.value.map(toLibCard),
+      exhaustive: exhaustive.value,
     })
   },
   { deep: true }
@@ -98,6 +100,7 @@ export function useSelectedCards() {
     board,
     odds,
     calculating: isLoading,
+    exhaustive,
     addPlayer,
     removeLastPlayer,
     reset,
