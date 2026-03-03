@@ -6,6 +6,7 @@ import {
   PlayerInOddsCalculator,
   PlayerOdds,
 } from '@/types/PlayingCards.type.ts'
+import { calculateOddsAsync } from '@/utils/oddsWorker.utils.ts'
 
 export const PLAYER_MAX_CARDS = 2
 export const BOARD_MAX_CARDS = 5
@@ -20,12 +21,6 @@ const odds = ref<(PlayerOdds | null)[] | null>(null)
 const isLoading = ref(false)
 const exhaustive = ref(false)
 
-let currentRequestId = 0
-const worker = new Worker(
-  new URL('../workers/oddsWorker.ts', import.meta.url),
-  { type: 'module' }
-)
-
 function getActivePlayers() {
   return players.value.filter(p => p.cards.length === PLAYER_MAX_CARDS)
 }
@@ -35,29 +30,9 @@ function resetOdds() {
   isLoading.value = false
 }
 
-worker.onmessage = (
-  event: MessageEvent<{ requestId: number; result: PlayerOdds[] | null }>
-) => {
-  const { requestId, result } = event.data
-  if (requestId !== currentRequestId) return
-
-  isLoading.value = false
-
-  if (!result) {
-    resetOdds()
-    return
-  }
-
-  const activePlayers = getActivePlayers()
-  odds.value = players.value.map(player => {
-    if (player.cards.length < PLAYER_MAX_CARDS) return null
-    return result[activePlayers.indexOf(player)] ?? null
-  })
-}
-
 watch(
   [players, board, exhaustive],
-  () => {
+  async () => {
     const activePlayers = getActivePlayers()
     if (
       activePlayers.length < 2 ||
@@ -68,12 +43,21 @@ watch(
     }
 
     isLoading.value = true
-    const requestId = ++currentRequestId
-    worker.postMessage({
-      requestId,
+    const result = await calculateOddsAsync({
       players: activePlayers.map(p => p.cards.map(toLibCard)),
       board: board.value.map(toLibCard),
       exhaustive: exhaustive.value,
+    })
+    isLoading.value = false
+
+    if (!result) {
+      resetOdds()
+      return
+    }
+
+    odds.value = players.value.map(player => {
+      if (player.cards.length < PLAYER_MAX_CARDS) return null
+      return result[activePlayers.indexOf(player)] ?? null
     })
   },
   { deep: true }

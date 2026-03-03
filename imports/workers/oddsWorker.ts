@@ -1,24 +1,13 @@
 import { TexasHoldem } from 'poker-odds-calc'
 
 type WorkerInput = {
-  requestId: number
   players: string[][]
   board: string[]
   exhaustive: boolean
 }
 
-type PlayerResult = {
-  wins: string
-  ties: string
-}
-
-type WorkerOutput = {
-  requestId: number
-  result: PlayerResult[] | null
-}
-
 self.onmessage = (event: MessageEvent<WorkerInput>) => {
-  const { requestId, players, board, exhaustive } = event.data
+  const { players, board, exhaustive } = event.data
 
   try {
     const table = new TexasHoldem()
@@ -38,8 +27,8 @@ self.onmessage = (event: MessageEvent<WorkerInput>) => {
       ties: rp.getTiesPercentageString(),
     }))
 
-    self.postMessage({ requestId, result } satisfies WorkerOutput)
+    self.postMessage(result)
   } catch {
-    self.postMessage({ requestId, result: null } satisfies WorkerOutput)
+    self.postMessage(null)
   }
 }
