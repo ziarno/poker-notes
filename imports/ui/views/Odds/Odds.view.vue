@@ -11,8 +11,8 @@ import {
   BOARD_MAX_CARDS,
   useSelectedCards,
 } from '@/composables/useSelectedCards'
-import CardInput from '@/ui/components/CardInput.vue'
-import PlayerCards from '@/ui/components/PlayerCards.vue'
+import CardInput from '@/ui/views/Odds/components/CardInput.vue'
+import PlayerCards from '@/ui/views/Odds/components/PlayerCards.vue'
 
 const { t } = useI18n()
 const { visible: keyboardVisible } = useCardKeyboard()

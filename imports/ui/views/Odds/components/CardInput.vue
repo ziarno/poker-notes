@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard'
+import { useCardKeyboard } from '@/composables/useCardKeyboard.ts'
 import { Card } from '@/types/PlayingCards.type.ts'
-import { CARD_TEXT_WIDTH_REM } from '@/ui/components/PlayingCardText.vue'
-import PlayingCardText from '@/ui/components/PlayingCardText.vue'
+import { CARD_TEXT_WIDTH_REM } from '@/ui/views/Odds/components/PlayingCardText.vue'
+import PlayingCardText from '@/ui/views/Odds/components/PlayingCardText.vue'
 
 const props = defineProps<{ max: number; label?: string }>()
 const cards = defineModel<Card[]>({ default: [] })

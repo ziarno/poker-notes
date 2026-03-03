@@ -4,7 +4,7 @@ export const CARD_TEXT_WIDTH_REM = 3
 
 <script setup lang="ts">
 import { Card } from '@/types/PlayingCards.type.ts'
-import SuitIcon from '@/ui/components/SuitIcon.vue'
+import SuitIcon from '@/ui/views/Odds/components/SuitIcon.vue'
 
 const { card } = defineProps<{ card: Card }>()
 </script>

@@ -3,10 +3,10 @@ import SecondaryButton from '@volt/SecondaryButton.vue'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard'
-import { SUITS_ICONS } from '@/constants/playingCrads.const'
+import { useCardKeyboard } from '@/composables/useCardKeyboard.ts'
+import { SUITS_ICONS } from '@/constants/playingCrads.const.ts'
 import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
-import SuitIcon from '@/ui/components/SuitIcon.vue'
+import SuitIcon from '@/ui/views/Odds/components/SuitIcon.vue'
 
 const { visible, activeLabel, addCard, removeLastCard, hide } =
   useCardKeyboard()

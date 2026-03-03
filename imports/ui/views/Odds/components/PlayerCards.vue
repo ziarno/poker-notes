@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useSelectedCards } from '@/composables/useSelectedCards.ts'
 import { PlayerInOddsCalculator } from '@/types/PlayingCards.type.ts'
-import CardInput from '@/ui/components/CardInput.vue'
+import CardInput from '@/ui/views/Odds/components/CardInput.vue'
 
 const props = defineProps<{ index: number }>()
 
