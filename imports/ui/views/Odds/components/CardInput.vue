@@ -18,9 +18,11 @@ const { show, isActive, onActiveIdChanged } = useCardKeyboard(
 const buttonRef = useTemplateRef('button')
 
 function scrollIntoView() {
-  setTimeout(() => {
-    buttonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, 300)
+  if (isActive.value) {
+    setTimeout(() => {
+      buttonRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 300)
+  }
 }
 
 onActiveIdChanged(scrollIntoView)
