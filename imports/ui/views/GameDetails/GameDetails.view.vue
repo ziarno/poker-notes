@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
+import { useClipboard } from '@vueuse/core'
+import { useToast } from 'primevue/usetoast'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { autorun, subscribe } from 'vue-meteor-tracker'
 import { useRoute } from 'vue-router'
 
@@ -23,17 +26,38 @@ addAccessToGameId(id)
 const game = autorun(() => GamesCollection.findOne(id)).result
 const date = useFormattedDate(game.value?.date, 'dd.MM.yyyy')
 const showMenu = ref(false)
+
+const { t } = useI18n()
+const toast = useToast()
+const { copy } = useClipboard()
+
+function copyLink() {
+  copy(window.location.href)
+  toast.add({
+    closable: true,
+    severity: 'success',
+    summary: t('link_copied'),
+    life: 1000,
+  })
+}
 </script>
 
 <template>
   <div>
     <NavigationHeader :title="game?.title" :subtitle="date">
       <template #icon>
-        <SecondaryButton
-          @click="showMenu = true"
-          variant="outlined"
-          icon="pi pi-bars"
-        />
+        <div class="flex gap-2">
+          <SecondaryButton
+            @click="copyLink"
+            variant="outlined"
+            icon="pi pi-share-alt"
+          />
+          <SecondaryButton
+            @click="showMenu = true"
+            variant="outlined"
+            icon="pi pi-bars"
+          />
+        </div>
       </template>
     </NavigationHeader>
     <template v-if="game">

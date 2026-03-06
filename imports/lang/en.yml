@@ -35,6 +35,7 @@ settlement_info: Settlement available when all players have cashed out
 settlement_warning: Buy in and buy out totals must match
 copy_game: Copy summary to clipboard
 copied: Copied to clipboard
+link_copied: Link copied to clipboard
 summary: Summary
 error_duplicate_name: This name already exists
 error_no_title: Please enter a title
