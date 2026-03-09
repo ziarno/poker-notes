@@ -24,7 +24,7 @@ subscribe('game', id)
 addAccessToGameId(id)
 
 const game = autorun(() => GamesCollection.findOne(id)).result
-const date = useFormattedDate(game.value?.date, 'dd.MM.yyyy')
+const date = useFormattedDate(() => game.value?.date, 'dd.MM.yyyy')
 const showMenu = ref(false)
 
 const { t } = useI18n()
