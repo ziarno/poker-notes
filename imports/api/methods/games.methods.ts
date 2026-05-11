@@ -133,6 +133,7 @@ export const addPlayer = createMethod({
       type: 'player_added',
       timestamp: new Date(),
       playerName: player.name,
+      in: player.in,
     }
     return GamesCollection.updateAsync(
       { _id: gameId },

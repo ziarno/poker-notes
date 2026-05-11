@@ -10,6 +10,7 @@ export interface HistoryItemPlayerAddRemove {
   type: 'player_added' | 'player_removed'
   timestamp: Date
   playerName: string
+  in?: number
 }
 
 export interface HistoryItemPlayerIn {

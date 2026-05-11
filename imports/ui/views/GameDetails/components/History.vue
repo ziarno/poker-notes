@@ -27,6 +27,8 @@ const sortedHistory = computed(() => {
 function formatChange(item: HistoryItem): string {
   const playerName = 'playerName' in item && getName(item.playerName)
   switch (item.type) {
+    case 'player_added':
+      return `${playerName}${item.in ? `: ${item.in}` : ''}`
     case 'player_in_changed':
       return t('player_in_changed', {
         name: playerName,
