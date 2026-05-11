@@ -1,7 +1,7 @@
 import assert from 'assert'
 
-import { FinishedGame } from '@/types'
-import { getGameSettlement } from '@/utils/game.utils'
+import { FinishedGame } from '../imports/types'
+import { getGameSettlement } from '../imports/utils/game.utils'
 
 describe('getGameSettlement', function () {
   function createGame(
@@ -10,6 +10,7 @@ describe('getGameSettlement', function () {
   ): FinishedGame {
     return {
       _id: 'test-game',
+      creatorId: 'test-user',
       pinCode: '1234',
       buyIn: 10,
       title: 'Test Game',

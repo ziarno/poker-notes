@@ -20,6 +20,8 @@ declare module '*.vue' {
   export default component
 }
 
+declare module '*.css'
+
 // Meteor package module declarations
 declare module 'meteor/meteor' {
   export * from '@types/meteor/meteor'

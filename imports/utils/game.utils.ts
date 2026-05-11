@@ -1,8 +1,8 @@
 import { flow, omitBy, reduce, sortBy, tap, thru } from 'lodash/fp'
 
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
-import { FinishedGame, FinishedPlayer, Game, Transfer } from '@/types'
-import { isNumber } from '@/utils/number.utils.ts'
+import { POT_KEY_NAME } from '../constants/transfers.const.ts'
+import type { FinishedGame, FinishedPlayer, Game, Transfer } from '../types'
+import { isNumber } from './number.utils.ts'
 
 export function getTotalIn(game: Game) {
   return game.players.reduce((sum, p) => sum + p.in, 0)
@@ -37,7 +37,10 @@ export function getGameSettlement(game: FinishedGame) {
   function cascadeAllDebt() {
     for (const looserName in loosers) {
       for (const winnerName in winners) {
-        while ((loosers[looserName] ?? 0) < 0 && (winners[winnerName] ?? 0) > 0) {
+        while (
+          (loosers[looserName] ?? 0) < 0 &&
+          (winners[winnerName] ?? 0) > 0
+        ) {
           const looserAmount = Math.abs(loosers[looserName] ?? 0)
           const winnerAmount = winners[winnerName] ?? 0
           const amountToGive = Math.min(looserAmount, winnerAmount)
@@ -98,18 +101,20 @@ export function getGameSettlement(game: FinishedGame) {
       })
     }),
     omitBy(value => value === 0),
-    thru((players: SettlementPlayers): [SettlementPlayers, SettlementPlayers] => {
-      const winners: SettlementPlayers = {}
-      const loosers: SettlementPlayers = {}
-      for (const name in players) {
-        if (players[name]! > 0) {
-          winners[name] = players[name]!
-        } else {
-          loosers[name] = players[name]!
+    thru(
+      (players: SettlementPlayers): [SettlementPlayers, SettlementPlayers] => {
+        const winners: SettlementPlayers = {}
+        const loosers: SettlementPlayers = {}
+        for (const name in players) {
+          if (players[name]! > 0) {
+            winners[name] = players[name]!
+          } else {
+            loosers[name] = players[name]!
+          }
         }
+        return [winners, loosers]
       }
-      return [winners, loosers]
-    })
+    )
   )([...game.players, POT])
 
   for (const sumPartsCount of [1, 2, 3, 4, 5]) {

@@ -10,6 +10,7 @@
     // Meteor-specific
     "types": ["meteor", "node", "mocha", "@modyfi/vite-plugin-yaml/modules"],
     "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
 
     // Vue-specific
     "resolveJsonModule": true,
@@ -40,7 +41,7 @@
       "meteor/jam:method": ["./imports/types/meteor/jam_method.d.ts"]
     }
   },
-  "include": ["client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*", "packages/**/*"],
+  "include": ["env.d.ts", "client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*", "packages/**/*"],
   "exclude": ["node_modules", ".meteor/local"],
   "vueCompilerOptions": {
     "target": 3.3
