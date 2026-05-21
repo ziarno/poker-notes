@@ -25,22 +25,32 @@ function navigate(path: string) {
 </script>
 
 <template>
-  <nav
-    class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 z-50 flex justify-around border-t"
-  >
+  <nav class="bg-ft-surface border-ft-ink-10 z-50 flex border-t">
     <button
       v-for="tab in tabs"
       :key="tab.path"
-      class="flex flex-1 cursor-pointer flex-col items-center gap-1 py-3 transition-colors"
+      class="flex flex-1 cursor-pointer flex-col items-center gap-[3px]
+        border-none bg-transparent pt-[10px] pb-3 font-sans text-[13px]
+        transition-colors"
       :class="
         isActive(tab.path)
-          ? 'text-bold'
-          : 'text-surface-500 dark:text-surface-400'
+          ? 'text-ft-green font-semibold'
+          : 'text-ft-ink-50 font-medium'
       "
       @click="navigate(tab.path)"
     >
-      <i :class="tab.icon" class="text-xl"></i>
-      <span class="text-xs">{{ tab.label }}</span>
+      <span
+        class="inline-flex items-center justify-center rounded-full px-[14px]
+          py-[5px]"
+        :class="
+          isActive(tab.path)
+            ? 'bg-ft-green-soft text-ft-green'
+            : 'text-ft-ink-50'
+        "
+      >
+        <i :class="tab.icon" class="text-lg"></i>
+      </span>
+      <span class="text-[13px]">{{ tab.label }}</span>
     </button>
   </nav>
 </template>

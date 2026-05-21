@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { autorun } from 'vue-meteor-tracker'
 
 import { GamesCollection } from '@/api/collections'
+import TitleBanner from '@/ui/components/TitleBanner.vue'
 import GameListItem from '@/ui/views/GamesList/components/GameListItem.vue'
 
 const { t } = useI18n()
@@ -15,21 +15,30 @@ const gamesSorted = computed(() =>
 </script>
 
 <template>
-  <div>
-    <h1
-      class="mt-3 mb-3 text-center font-[Poker] text-5xl text-black dark:text-white"
+  <div class="flex min-h-full flex-col pt-[18px] pb-6">
+    <TitleBanner />
+
+    <div
+      class="text-ft-ink px-[22px] pt-[2px] pb-2 font-sans text-[15px]
+        font-semibold"
     >
-      {{ t('poker_notes') }}
-    </h1>
-    <div class="mt-8 mb-10 flex justify-center">
-      <SecondaryButton
-        raised
-        @click="$router.push('/new')"
-        icon="pi pi-plus"
-        :label="t('new_game')"
+      {{ t('recent_games') }}
+    </div>
+
+    <p
+      v-if="!gamesSorted?.length"
+      class="text-surface-400 flex flex-1 items-center justify-center text-center
+        text-sm"
+    >
+      {{ t('no_games') }}
+    </p>
+    <div v-else class="flex flex-col gap-2 px-[14px]">
+      <GameListItem
+        v-for="(game, idx) of gamesSorted"
+        :key="game._id"
+        :game="game"
+        :index="idx"
       />
     </div>
-    <GameListItem v-for="game of gamesSorted" :key="game._id" :game="game" />
-    <div class="fixed right-0 bottom-0 left-0 mb-10 flex justify-center"></div>
   </div>
 </template>

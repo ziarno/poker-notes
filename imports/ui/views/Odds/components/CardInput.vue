@@ -3,10 +3,9 @@ import { computed, useTemplateRef } from 'vue'
 
 import { useCardKeyboard } from '@/composables/useCardKeyboard.ts'
 import { Card } from '@/types/PlayingCards.type.ts'
-import { CARD_TEXT_WIDTH_REM } from '@/ui/views/Odds/components/PlayingCardText.vue'
 import PlayingCardText from '@/ui/views/Odds/components/PlayingCardText.vue'
 
-const props = defineProps<{ max: number; label?: string }>()
+const props = defineProps<{ max: number; label?: string; onFelt?: boolean }>()
 const cards = defineModel<Card[]>({ default: [] })
 
 const { show, isActive, onActiveIdChanged } = useCardKeyboard(
@@ -27,28 +26,28 @@ function scrollIntoView() {
 
 onActiveIdChanged(scrollIntoView)
 
-const width = computed(() => {
-  const cardsWidth = props.max * CARD_TEXT_WIDTH_REM
-  const gaps = (props.max - 1) * 0.5
-  const padding = 1.8
-  return `${cardsWidth + gaps + padding}rem`
-})
+const placeholderCount = computed(() =>
+  Math.max(0, props.max - cards.value.length)
+)
 </script>
 
 <template>
   <button
     ref="button"
-    class="border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 flex h-12 cursor-pointer items-center gap-2 rounded-md border px-3 transition-colors"
-    :class="
-      isActive
-        ? 'ring-grey-100 dark:ring-primary-400 ring-2'
-        : 'hover:border-surface-400 dark:hover:border-surface-500'
-    "
-    :style="{ width }"
+    type="button"
+    class="inline-flex cursor-pointer items-center gap-[5px] rounded-lg
+      border-none bg-transparent p-[6px] outline outline-2 outline-offset-0
+      transition-[outline-color] duration-200"
+    :class="isActive ? 'outline-black/70' : 'outline-transparent'"
     @click="show"
   >
-    <span v-if="cards.length" class="flex flex-wrap gap-2">
-      <PlayingCardText v-for="(card, i) in cards" :key="i" :card="card" />
-    </span>
+    <PlayingCardText v-for="(card, i) in cards" :key="i" :card="card" />
+    <span
+      v-for="i in placeholderCount"
+      :key="`p${i}`"
+      class="h-12 w-[34px] rounded-[5px] border-[1.5px] border-dashed
+        bg-transparent"
+      :class="onFelt ? 'border-white/22' : 'border-ft-ink-30'"
+    ></span>
   </button>
 </template>

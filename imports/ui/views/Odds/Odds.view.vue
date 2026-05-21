@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import Dialog from '@volt/Dialog.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import SelectButton from '@volt/SelectButton.vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import pokerTableUrl from '@/assets/poker-table.svg'
 import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import {
   BOARD_MAX_CARDS,
   useSelectedCards,
 } from '@/composables/useSelectedCards'
+import DashedAddButton from '@/ui/components/DashedAddButton.vue'
+import Board from '@/ui/views/Odds/components/Board.vue'
 import CardInput from '@/ui/views/Odds/components/CardInput.vue'
-import PlayerCards from '@/ui/views/Odds/components/PlayerCards.vue'
+import OddsPlayer from '@/ui/views/Odds/components/OddsPlayer.vue'
 
 const { t } = useI18n()
 const { visible: keyboardVisible } = useCardKeyboard()
@@ -20,6 +20,12 @@ const { players, board, exhaustive, addPlayer, removeLastPlayer, reset } =
   useSelectedCards()
 
 const infoVisible = ref(false)
+
+const boardLabel = computed(() => {
+  const n = board.value.length
+  const stage = n === 5 ? 'RIVER' : n === 4 ? 'TURN' : 'FLOP'
+  return `${stage} · ${n} / ${BOARD_MAX_CARDS}`
+})
 
 const modeOptions = computed(() => [
   { label: t('fast'), value: false },
@@ -29,76 +35,80 @@ const modeOptions = computed(() => [
 
 <template>
   <div
-    class="xs:p-4"
-    :class="keyboardVisible && 'pb-60!'"
-    :style="{
-      transitionProperty: 'padding-bottom opacity transform',
-      transitionDuration: '0.3s',
-      transitionTimingFunction: 'ease',
-    }"
+    class="px-[18px] pt-[18px] pb-6 transition-[padding,opacity,transform]
+      duration-300 ease-in-out"
+    :class="{ '!pb-60': keyboardVisible }"
   >
-    <h1
-      class="text-surface-700 dark:text-surface-0 mb-8 text-center text-2xl font-semibold"
-    >
-      {{ t('odds') }}
-    </h1>
+    <header class="flex items-center justify-between pb-[6px]">
+      <div>
+        <div
+          class="text-ft-ink-50 font-sans text-[13px] font-semibold
+            tracking-[0.18em] uppercase"
+        >
+          {{ t('odds') }}
+        </div>
+        <div class="font-sans text-[22px] font-bold tracking-[-0.02em]">
+          {{ t('win_chances') }}
+        </div>
+      </div>
+    </header>
 
-    <div class="relative my-10">
-      <img :src="pokerTableUrl" class="w-full" alt="Poker table" />
-      <div class="absolute inset-0 flex items-center justify-center">
-        <CardInput v-model="board" :max="BOARD_MAX_CARDS" :label="t('board')" />
-      </div>
-    </div>
-    <div class="my-6 flex items-center justify-between gap-2">
-      <div class="flex items-center gap-1">
-        <SelectButton
-          v-model="exhaustive"
-          :options="modeOptions"
-          option-label="label"
-          option-value="value"
-          size="small"
-        />
-        <SecondaryButton
-          variant="text"
-          rounded
-          icon="pi pi-info-circle"
-          @click="infoVisible = true"
-        />
-      </div>
-      <SecondaryButton
+    <Board :label="boardLabel">
+      <CardInput
+        v-model="board"
+        :max="BOARD_MAX_CARDS"
+        :label="t('board')"
+        on-felt
+      />
+    </Board>
+
+    <div class="mb-4 flex items-center gap-[6px] pt-[14px] pb-2">
+      <SelectButton
+        v-model="exhaustive"
+        :options="modeOptions"
+        option-label="label"
+        option-value="value"
+        :allow-empty="false"
         size="small"
+      />
+      <button
+        type="button"
+        class="border-ft-ink-10 bg-ft-surface text-ft-ink-70 inline-flex h-8 w-8
+          cursor-pointer items-center justify-center rounded-full border"
+        :aria-label="t('fast') + ' / ' + t('precise')"
+        @click="infoVisible = true"
+      >
+        <i class="pi pi-info-circle"></i>
+      </button>
+      <button
+        type="button"
+        class="bg-ft-surface border-ft-ink-10 text-ft-ink-70 hover:text-ft-ink
+          hover:border-ft-ink-30 ml-auto inline-flex cursor-pointer items-center
+          gap-[6px] rounded-full border px-3 py-[6px] font-sans text-xs"
         @click="reset"
-        icon="pi pi-trash"
-        icon-pos="right"
-        :label="t('reset')"
-      />
+      >
+        <i class="pi pi-trash text-[13px]"></i>
+        <span>{{ t('reset') }}</span>
+      </button>
     </div>
 
-    <div class="grid grid-cols-2 gap-3">
-      <PlayerCards
-        class="flex-grow-1 basis-0"
-        v-for="(_, i) in players"
-        :index="i"
-      />
+    <div class="mt-1 flex flex-col gap-2">
+      <OddsPlayer v-for="(_, i) in players" :key="i" :index="i" />
     </div>
 
-    <div class="mt-8 flex justify-center gap-2">
-      <SecondaryButton
+    <div class="mt-[14px] flex items-center justify-center gap-2">
+      <DashedAddButton block :label="t('add_player')" @click="addPlayer" />
+      <button
         v-if="players.length > 2"
-        size="small"
+        type="button"
+        class="text-ft-ink-50 hover:text-ft-red inline-flex cursor-pointer
+          items-center gap-[6px] border-none bg-transparent px-[10px] py-2
+          font-sans text-xs"
         @click="removeLastPlayer"
-        icon="pi pi-minus"
-        icon-pos="right"
-        :label="t('remove_player')"
-      />
-
-      <SecondaryButton
-        size="small"
-        @click="addPlayer"
-        icon="pi pi-plus"
-        icon-pos="right"
-        :label="t('add_player')"
-      />
+      >
+        <i class="pi pi-minus"></i>
+        <span>{{ t('remove_player') }}</span>
+      </button>
     </div>
 
     <Dialog
@@ -110,15 +120,11 @@ const modeOptions = computed(() => [
       <div class="flex flex-col gap-3 text-sm">
         <div>
           <p class="font-semibold">{{ t('fast') }}</p>
-          <p class="text-surface-500 dark:text-surface-400">
-            {{ t('fast_description') }}
-          </p>
+          <p class="text-ft-ink-50">{{ t('fast_description') }}</p>
         </div>
         <div>
           <p class="font-semibold">{{ t('precise') }}</p>
-          <p class="text-surface-500 dark:text-surface-400">
-            {{ t('precise_description') }}
-          </p>
+          <p class="text-ft-ink-50">{{ t('precise_description') }}</p>
         </div>
       </div>
     </Dialog>

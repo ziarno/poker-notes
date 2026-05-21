@@ -24,37 +24,13 @@ const sortedHistory = computed(() => {
   )
 })
 
-function formatChange(item: HistoryItem): string {
-  const playerName = 'playerName' in item && getName(item.playerName)
-  switch (item.type) {
-    case 'player_added':
-      return `${playerName}${item.in ? `: ${item.in}` : ''}`
-    case 'player_in_changed':
-      return t('player_in_changed', {
-        name: playerName,
-        oldValue: item.oldValue,
-        newValue: item.newValue,
-        diff: balanceToString(
-          toNumber(item.newValue) - toNumber(item.oldValue)
-        ),
-      })
-    case 'player_out_changed':
-      return t('player_out_changed', {
-        name: playerName,
-        newValue: item.newValue,
-        balance: balanceToString(item.balance),
-      })
-    case 'transfer_added': {
-      const { from, to, value } = item.transfer
-      return `${t('transfer')}\n${getName(from)} → ${getName(to)}:${NBSP}${value}`
-    }
-    case 'transfer_removed': {
-      const { from, to, value } = item.transfer
-      return `${t('transfer_removed')}\n${getName(from)} → ${getName(to)}:${NBSP}${value}`
-    }
-    default:
-      return playerName || ''
-  }
+function inDiff(oldValue: number | null, newValue: number | null): string {
+  return balanceToString(toNumber(newValue) - toNumber(oldValue))
+}
+
+function balanceColorClass(balance: number | null): string {
+  if (!balance) return ''
+  return balance > 0 ? 'text-lime-600' : 'text-red-700'
 }
 
 function formatTime(timestamp: Date): string {
@@ -111,21 +87,77 @@ function getColorClass(item: HistoryItem): string {
     <Timeline v-else :value="sortedHistory" class="w-full">
       <template #marker="{ item }">
         <span
-          class="flex h-6 w-6 items-center justify-center rounded-full"
+          class="flex h-6 w-6 items-center justify-center rounded-full
+            leading-normal"
           :class="getColorClass(item)"
         >
           <i :class="getIcon(item)" class="text-xs"></i>
         </span>
       </template>
       <template #opposite="{ item }">
-        <span class="text-surface-400 text-sm">{{
+        <span class="text-surface-400 mt-[2px] inline-block text-sm">{{
           formatTime(item.timestamp)
         }}</span>
       </template>
       <template #content="{ item }">
-        <span class="mb-5 inline-block text-sm whitespace-pre-wrap">{{
-          formatChange(item)
-        }}</span>
+        <span class="mb-5 inline-block leading-tight whitespace-pre-wrap">
+          <template v-if="item.type === 'player_added'">
+            {{ getName(item.playerName) }}
+            <template v-if="item.in">: {{ item.in }}</template>
+          </template>
+          <i18n-t
+            v-else-if="item.type === 'player_in_changed'"
+            keypath="player_in_changed"
+            tag="span"
+          >
+            <template #name>
+              {{ getName(item.playerName) }}
+            </template>
+            <template #diff>
+              <strong>
+                {{ inDiff(item.oldValue, item.newValue) }}
+              </strong>
+            </template>
+            <template #oldValue>
+              {{ item.oldValue }}
+            </template>
+            <template #newValue>
+              {{ item.newValue }}
+            </template>
+          </i18n-t>
+          <i18n-t
+            v-else-if="item.type === 'player_out_changed'"
+            keypath="player_out_changed"
+            tag="span"
+          >
+            <template #name
+              ><strong>{{ getName(item.playerName) }}</strong></template
+            >
+            <template #newValue
+              ><strong>{{ item.newValue }}</strong></template
+            >
+            <template #balance
+              ><strong :class="balanceColorClass(item.balance)">{{
+                balanceToString(item.balance)
+              }}</strong></template
+            >
+          </i18n-t>
+          <template
+            v-else-if="
+              item.type === 'transfer_added' || item.type === 'transfer_removed'
+            "
+            >{{
+              item.type === 'transfer_added'
+                ? t('transfer')
+                : t('transfer_removed')
+            }}{{ '\n' }}{{ getName(item.transfer.from) }} {{ ' → '
+            }}{{ getName(item.transfer.to) }}:{{ NBSP
+            }}<strong>{{ item.transfer.value }}</strong></template
+          >
+          <template v-else-if="'playerName' in item"
+            ><strong>{{ getName(item.playerName) }}</strong></template
+          >
+        </span>
       </template>
     </Timeline>
   </div>

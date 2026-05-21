@@ -77,6 +77,7 @@ export function useSelectedCards() {
   function reset() {
     players.value = [{ cards: [] }, { cards: [] }]
     board.value = []
+    odds.value = null
   }
 
   return {

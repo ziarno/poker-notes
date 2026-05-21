@@ -42,6 +42,7 @@ The app will build to `./build/bundle/` and start on http://localhost:3000.
 ### Environment Configuration
 
 Production settings are in `.env.local`:
+
 - `MONGO_URL` - MongoDB connection string (default: mongodb://localhost:27017/poker-notes)
 - `ROOT_URL` - Your app's public URL (default: http://localhost:3000)
 - `PORT` - Port to run on (default: 3000)
@@ -50,6 +51,7 @@ Production settings are in `.env.local`:
 ### Troubleshooting
 
 **MongoDB not running:**
+
 ```bash
 brew services start mongodb-community
 ```
@@ -59,6 +61,7 @@ Change the `PORT` in `.env.local` to a different port.
 
 **Build fails:**
 Delete the build directory and try again:
+
 ```bash
 rm -rf ./build
 npm run build

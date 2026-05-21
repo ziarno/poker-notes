@@ -6,29 +6,45 @@ import { useI18n } from 'vue-i18n'
 import { Game } from '@/types'
 import { getGameTotal } from '@/utils'
 
-const { t } = useI18n()
-
 const props = defineProps<{
   game: Game
-  long?: boolean
 }>()
 
-const gameTotal = computed(() => getGameTotal(props.game))
+const { t } = useI18n()
+
+const chips = computed(() => [
+  {
+    icon: 'pi-user',
+    label: t('players_count').toLowerCase(),
+    value: props.game.players.length,
+  },
+  {
+    icon: 'pi-wallet',
+    label: t('buy_in').toLowerCase(),
+    value: props.game.buyIn,
+  },
+  {
+    icon: 'pi-dollar',
+    label: t('pot').toLowerCase(),
+    value: getGameTotal(props.game),
+  },
+])
 </script>
 
 <template>
-  <div class="shrink-0 space-x-1">
-    <Tag severity="secondary" icon="pi pi-user">
-      <span class="font-light" v-if="long">{{ t('players_count') }}:</span>
-      <span>{{ game.players.length }}</span>
-    </Tag>
-    <Tag severity="secondary" icon="pi pi-wallet">
-      <span class="font-light" v-if="long">{{ t('buy_in') }}:</span>
-      <span>{{ game.buyIn }}</span>
-    </Tag>
-    <Tag severity="secondary" icon="pi pi-dollar">
-      <span class="font-light" v-if="long">{{ t('pot') }}:</span>
-      <span>{{ gameTotal }}</span>
+  <div class="mt-2 flex flex-wrap justify-around">
+    <Tag
+      v-for="chip in chips"
+      :key="chip.icon"
+      :icon="`pi ${chip.icon} text-ft-ink-50!`"
+      class="bg-ft-surface! border-ft-ink-10! text-ft-ink! gap-[6px]!
+        rounded-full! border! py-[5px]! pr-[10px]! pl-2! text-[15px]!
+        font-normal!"
+    >
+      <span class="text-ft-ink-50 text-[13px] tracking-[0.02em]">{{
+        chip.label
+      }}</span>
+      <span class="font-mono font-semibold tabular-nums">{{ chip.value }}</span>
     </Tag>
   </div>
 </template>

@@ -3,13 +3,68 @@
 @import '../assets/volt-vue-vars.css';
 
 @font-face {
-    font-family: 'Poker';
-    src: url('../assets/fonts/Poker.ttf') format('truetype');
+  font-family: 'Poker';
+  src: url('../assets/fonts/Poker.ttf') format('truetype');
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant safari (&:where(.safari, .safari *));
 
 @theme {
-    --breakpoint-xs: 24rem;
+  --breakpoint-xs: 24rem;
+
+  --font-sans: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Felt palette — from the design handoff (variants/felt.jsx) */
+  --color-ft-bg: #f4f5f3;
+  --color-ft-surface: #ffffff;
+  --color-ft-surface-alt: #fbfbfa;
+  --color-ft-ink: #0d1411;
+  --color-ft-ink-70: rgba(13, 20, 17, 0.7);
+  --color-ft-ink-50: rgba(13, 20, 17, 0.5);
+  --color-ft-ink-30: rgba(13, 20, 17, 0.3);
+  --color-ft-ink-10: rgba(13, 20, 17, 0.08);
+  --color-ft-green: #0f5c45;
+  --color-ft-green-soft: #e4efe9;
+  --color-ft-green-tint: #d4e6dd;
+  --color-ft-green-ink: #073b2c;
+  --color-ft-green-deep: #0a4334;
+  --color-ft-green-mid: #2a8a6a;
+  --color-ft-red: #c1392b;
+  --color-ft-red-soft: #fbeae7;
+  --color-ft-wood: #4a3220;
+  --color-ft-wood-dark: #1a1006;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-ft-bg);
+    color: var(--color-ft-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+/* Reusable felt patterns — used in multiple Vue components */
+@utility ft-icon-btn {
+  @apply inline-flex h-10 w-10 cursor-pointer items-center justify-center
+    rounded-[11px] border border-ft-ink-10 bg-ft-surface text-ft-ink
+    transition-colors hover:bg-neutral-50;
+  & i {
+    font-size: 16px;
+  }
+}
+
+@utility ft-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }

@@ -41,7 +41,15 @@
       "meteor/jam:method": ["./imports/types/meteor/jam_method.d.ts"]
     }
   },
-  "include": ["env.d.ts", "client/**/*", "server/**/*", "imports/**/*", "tests/**/*", "src/**/*", "packages/**/*"],
+  "include": [
+    "env.d.ts",
+    "client/**/*",
+    "server/**/*",
+    "imports/**/*",
+    "tests/**/*",
+    "src/**/*",
+    "packages/**/*"
+  ],
   "exclude": ["node_modules", ".meteor/local"],
   "vueCompilerOptions": {
     "target": 3.3

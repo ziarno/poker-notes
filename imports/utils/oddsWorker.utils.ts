@@ -15,7 +15,7 @@ export function calculateOddsAsync(data: {
 
   worker.postMessage(data)
 
-  return new Promise(resolve => {
+  return new Promise<PlayerOdds[] | null>(resolve => {
     worker.onmessage = (event: MessageEvent<PlayerOdds[] | null>) => {
       if (currentId === currentRequestId) resolve(event.data)
     }

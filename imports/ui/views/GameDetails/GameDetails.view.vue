@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useClipboard } from '@vueuse/core'
 import { useToast } from 'primevue/usetoast'
 import { ref } from 'vue'
@@ -15,6 +14,7 @@ import GameMenu from '@/ui/views/GameDetails/components/GameMenu.vue'
 import PlayersTable from '@/ui/views/GameDetails/components/PlayersTable.vue'
 import Settlement from '@/ui/views/GameDetails/components/Settlement.vue'
 import Transfers from '@/ui/views/GameDetails/components/Transfers.vue'
+import WinnerBanner from '@/ui/views/GameDetails/components/WinnerBanner.vue'
 import { addAccessToGameId } from '@/utils/accessToGameIds.utils.ts'
 
 const route = useRoute()
@@ -24,7 +24,7 @@ subscribe('game', id)
 addAccessToGameId(id)
 
 const game = autorun(() => GamesCollection.findOne(id)).result
-const date = useFormattedDate(() => game.value?.date, 'dd.MM.yyyy')
+const date = useFormattedDate(() => game.value?.date, 'E, dd.MM.yyyy')
 const showMenu = ref(false)
 
 const { t } = useI18n()
@@ -43,29 +43,30 @@ function copyLink() {
 </script>
 
 <template>
-  <div>
+  <div class="px-[18px] pt-[18px] pb-6">
     <NavigationHeader :title="game?.title" :subtitle="date">
       <template #icon>
-        <div class="flex gap-2">
-          <SecondaryButton
-            @click="copyLink"
-            variant="outlined"
-            icon="pi pi-share-alt"
-          />
-          <SecondaryButton
-            @click="showMenu = true"
-            variant="outlined"
-            icon="pi pi-bars"
-          />
-        </div>
+        <button
+          class="ft-icon-btn"
+          @click="copyLink"
+          :aria-label="t('link_copied')"
+        >
+          <i class="pi pi-share-alt"></i>
+        </button>
+        <button
+          class="ft-icon-btn"
+          @click="showMenu = true"
+          :aria-label="t('history')"
+        >
+          <i class="pi pi-bars"></i>
+        </button>
       </template>
     </NavigationHeader>
+
     <template v-if="game">
-      <InfoTags
-        :game="game"
-        long
-        class="mt-5 flex flex-wrap items-start justify-around space-x-1"
-      />
+      <InfoTags :game="game" class="pt-1 pb-[14px]" />
+
+      <WinnerBanner :game="game" />
       <PlayersTable :game="game" />
       <Transfers :game="game" />
       <Settlement :game="game" />

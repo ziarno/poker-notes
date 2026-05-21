@@ -29,6 +29,8 @@ export type PlayerInOddsCalculator = {
 }
 
 export type PlayerOdds = {
-  wins: string
-  ties: string
+  winsPercentageString: string
+  tiesPercentageString: string
+  winsPercentage: number
+  tiesPercentage: number
 }

@@ -61,11 +61,13 @@ onClickOutside(refContainer, close)
     <div
       ref="container"
       v-if="visible"
-      class="bg-surface-50 dark:bg-surface-800 border-surface-200 dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-4"
+      class="bg-surface-50 dark:bg-surface-800 border-surface-200
+        dark:border-surface-700 fixed inset-x-0 bottom-0 z-100 border-t py-4"
     >
       <h2
         v-if="activeLabel"
-        class="text-surface-600 dark:text-surface-300 text-center text-lg font-medium"
+        class="text-surface-600 dark:text-surface-300 text-center text-lg
+          font-medium"
       >
         {{ activeLabel }}
       </h2>

@@ -21,13 +21,14 @@ interface Props extends /* @vue-ignore */ SelectButtonProps {}
 defineProps<Props>();
 
 const theme = ref<SelectButtonPassThroughOptions>({
-    root: `inline-flex select-none rounded-md
+    root: `inline-flex select-none rounded-md overflow-hidden
+        border border-surface-100 dark:border-surface-800
         p-invalid:outline p-invalid:outline-offset-0 p-invalid:outline-red-400 dark:p-invalid:outline-red-300`,
     pcToggleButton: {
         root: `inline-flex items-center justify-center overflow-hidden relative cursor-pointer select-none grow
-            border border-surface-100 dark:border-surface-950
-            rounded-none first:rounded-s-md last:rounded-e-md
-            bg-surface-100 dark:bg-surface-950
+            border-none
+            rounded-none
+            bg-surface-0 dark:bg-surface-900
             text-surface-500 dark:text-surface-400
             p-checked:text-surface-700 dark:p-checked:text-surface-0
             text-base font-medium
@@ -41,7 +42,7 @@ const theme = ref<SelectButtonPassThroughOptions>({
         `,
         content: `relative flex-auto inline-flex items-center justify-center gap-2 py-1 px-3
             rounded-md transition-colors duration-200
-            p-checked:bg-surface-0 dark:p-checked:bg-surface-800 p-checked:shadow-[0px_1px_2px_0px_rgba(0,0,0,0.02),0px_1px_2px_0px_rgba(0,0,0,0.04)]`,
+            p-checked:bg-surface-200 dark:p-checked:bg-surface-700`,
         icon: ``,
         label: ``
     }

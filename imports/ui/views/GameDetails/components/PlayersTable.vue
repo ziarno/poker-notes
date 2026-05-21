@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import DataTable from '@volt/DataTable.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
-import Column from 'primevue/column'
-import ColumnGroup from 'primevue/columngroup'
-import { DataTableRowSelectEvent } from 'primevue/datatable'
-import Row from 'primevue/row'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
 import { useIsGameCreator } from '@/composables'
 import { Game, NewPlayer, Player } from '@/types'
-import Balance from '@/ui/components/Balance.vue'
+import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
 import { getTotalIn, getTotalOut, isNumber } from '@/utils'
@@ -26,14 +20,15 @@ const isCreator = useIsGameCreator(() => game)
 const isAddingNewPlayer = ref(false)
 const editingPlayer = ref<Player | null>(null)
 
-const tableData = computed(() => {
-  return game.players.map(player => ({
-    ...player,
-    balance: isNumber(player.out) ? player.out - player.in : null,
+const rows = computed(() =>
+  game.players.map(p => ({
+    ...p,
+    balance: isNumber(p.out) ? (p.out as number) - p.in : null,
   }))
-})
-const totalIn = computed(() => getTotalIn(game).toString() ?? '')
-const totalOut = computed(() => getTotalOut(game).toString() ?? '')
+)
+
+const totalIn = computed(() => getTotalIn(game))
+const totalOut = computed(() => getTotalOut(game))
 
 function addPlayer(player: NewPlayer) {
   addPlayerMethod({
@@ -43,104 +38,104 @@ function addPlayer(player: NewPlayer) {
   isAddingNewPlayer.value = false
 }
 
-function onRowClick(e: DataTableRowSelectEvent<Player>) {
+function onRowClick(player: Player) {
   if (!isCreator.value) return
-  editingPlayer.value = e.data
+  editingPlayer.value = player
 }
+
+function balanceText(b: number | null): string {
+  if (!isNumber(b)) return ''
+  if (b === 0) return '0'
+  return b > 0 ? `+${b}` : `${b}`
+}
+
+const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
 </script>
 
 <template>
-  <DataTable
-    :selection-mode="isCreator ? 'single' : undefined"
-    @row-select="onRowClick"
-    dataKey="name"
-    ref="data-table"
-    :value="tableData"
-    class="mt-4 mb-15"
+  <div
+    class="bg-ft-surface border-ft-ink-10 mb-12 overflow-hidden rounded-[14px]
+      border"
   >
-    <Column
-      field="name"
-      body-class="max-w-0 !pr-1 min-w-32 overflow-hidden text-ellipsis safari:!pl-1"
-    ></Column>
-    <Column
-      field="in"
-      :header="t('buy_in')"
-      class="w-0"
-      headerClass="thead-center safari:!px-1"
-      bodyClass="!text-center"
+    <div
+      :class="gridCols"
+      class="text-ft-ink-50 border-ft-ink-10 border-b px-[14px] py-[10px]
+        text-[12px] font-semibold tracking-[0.08em] uppercase"
     >
-    </Column>
-    <Column
-      field="out"
-      :header="t('buy_out')"
-      class="w-0"
-      headerClass="thead-center safari:!px-1"
-      bodyClass="!text-center"
+      <div>{{ t('players') }}</div>
+      <div class="text-right">{{ t('buy_in') }}</div>
+      <div class="text-right">{{ t('buy_out') }}</div>
+      <div class="text-right">{{ t('balance') }}</div>
+    </div>
+
+    <div
+      v-for="r in rows"
+      :key="r.name"
+      :class="[
+        gridCols,
+        'border-ft-ink-10 items-center border-b px-[14px] py-3 last:border-b-0',
+        isCreator ? 'cursor-pointer hover:bg-[rgba(13,20,17,0.02)]' : '',
+      ]"
+      @click="onRowClick(r as Player)"
     >
-    </Column>
-    <Column
-      field="balance"
-      :header="t('balance')"
-      class="w-0 min-w-[80px]"
-      headerClass="thead-center safari:!px-1"
-      bodyClass="!text-center"
+      <div class="text-md">
+        {{ r.name }}
+      </div>
+      <div class="text-ft-ink-70 text-right text-[16px]">
+        {{ r.in }}
+      </div>
+      <div class="text-ft-ink-70 text-right text-[16px]">
+        {{ r.out ?? '—' }}
+      </div>
+      <div
+        class="text-right text-sm text-[16px] font-bold"
+        :class="
+          (r.balance ?? 0) > 0
+            ? 'text-lime-600'
+            : (r.balance ?? 0) < 0
+              ? 'text-red-700'
+              : 'text-ft-ink-70'
+        "
+      >
+        {{ balanceText(r.balance) }}
+      </div>
+    </div>
+
+    <div
+      v-if="isCreator"
+      class="border-ft-ink-10 bg-ft-surface-alt border-t px-[14px] py-[10px]"
     >
-      <template #body="slotProps">
-        <Balance :value="slotProps.data.balance" />
-      </template>
-    </Column>
-    <ColumnGroup type="footer">
-      <Row v-if="isCreator">
-        <Column :colspan="4" footer-class="pl-0 pr-0 pt-2 pb-2">
-          <template #footer>
-            <SecondaryButton
-              class="mt-1 mb-1"
-              size="small"
-              @click="isAddingNewPlayer = true"
-              v-if="!isAddingNewPlayer"
-              icon="pi pi-plus"
-              icon-pos="right"
-              :label="t('add_player')"
-            />
-            <InputNewPlayer
-              show-cancel
-              show-buy-in
-              :buy-in="game.buyIn"
-              v-else
-              :exclude-names="game.players.map(p => p.name)"
-              @add="addPlayer"
-              @cancel="isAddingNewPlayer = false"
-            />
-          </template>
-        </Column>
-      </Row>
-      <Row>
-        <Column :footer="t('sum')" footer-style="text-align: right;" />
-        <Column
-          :footer="totalIn"
-          footer-class="!text-center game-details-footer-row"
-        />
-        <Column
-          :footer="totalOut"
-          footer-class="!text-center game-details-footer-row"
-        />
-        <Column />
-      </Row>
-    </ColumnGroup>
-  </DataTable>
+      <DashedAddButton
+        v-if="!isAddingNewPlayer"
+        :label="t('add_player')"
+        @click="isAddingNewPlayer = true"
+      />
+      <InputNewPlayer
+        v-else
+        show-cancel
+        show-buy-in
+        :buy-in="game.buyIn"
+        :exclude-names="game.players.map(p => p.name)"
+        @add="addPlayer"
+        @cancel="isAddingNewPlayer = false"
+      />
+    </div>
+
+    <div
+      :class="gridCols"
+      class="text-ft-ink-70 border-ft-ink-10 bg-ft-surface-alt border-t
+        px-[14px] py-[10px]"
+    >
+      <span>{{ t('sum') }}</span>
+      <span class="text-ft-ink text-right text-[16px]">{{ totalIn }}</span>
+      <span class="text-ft-ink text-right text-[16px]">{{ totalOut }}</span>
+      <span></span>
+    </div>
+  </div>
+
   <EditPlayerDialog
     :player="editingPlayer"
     @hide="editingPlayer = null"
     :game="game"
   />
 </template>
-
-<style>
-.game-details-footer-row > span {
-  font-weight: normal !important;
-}
-
-.thead-center > div {
-  justify-content: center;
-}
-</style>

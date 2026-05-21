@@ -23,8 +23,10 @@ self.onmessage = (event: MessageEvent<WorkerInput>) => {
 
     const calculated = table.calculate()
     const result = calculated.getPlayers().map(rp => ({
-      wins: rp.getWinsPercentageString(),
-      ties: rp.getTiesPercentageString(),
+      winsPercentageString: rp.getWinsPercentageString(),
+      tiesPercentageString: rp.getTiesPercentageString(),
+      winsPercentage: rp.getWinsPercentage(),
+      tiesPercentage: rp.getTiesPercentage(),
     }))
 
     self.postMessage(result)

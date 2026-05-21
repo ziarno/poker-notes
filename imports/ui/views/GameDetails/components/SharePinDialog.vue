@@ -24,7 +24,8 @@ const { t } = useI18n()
     </p>
     <div class="flex items-center justify-center">
       <span
-        class="bg-surface-100 dark:bg-surface-800 rounded-lg px-6 py-3 font-mono text-2xl tracking-widest"
+        class="bg-surface-100 dark:bg-surface-800 rounded-lg px-6 py-3 font-mono
+          text-2xl tracking-widest"
       >
         {{ pinCode }}
       </span>

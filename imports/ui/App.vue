@@ -13,7 +13,7 @@ subscribe('games', getCreatorId(), accessToGameIds.value)
 </script>
 
 <template>
-  <div class="flex h-dvh flex-col overflow-y-hidden">
+  <div class="bg-ft-bg flex h-dvh flex-col overflow-y-hidden">
     <div id="main-scroll" class="flex-1 overflow-y-auto">
       <Router />
     </div>

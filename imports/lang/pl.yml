@@ -1,5 +1,9 @@
 _locale: pl
 poker_notes: Poker nOtes
+recent_games: Ostatnie gry
+no_games: Brak gier
+winner_of_evening: Zwycięzca wieczoru
+win_chances: Szanse wygranej
 players_count: Graczy
 pot: Pula
 date: Data
@@ -44,8 +48,8 @@ save: Zapisz
 delete_game: Usuń grę
 history: Historia
 no_history: Brak zmian
-player_added: "{name} dołączył"
-player_removed: "{name} został usunięty"
+player_added: '{name} dołączył'
+player_removed: '{name} został usunięty'
 player_in_changed: "{name}: {diff}\n{oldValue} → {newValue}"
 player_out_changed: "{name} wyjście: {newValue}\nStan: {balance}"
 add_editor: Dodaj edytora
@@ -63,7 +67,7 @@ odds: Kalkulator
 coming_soon: Już wkrótce
 add_card: Dodaj kartę
 reset: Resetuj
-player: "Gracz {n}"
+player: 'Gracz {n}'
 board: Stół
 fast: Szybko
 precise: Dokładnie

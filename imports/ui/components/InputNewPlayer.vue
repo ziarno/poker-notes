@@ -33,7 +33,6 @@ const getDefaultValue = () => ({
 const playerFormData = ref(getDefaultValue())
 
 const onSubmit = () => {
-  debugger
   if (checkIsNameExcluded(playerFormData.value.name)) {
     return
   }

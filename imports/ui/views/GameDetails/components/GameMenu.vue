@@ -35,7 +35,12 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
 </script>
 
 <template>
-  <Drawer v-model:visible="visible" position="right" :header="t('history')">
+  <Drawer
+    v-model:visible="visible"
+    position="right"
+    :header="t('history')"
+    class="p-right:w-[440px] p-right:max-w-[85vw] rounded-tl-[14px]"
+  >
     <History :history="game.history" />
 
     <template #footer>

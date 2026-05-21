@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Fieldset from '@volt/Fieldset.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useClipboard } from '@vueuse/core'
 import { flow, join, map, sortBy } from 'lodash/fp'
 import { useToast } from 'primevue/usetoast'
@@ -72,12 +71,17 @@ function onCollapsed(collapsed: boolean) {
 </script>
 
 <template>
-  <SecondaryButton
-    icon="pi pi-copy"
+  <button
     v-if="isSupported"
+    type="button"
+    class="bg-ft-green inline-flex cursor-pointer items-center gap-[6px]
+      rounded-full border-none px-[14px] py-2 font-sans text-xs font-semibold
+      text-white shadow-[0_3px_10px_-4px_var(--color-ft-green-ink)]"
     @click="copyToClipboard"
-    :label="t('copy_game')"
-  />
+  >
+    <i class="pi pi-copy text-[13px]"></i>
+    <span>{{ t('copy_game') }}</span>
+  </button>
   <Fieldset
     v-else
     :legend="t('summary')"

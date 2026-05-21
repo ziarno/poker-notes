@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useRouter } from 'vue-router'
 
 defineProps<{
@@ -12,33 +11,44 @@ defineSlots<{
 
 const router = useRouter()
 
-function goBack() {
+function checkIfWeWentBack() {
   const { currentRoute } = router
-  router.back()
   setTimeout(() => {
-    // check if it worked - it's possible that we couldn't go back
     if (router.currentRoute === currentRoute) {
       router.push('/')
     }
   }, 50)
 }
+
+function goBack() {
+  router.back()
+  checkIfWeWentBack()
+}
 </script>
 
 <template>
-  <div class="mb-4 flex w-full items-center space-x-2">
-    <SecondaryButton
-      @click="goBack"
-      icon="pi pi-chevron-left"
-      variant="text"
-      rounded
-    />
-    <div class="flex-grow">
-      <p class="dark:text-surface-0 text-lg">{{ title }}</p>
-      <p v-if="subtitle" class="dark:text-surface-0 text-xs opacity-50">
+  <div
+    class="flex gap-[10px] pt-[6px] pb-[14px]"
+    :class="{ ['items-center']: !subtitle }"
+  >
+    <button type="button" class="ft-icon-btn" @click="goBack">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+    <div class="min-w-0 flex-1">
+      <p
+        v-if="title"
+        class="text-ft-ink m-0 font-sans text-lg leading-[1.15] font-semibold"
+      >
+        {{ title }}
+      </p>
+      <p
+        v-if="subtitle"
+        class="text-ft-ink-50 mt-[2px] mb-0 font-sans text-[13px]"
+      >
         {{ subtitle }}
       </p>
     </div>
-    <div>
+    <div class="flex gap-2">
       <slot name="icon"></slot>
     </div>
   </div>

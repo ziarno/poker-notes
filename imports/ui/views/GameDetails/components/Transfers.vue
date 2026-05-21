@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import DataTable from '@volt/DataTable.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
-import Column from 'primevue/column'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -13,7 +10,10 @@ import { useIsGameCreator } from '@/composables'
 import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
+import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
+import SectionTitle from '@/ui/components/SectionTitle.vue'
+import TransferRow from '@/ui/components/TransferRow.vue'
 
 const { game } = defineProps<{
   game: Game
@@ -22,6 +22,13 @@ const { game } = defineProps<{
 const { t } = useI18n()
 const isCreator = useIsGameCreator(() => game)
 const isAddingNewTransfer = ref(false)
+
+const count = computed(() => game.transfers.length)
+const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
+
+function name(n: string) {
+  return n === POT_KEY_NAME ? t('pot').toUpperCase() : n
+}
 
 async function addTransfer(transfer: Transfer) {
   addTransferMethod({ gameId: game._id!, transfer })
@@ -36,70 +43,52 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
 </script>
 
 <template>
-  <h2 class="text-surface-700 dark:text-surface-0 mb-4 text-lg font-semibold">
-    {{ t('transfers') }}
-  </h2>
+  <section class="mt-4 mb-12">
+    <SectionTitle>{{ subtitle }}</SectionTitle>
 
-  <DataTable
-    :value="game.transfers"
-    v-if="game.transfers.length"
-    table-class="mb-5"
-  >
-    <Column field="from" :header="t('from')">
-      <template #body="slotProps">
-        <span v-if="slotProps.data.from === POT_KEY_NAME">{{
-          t('pot').toUpperCase()
-        }}</span>
-        <span v-else>{{ slotProps.data.from }}</span>
-      </template>
-    </Column>
-    <Column field="to" :header="t('to')">
-      <template #body="slotProps">
-        <span v-if="slotProps.data.to === POT_KEY_NAME">{{
-          t('pot').toUpperCase()
-        }}</span>
-        <span v-else>{{ slotProps.data.to }}</span>
-      </template>
-    </Column>
-    <Column
-      field="value"
-      :header="t('value')"
-      class="w-0 pr-0 pl-0"
-      bodyClass="!text-center !p-0"
-    />
-    <Column class="w-0" v-if="isCreator">
-      <template #body="{ data }">
-        <SecondaryButton
-          outlined
-          icon="pi pi-times"
-          @click="confirmRemoveTransfer(data)"
-        />
-      </template>
-    </Column>
-  </DataTable>
-  <p
-    v-if="!game.transfers.length && !isCreator"
-    class="text-surface-400 mb-6 text-center text-sm"
-  >
-    {{ t('no_transfers') }}
-  </p>
-  <div v-if="isCreator">
-    <SecondaryButton
-      class="mb-14"
-      size="small"
-      @click="isAddingNewTransfer = true"
-      v-if="!isAddingNewTransfer"
-      icon="pi pi-plus"
-      icon-pos="right"
-      :label="t('add_transfer')"
-    />
+    <div v-if="game.transfers.length" class="flex flex-col gap-[6px]">
+      <TransferRow
+        v-for="(transfer, i) in game.transfers"
+        :key="i"
+        :from="name(transfer.from)"
+        :to="name(transfer.to)"
+        :value="transfer.value"
+      >
+        <template #action>
+          <button
+            v-if="isCreator"
+            type="button"
+            class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-red
+              hover:border-ft-red inline-flex h-[26px] w-[26px] cursor-pointer
+              items-center justify-center rounded-full border bg-white"
+            :aria-label="t('cancel')"
+            @click="confirmRemoveTransfer(transfer)"
+          >
+            <i class="pi pi-times text-[12px]"></i>
+          </button>
+        </template>
+      </TransferRow>
+    </div>
 
-    <InputNewTransfer
-      v-if="isAddingNewTransfer"
-      :game="game"
-      class=""
-      @add="addTransfer"
-      @cancel="isAddingNewTransfer = false"
-    />
-  </div>
+    <p
+      v-if="!game.transfers.length && !isCreator"
+      class="text-ft-ink-50 my-2 text-center text-[15px]"
+    >
+      {{ t('no_transfers') }}
+    </p>
+
+    <div v-if="isCreator" class="mt-[10px]">
+      <DashedAddButton
+        v-if="!isAddingNewTransfer"
+        :label="t('add_transfer')"
+        @click="isAddingNewTransfer = true"
+      />
+      <InputNewTransfer
+        v-else
+        :game="game"
+        @add="addTransfer"
+        @cancel="isAddingNewTransfer = false"
+      />
+    </div>
+  </section>
 </template>

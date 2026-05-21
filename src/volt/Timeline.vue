@@ -33,7 +33,7 @@ const theme = ref<TimelinePassThroughOptions>({
         p-bottom:flex-col-reverse
         p-vertical:p-alternate:even:flex-row-reverse
         p-horizontal:p-alternate:even:flex-col-reverse`,
-  eventOpposite: `flex-1
+  eventOpposite: `p-vertical:flex-none p-vertical:w-20 p-horizontal:flex-1
         p-left:text-end p-right:text-start
         p-vertical:py-0 p-vertical:px-4 p-vertical:leading-none
         p-vertical:p-alternate:group-odd:text-end  p-vertical:p-alternate:group-even:text-start
@@ -48,7 +48,7 @@ const theme = ref<TimelinePassThroughOptions>({
   eventConnector: `flex-grow bg-surface-200 dark:bg-surface-700
         p-vertical:w-[2px]
         p-horizontal:w-full p-horizontal:h-[2px]`,
-  eventContent: `flex-5
+  eventContent: `flex-1 p-vertical:min-w-0
         p-left:text-start p-right:text-end
         p-vertical:py-0 p-vertical:px-4 p-vertical:leading-none
         p-vertical:p-alternate:group-odd:text-start p-vertical:p-alternate:group-even:text-end

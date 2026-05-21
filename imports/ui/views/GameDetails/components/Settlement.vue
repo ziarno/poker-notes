@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import DataTable from '@volt/DataTable.vue'
-import Message from '@volt/Message.vue'
-import SecondaryButton from '@volt/SecondaryButton.vue'
-import Column from 'primevue/column'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -10,7 +6,8 @@ import { addTransfer } from '@/api/methods'
 import { useIsGameCreator } from '@/composables'
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { Game, Transfer } from '@/types'
-import GameSummaryCopy from '@/ui/views/GameDetails/components/GameSummaryCopy.vue'
+import SectionTitle from '@/ui/components/SectionTitle.vue'
+import TransferRow from '@/ui/components/TransferRow.vue'
 import {
   getGameSettlement,
   isGameFinished,
@@ -32,66 +29,57 @@ const settlement = computed<Transfer[]>(() => {
   return getGameSettlement(game)
 })
 
+function pretty(name: string): string {
+  return name === POT_KEY_NAME ? t('pot').toUpperCase() : name
+}
+
 function addToTransfers(transfer: Transfer) {
   addTransfer({ gameId: game._id, transfer })
 }
 </script>
 
 <template>
-  <div class="mb-10">
-    <h2 class="text-surface-700 dark:text-surface-0 mb-4 text-lg font-semibold">
-      {{ t('settlement') }}
-    </h2>
+  <section class="mt-5 mb-6">
+    <SectionTitle>{{ t('settlement') }}</SectionTitle>
 
-    <p v-if="isOngoing" class="text-surface-400 text-center text-sm">
+    <p v-if="isOngoing" class="text-ft-ink-50 py-3 text-center text-[15px]">
       {{ t('settlement_info') }}
     </p>
-    <Message
-      icon="pi pi-exclamation-triangle"
-      size="small"
+
+    <div
       v-else-if="!isInOutEqual"
-      severity="warn"
-      variant="simple"
-      class="justify-center"
-      >{{ t('settlement_warning') }}</Message
+      class="bg-ft-red-soft text-ft-red flex items-center justify-center gap-2
+        rounded-xl px-[14px] py-[10px] text-[15px]"
     >
+      <i class="pi pi-exclamation-triangle"></i>
+      <span>{{ t('settlement_warning') }}</span>
+    </div>
+
     <template v-else>
-      <DataTable :value="settlement">
-        <Column field="from" :header="t('from')">
-          <template #body="slotProps">
-            <span v-if="slotProps.data.from === POT_KEY_NAME">{{
-              t('pot').toUpperCase()
-            }}</span>
-            <span v-else>{{ slotProps.data.from }}</span>
+      <div v-if="settlement.length" class="flex flex-col gap-[6px]">
+        <TransferRow
+          v-for="(transfer, i) in settlement"
+          :key="i"
+          :from="pretty(transfer.from)"
+          :to="pretty(transfer.to)"
+          :value="transfer.value"
+        >
+          <template #action>
+            <button
+              v-if="isCreator"
+              type="button"
+              class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-green
+                hover:border-ft-green inline-flex h-[26px] w-[26px]
+                cursor-pointer items-center justify-center rounded-full border
+                bg-white"
+              :aria-label="t('add')"
+              @click="addToTransfers(transfer)"
+            >
+              <i class="pi pi-check text-[12px]"></i>
+            </button>
           </template>
-        </Column>
-        <Column field="to" :header="t('to')">
-          <template #body="slotProps">
-            <span v-if="slotProps.data.to === POT_KEY_NAME">{{
-              t('pot').toUpperCase()
-            }}</span>
-            <span v-else>{{ slotProps.data.to }}</span>
-          </template>
-        </Column>
-        <Column
-          field="value"
-          :header="t('value')"
-          class="w-0 pr-0 pl-0"
-          bodyClass="!text-center !p-0"
-        />
-        <Column class="w-0" v-if="isCreator">
-          <template #body="slotProps">
-            <SecondaryButton
-              outlined
-              icon="pi pi-check"
-              @click="addToTransfers(slotProps.data)"
-            />
-          </template>
-        </Column>
-      </DataTable>
-      <div class="mt-10 flex justify-center">
-        <GameSummaryCopy v-if="isGameFinished(game)" :game="game" />
+        </TransferRow>
       </div>
     </template>
-  </div>
+  </section>
 </template>
