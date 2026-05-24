@@ -46,7 +46,10 @@ function copyLink() {
 </script>
 
 <template>
-  <div class="px-[18px] pt-[18px] pb-6 xl:flex xl:h-full xl:flex-col xl:px-8">
+  <div
+    class="px-[18px] pt-[18px] pb-6 xl:flex xl:h-full xl:flex-col xl:px-8
+      xl:pb-0"
+  >
     <NavigationHeader :title="game?.title" :subtitle="date">
       <template #icon>
         <InfoTags
@@ -77,14 +80,14 @@ function copyLink() {
         class="mt-2 flex flex-wrap justify-around pt-1 pb-[14px] xl:hidden"
       />
 
-      <WinnerBanner :game="game" />
-
       <div
-        class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr]
-          xl:grid-rows-[minmax(0,1fr)] xl:min-h-0 xl:flex-1 xl:items-start
-          xl:gap-7"
+        class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr] xl:grid-rows-[minmax(0,1fr)]
+          xl:min-h-0 xl:flex-1 xl:items-start xl:gap-7"
       >
-        <PlayersTable :game="game" />
+        <div>
+          <WinnerBanner :game="game" />
+          <PlayersTable :game="game" />
+        </div>
 
         <div class="xl:[&>section:first-child]:mt-0">
           <Transfers :game="game" />

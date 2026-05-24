@@ -28,44 +28,50 @@ const winner = computed(() => {
 </script>
 
 <template>
-  <div
-    v-if="winner"
-    class="from-ft-green-soft to-ft-green-tint border-ft-green-tint relative
-      mt-4 mb-10 flex flex-col gap-3 overflow-hidden rounded-[18px] border
-      bg-gradient-to-br p-4"
-  >
-    <div class="absolute right-2 -bottom-6">
-      <SuitWatermark
-        suit="spades"
-        :size="140"
-        :opacity="0.12"
-        color="var(--color-ft-green)"
-      />
-    </div>
-    <div class="relative z-10 flex items-center gap-[14px]">
-      <div class="flex-1">
+  <Transition name="ft-banner" appear>
+    <div v-if="winner">
+      <!-- Clipping wrapper enables the grid-row height-collapse animation. -->
+      <div class="min-h-0 overflow-hidden">
         <div
-          class="text-ft-green-ink font-sans text-[12px] font-semibold
-            tracking-[0.2em] uppercase"
+          class="from-ft-green-soft to-ft-green-tint border-ft-green-tint
+            relative mt-4 mb-10 flex flex-col gap-3 overflow-hidden
+            rounded-[18px] border bg-gradient-to-br p-4"
         >
-          {{ t('winner_of_evening') }}
-        </div>
-        <div
-          class="text-ft-green-ink mt-[2px] font-sans text-[22px] font-bold
-            tracking-[-0.02em]"
-        >
-          {{ winner.name }}
+          <div class="absolute right-2 -bottom-6">
+            <SuitWatermark
+              suit="spades"
+              :size="140"
+              :opacity="0.12"
+              color="var(--color-ft-green)"
+            />
+          </div>
+          <div class="relative z-10 flex items-center gap-[14px]">
+            <div class="flex-1">
+              <div
+                class="text-ft-green-ink font-sans text-[12px] font-semibold
+                  tracking-[0.2em] uppercase"
+              >
+                {{ t('winner_of_evening') }}
+              </div>
+              <div
+                class="text-ft-green-ink mt-[2px] font-sans text-[22px]
+                  font-bold tracking-[-0.02em]"
+              >
+                {{ winner.name }}
+              </div>
+            </div>
+            <div
+              class="text-ft-green font-mono text-[32px] leading-none font-bold
+                tracking-[-0.03em] tabular-nums"
+            >
+              +{{ winner.delta }}
+            </div>
+          </div>
+          <div class="relative z-10 flex justify-end">
+            <GameSummaryCopy :game="game as FinishedGame" />
+          </div>
         </div>
       </div>
-      <div
-        class="text-ft-green font-mono text-[32px] leading-none font-bold
-          tracking-[-0.03em] tabular-nums"
-      >
-        +{{ winner.delta }}
-      </div>
     </div>
-    <div class="relative z-10 flex justify-end">
-      <GameSummaryCopy :game="game as FinishedGame" />
-    </div>
-  </div>
+  </Transition>
 </template>

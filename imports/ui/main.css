@@ -102,3 +102,28 @@
     transition: none;
   }
 }
+
+/* Winner banner appear/disappear — GameDetails. Used with
+   <Transition name="ft-banner">. Collapses the row height so surrounding
+   content glides smoothly; the inner wrapper must clip the overflow. */
+.ft-banner-enter-active,
+.ft-banner-leave-active {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.28s ease;
+}
+
+.ft-banner-enter-from,
+.ft-banner-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-banner-enter-active,
+  .ft-banner-leave-active {
+    transition: none;
+  }
+}
