@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import Timeline from '@volt/Timeline.vue'
 import { toNumber } from 'lodash'
-import { computed } from 'vue'
+import { TransitionGroup, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
@@ -84,23 +83,39 @@ function getColorClass(item: HistoryItem): string {
     >
       {{ t('no_history') }}
     </p>
-    <Timeline v-else :value="sortedHistory" class="w-full">
-      <template #marker="{ item }">
+    <TransitionGroup
+      v-else
+      tag="div"
+      name="ft-list"
+      class="relative flex w-full flex-col"
+    >
+      <div
+        v-for="(item, idx) in sortedHistory"
+        :key="new Date(item.timestamp).getTime()"
+        class="relative flex"
+      >
         <span
-          class="flex h-6 w-6 items-center justify-center rounded-full
-            leading-normal"
-          :class="getColorClass(item)"
+          class="text-surface-400 mt-[2px] w-12 flex-none pr-2 text-right
+            text-sm"
         >
-          <i :class="getIcon(item)" class="text-xs"></i>
+          {{ formatTime(item.timestamp) }}
         </span>
-      </template>
-      <template #opposite="{ item }">
-        <span class="text-surface-400 mt-[2px] inline-block text-sm">{{
-          formatTime(item.timestamp)
-        }}</span>
-      </template>
-      <template #content="{ item }">
-        <span class="mb-5 inline-block leading-tight whitespace-pre-wrap">
+
+        <div class="flex flex-none flex-col items-center">
+          <span
+            class="flex h-6 w-6 items-center justify-center rounded-full
+              leading-normal"
+            :class="getColorClass(item)"
+          >
+            <i :class="getIcon(item)" class="text-xs"></i>
+          </span>
+          <span
+            v-if="idx !== sortedHistory.length - 1"
+            class="bg-surface-200 mt-1 w-[2px] grow"
+          ></span>
+        </div>
+
+        <span class="mb-5 flex-1 pl-3 leading-tight whitespace-pre-wrap">
           <template v-if="item.type === 'player_added'">
             {{ getName(item.playerName) }}
             <template v-if="item.in">: {{ item.in }}</template>
@@ -158,7 +173,7 @@ function getColorClass(item: HistoryItem): string {
             ><strong>{{ getName(item.playerName) }}</strong></template
           >
         </span>
-      </template>
-    </Timeline>
+      </div>
+    </TransitionGroup>
   </div>
 </template>

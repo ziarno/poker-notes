@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { TransitionGroup, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -46,10 +46,15 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
   <section class="mt-4 mb-12">
     <SectionTitle>{{ subtitle }}</SectionTitle>
 
-    <div v-if="game.transfers.length" class="flex flex-col gap-[6px]">
+    <TransitionGroup
+      v-if="game.transfers.length"
+      tag="div"
+      name="ft-list"
+      class="relative flex flex-col gap-[6px]"
+    >
       <TransferRow
-        v-for="(transfer, i) in game.transfers"
-        :key="i"
+        v-for="transfer in game.transfers"
+        :key="`${transfer.from}-${transfer.to}-${transfer.value}`"
         :from="name(transfer.from)"
         :to="name(transfer.to)"
         :value="transfer.value"
@@ -68,7 +73,7 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
           </button>
         </template>
       </TransferRow>
-    </div>
+    </TransitionGroup>
 
     <p
       v-if="!game.transfers.length && !isCreator"

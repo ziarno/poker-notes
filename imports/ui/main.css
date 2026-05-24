@@ -68,3 +68,37 @@
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
+
+/* List enter/leave/move transitions — GameDetails transfers, settlement, history.
+   Used with <TransitionGroup name="ft-list">. */
+.ft-list-move,
+.ft-list-enter-active,
+.ft-list-leave-active {
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ft-list-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.ft-list-leave-to {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+/* Take leaving items out of flow so the remaining ones glide up. */
+.ft-list-leave-active {
+  position: absolute;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-list-move,
+  .ft-list-enter-active,
+  .ft-list-leave-active {
+    transition: none;
+  }
+}

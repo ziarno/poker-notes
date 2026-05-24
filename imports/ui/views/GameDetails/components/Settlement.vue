@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { TransitionGroup, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addTransfer } from '@/api/methods'
@@ -56,10 +56,15 @@ function addToTransfers(transfer: Transfer) {
     </div>
 
     <template v-else>
-      <div v-if="settlement.length" class="flex flex-col gap-[6px]">
+      <TransitionGroup
+        v-if="settlement.length"
+        tag="div"
+        name="ft-list"
+        class="relative flex flex-col gap-[6px]"
+      >
         <TransferRow
-          v-for="(transfer, i) in settlement"
-          :key="i"
+          v-for="transfer in settlement"
+          :key="`${transfer.from}-${transfer.to}-${transfer.value}`"
           :from="pretty(transfer.from)"
           :to="pretty(transfer.to)"
           :value="transfer.value"
@@ -79,7 +84,7 @@ function addToTransfers(transfer: Transfer) {
             </button>
           </template>
         </TransferRow>
-      </div>
+      </TransitionGroup>
     </template>
   </section>
 </template>
