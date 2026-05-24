@@ -14,7 +14,7 @@ subscribe('games', getCreatorId(), accessToGameIds.value)
 
 <template>
   <div class="bg-ft-bg flex h-dvh flex-col overflow-y-hidden">
-    <div id="main-scroll" class="flex-1 overflow-y-auto">
+    <div id="main-scroll" class="flex-1 overflow-x-hidden overflow-y-auto">
       <Router />
     </div>
     <TabBar />

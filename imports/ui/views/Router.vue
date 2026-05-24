@@ -26,7 +26,7 @@ function syncWidth() {
 
 <template>
   <div
-    class="safari:p-2 m-auto h-full max-w-xl overflow-x-hidden"
+    class="safari:p-2 m-auto h-full max-w-xl"
     :class="{ 'xl:max-w-none': wide }"
   >
     <router-view v-slot="{ Component }">
