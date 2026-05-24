@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { autorun } from 'vue-meteor-tracker'
 
 import { GamesCollection } from '@/api/collections'
-import TitleBanner from '@/ui/components/TitleBanner.vue'
+import TitleBanner from '@/ui/views/GamesList/components/TitleBanner.vue'
 import GameListItem from '@/ui/views/GamesList/components/GameListItem.vue'
 
 const { t } = useI18n()
@@ -27,8 +27,8 @@ const gamesSorted = computed(() =>
 
     <p
       v-if="!gamesSorted?.length"
-      class="text-surface-400 flex flex-1 items-center justify-center text-center
-        text-sm"
+      class="text-surface-400 flex flex-1 items-center justify-center
+        text-center text-sm"
     >
       {{ t('no_games') }}
     </p>

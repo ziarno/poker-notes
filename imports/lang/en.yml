@@ -1,5 +1,5 @@
 _locale: en
-poker_notes: Poker nOtes
+poker_notes: Poker notes
 recent_games: Recent games
 no_games: No games yet
 winner_of_evening: Winner of the night
@@ -73,3 +73,5 @@ fast: Fast
 precise: Precise
 fast_description: Checks 100 000 random combinations — fast but approximate
 precise_description: Checks all possible combinations — exact but slower
+theme_dark: Dark mode
+theme_light: Light mode

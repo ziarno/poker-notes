@@ -10,6 +10,7 @@ import {
   useSelectedCards,
 } from '@/composables/useSelectedCards'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
+import ThemeToggle from '@/ui/components/ThemeToggle.vue'
 import Board from '@/ui/views/Odds/components/Board.vue'
 import CardInput from '@/ui/views/Odds/components/CardInput.vue'
 import OddsPlayer from '@/ui/views/Odds/components/OddsPlayer.vue'
@@ -51,6 +52,7 @@ const modeOptions = computed(() => [
           {{ t('win_chances') }}
         </div>
       </div>
+      <ThemeToggle />
     </header>
 
     <Board :label="boardLabel">

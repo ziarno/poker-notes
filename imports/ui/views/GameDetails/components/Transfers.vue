@@ -64,8 +64,8 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
             v-if="isCreator"
             type="button"
             class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-red
-              hover:border-ft-red inline-flex h-[26px] w-[26px] cursor-pointer
-              items-center justify-center rounded-full border bg-white"
+              hover:border-ft-red bg-ft-surface inline-flex h-[26px] w-[26px]
+              cursor-pointer items-center justify-center rounded-full border"
             :aria-label="t('cancel')"
             @click="confirmRemoveTransfer(transfer)"
           >

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import SuitWatermark from '@/ui/components/SuitWatermark.vue'
+import ThemeToggle from '@/ui/components/ThemeToggle.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -12,7 +13,10 @@ const router = useRouter()
   <section
     class="from-ft-green to-ft-green-deep relative mx-[18px] mt-2 mb-4
       overflow-hidden rounded-[18px] bg-gradient-to-br px-[18px] py-[18px]
-      text-white shadow-[0_8px_24px_-10px_var(--color-ft-green)]"
+      text-white shadow-[0_8px_24px_-10px_var(--color-ft-green)]
+      dark:from-[#0f4d3a] dark:to-[#0a2c22]
+      dark:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.85)] dark:ring-1
+      dark:ring-white/[0.06] dark:ring-inset"
   >
     <!-- Background suit decorations -->
     <div
@@ -43,19 +47,23 @@ const router = useRouter()
           aria-hidden="true"
           >♠</span
         >
-        <span class="font-[Poker] text-[34px] leading-none">{{
+        <span class="font-[Jqkas] text-[34px] leading-none">{{
           t('poker_notes')
         }}</span>
       </div>
-      <button
-        class="text-ft-green-ink inline-flex cursor-pointer items-center
-          gap-[6px] rounded-full border-none bg-white/95 px-[14px] py-[10px]
-          font-sans text-[15px] font-semibold shadow-[0_2px_0_rgba(0,0,0,0.1)]"
-        @click="router.push('/new')"
-      >
-        <i class="pi pi-plus text-[13px]"></i>
-        <span>{{ t('new_game') }}</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <ThemeToggle variant="banner" />
+        <button
+          class="text-ft-green-ink dark:text-ft-green-deep inline-flex
+            cursor-pointer items-center gap-[6px] rounded-full border-none
+            bg-white/95 px-[14px] py-[10px] font-sans text-[15px] font-semibold
+            shadow-[0_2px_0_rgba(0,0,0,0.1)]"
+          @click="router.push('/new')"
+        >
+          <i class="pi pi-plus text-[13px]"></i>
+          <span>{{ t('new_game') }}</span>
+        </button>
+      </div>
     </div>
   </section>
 </template>

@@ -74,9 +74,9 @@ function addToTransfers(transfer: Transfer) {
               v-if="isCreator"
               type="button"
               class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-green
-                hover:border-ft-green inline-flex h-[26px] w-[26px]
-                cursor-pointer items-center justify-center rounded-full border
-                bg-white"
+                hover:border-ft-green bg-ft-surface inline-flex h-[26px]
+                w-[26px] cursor-pointer items-center justify-center rounded-full
+                border"
               :aria-label="t('add')"
               @click="addToTransfers(transfer)"
             >

@@ -3,8 +3,8 @@
 @import '../assets/volt-vue-vars.css';
 
 @font-face {
-  font-family: 'Poker';
-  src: url('../assets/fonts/Poker.ttf') format('truetype');
+  font-family: 'Jqkas';
+  src: url('../assets/fonts/JqkasWild.ttf') format('truetype');
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -37,6 +37,30 @@
   --color-ft-wood-dark: #1a1006;
 }
 
+/* Dark felt — overrides the palette tokens above. Toggled via the `dark`
+   class on <html> (see useTheme). Tailwind utilities resolve these through
+   var(), so re-pointing the tokens here re-themes the whole app in one place. */
+.dark {
+  --color-ft-bg: #0c1110;
+  --color-ft-surface: #161d1a;
+  --color-ft-surface-alt: #1b2420;
+  --color-ft-ink: #eef1ee;
+  --color-ft-ink-70: rgba(238, 241, 238, 0.7);
+  --color-ft-ink-50: rgba(238, 241, 238, 0.52);
+  --color-ft-ink-30: rgba(238, 241, 238, 0.34);
+  --color-ft-ink-10: rgba(238, 241, 238, 0.12);
+  --color-ft-green: #2ea374;
+  --color-ft-green-soft: rgba(46, 163, 116, 0.16);
+  --color-ft-green-tint: rgba(46, 163, 116, 0.24);
+  --color-ft-green-ink: #8fdcbb;
+  --color-ft-green-deep: #0b3a2c;
+  --color-ft-green-mid: #36a079;
+  --color-ft-red: #e36253;
+  --color-ft-red-soft: rgba(227, 98, 83, 0.16);
+  --color-ft-wood: #6b4a30;
+  --color-ft-wood-dark: #120b04;
+}
+
 @layer base {
   html,
   body {
@@ -58,7 +82,7 @@
 @utility ft-icon-btn {
   @apply inline-flex h-10 w-10 cursor-pointer items-center justify-center
     rounded-[11px] border border-ft-ink-10 bg-ft-surface text-ft-ink
-    transition-colors hover:bg-neutral-50;
+    transition-colors hover:bg-neutral-50 dark:hover:bg-white/[0.06];
   & i {
     font-size: 16px;
   }
