@@ -32,7 +32,7 @@ const chips = computed(() => [
 </script>
 
 <template>
-  <div class="mt-2 flex flex-wrap justify-around">
+  <div>
     <Tag
       v-for="chip in chips"
       :key="chip.icon"

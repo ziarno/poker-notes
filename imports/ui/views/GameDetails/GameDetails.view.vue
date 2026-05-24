@@ -10,7 +10,10 @@ import { GamesCollection } from '@/api/collections'
 import { useFormattedDate } from '@/composables'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
+import SectionTitle from '@/ui/components/SectionTitle.vue'
 import GameMenu from '@/ui/views/GameDetails/components/GameMenu.vue'
+import GameMenuActions from '@/ui/views/GameDetails/components/GameMenuActions.vue'
+import History from '@/ui/views/GameDetails/components/History.vue'
 import PlayersTable from '@/ui/views/GameDetails/components/PlayersTable.vue'
 import Settlement from '@/ui/views/GameDetails/components/Settlement.vue'
 import Transfers from '@/ui/views/GameDetails/components/Transfers.vue'
@@ -43,9 +46,14 @@ function copyLink() {
 </script>
 
 <template>
-  <div class="px-[18px] pt-[18px] pb-6">
+  <div class="px-[18px] pt-[18px] pb-6 xl:px-8">
     <NavigationHeader :title="game?.title" :subtitle="date">
       <template #icon>
+        <InfoTags
+          v-if="game"
+          :game="game"
+          class="mr-1 hidden flex-wrap items-center justify-end gap-2 xl:flex"
+        />
         <button
           class="ft-icon-btn"
           @click="copyLink"
@@ -54,7 +62,7 @@ function copyLink() {
           <i class="pi pi-share-alt"></i>
         </button>
         <button
-          class="ft-icon-btn"
+          class="ft-icon-btn xl:hidden"
           @click="showMenu = true"
           :aria-label="t('history')"
         >
@@ -64,12 +72,30 @@ function copyLink() {
     </NavigationHeader>
 
     <template v-if="game">
-      <InfoTags :game="game" class="pt-1 pb-[14px]" />
+      <InfoTags
+        :game="game"
+        class="mt-2 flex flex-wrap justify-around pt-1 pb-[14px] xl:hidden"
+      />
 
       <WinnerBanner :game="game" />
-      <PlayersTable :game="game" />
-      <Transfers :game="game" />
-      <Settlement :game="game" />
+
+      <div class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr] xl:items-start xl:gap-7">
+        <PlayersTable :game="game" />
+
+        <div class="xl:[&>section:first-child]:mt-0">
+          <Transfers :game="game" />
+          <Settlement :game="game" />
+        </div>
+
+        <div class="hidden xl:block">
+          <SectionTitle>{{ t('history') }}</SectionTitle>
+          <div class="mb-6">
+            <GameMenuActions :game="game" />
+          </div>
+          <History :history="game.history" />
+        </div>
+      </div>
+
       <GameMenu :game="game" v-model:visible="showMenu" />
     </template>
   </div>

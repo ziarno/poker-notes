@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const transitionName = ref('route-forward')
 const router = useRouter()
+const route = useRoute()
+
+// Width follows the *visible* view. We flip it in the transition's
+// `before-enter` (while the incoming view is still at opacity 0) rather than
+// on route change, otherwise the outgoing view snaps to the new width
+// mid-animation and flickers.
+const wide = ref(!!route.meta.wide)
 
 router.beforeEach((to, from) => {
   transitionName.value =
@@ -11,12 +18,23 @@ router.beforeEach((to, from) => {
       ? 'route-forward'
       : 'route-back'
 })
+
+function syncWidth() {
+  wide.value = !!route.meta.wide
+}
 </script>
 
 <template>
-  <div class="safari:p-2 m-auto h-full max-w-xl overflow-x-hidden">
+  <div
+    class="safari:p-2 m-auto h-full max-w-xl overflow-x-hidden"
+    :class="{ 'xl:max-w-none': wide }"
+  >
     <router-view v-slot="{ Component }">
-      <Transition :name="transitionName" mode="out-in">
+      <Transition
+        :name="transitionName"
+        mode="out-in"
+        @before-enter="syncWidth"
+      >
         <component :is="Component" :key="$route.path" />
       </Transition>
     </router-view>

@@ -8,6 +8,7 @@ import OddsView from '@/ui/views/Odds'
 declare module 'vue-router' {
   interface RouteMeta {
     depthForAnimation: number
+    wide?: boolean
   }
 }
 
@@ -20,7 +21,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:id',
     component: GameDetailsView,
-    meta: { depthForAnimation: 2 },
+    meta: { depthForAnimation: 2, wide: true },
   },
   {
     path: '/new',
