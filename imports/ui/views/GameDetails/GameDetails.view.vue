@@ -11,6 +11,7 @@ import { useFormattedDate } from '@/composables'
 import InfoTags from '@/ui/components/InfoTags.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
+import ThemeToggle from '@/ui/components/ThemeToggle.vue'
 import GameMenu from '@/ui/views/GameDetails/components/GameMenu.vue'
 import GameMenuActions from '@/ui/views/GameDetails/components/GameMenuActions.vue'
 import History from '@/ui/views/GameDetails/components/History.vue'
@@ -57,6 +58,9 @@ function copyLink() {
           :game="game"
           class="mr-1 hidden flex-wrap items-center justify-end gap-2 xl:flex"
         />
+        <div class="hidden xl:block">
+          <ThemeToggle />
+        </div>
         <button
           class="ft-icon-btn"
           @click="copyLink"
