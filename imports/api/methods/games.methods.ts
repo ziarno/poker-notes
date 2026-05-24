@@ -2,7 +2,10 @@ import { createMethod } from 'meteor/jam:method'
 import { Meteor } from 'meteor/meteor'
 
 import { GamesCollection } from '@/api/collections'
-import { renamePlayerInHistoryAndTransfers } from '@/api/methods/games.methods.utils.ts'
+import {
+  generateUniqueGameId,
+  renamePlayerInHistoryAndTransfers,
+} from '@/api/methods/games.methods.utils.ts'
 import {
   Game,
   HistoryItem,
@@ -19,9 +22,22 @@ function check(condition: boolean, message: string) {
   if (!condition) throw new Meteor.Error('validation-error', message)
 }
 
+// Allocates a short, collision-checked game id. serverOnly so there is no client
+// stub: the client awaits and receives the real server-generated id, then passes
+// it to createGame so the optimistic (client) and server inserts agree on the _id.
+export const getAvailableGameId = createMethod({
+  name: 'getAvailableGameId',
+  validate() {},
+  serverOnly: true,
+  async run() {
+    return generateUniqueGameId()
+  },
+})
+
 export const createGame = createMethod({
   name: 'createGame',
   validate(game: NewGame) {
+    check(!!game._id, 'Game ID is required')
     check(!!game.title?.trim(), 'Title is required')
     check(game.buyIn > 0, 'Buy-in must be positive')
     check(game.players?.length > 0, 'At least one player is required')

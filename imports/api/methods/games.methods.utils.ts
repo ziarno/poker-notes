@@ -1,5 +1,26 @@
 import { GamesCollection } from '@/api/collections'
 import { HistoryItem } from '@/types'
+import { generateGameId } from '@/utils/gameId.utils.ts'
+
+const START_LENGTH = 4
+const ATTEMPTS_PER_LENGTH = 8
+
+export async function generateUniqueGameId(): Promise<string> {
+  let length = START_LENGTH
+  let attempts = 0
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const candidate = generateGameId(length)
+    const existing = await GamesCollection.findOneAsync(candidate, {
+      fields: { _id: 1 },
+    })
+    if (!existing) return candidate
+    if (++attempts >= ATTEMPTS_PER_LENGTH) {
+      length++
+      attempts = 0
+    }
+  }
+}
 
 export async function renamePlayerInHistoryAndTransfers(
   gameId: string,

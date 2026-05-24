@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { cloneDeep } from 'lodash'
-import { Random } from 'meteor/random'
+import { Meteor } from 'meteor/meteor'
 import { useToast } from 'primevue/usetoast'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { createGame } from '@/api/methods/games.methods.ts'
+import { createGame, getAvailableGameId } from '@/api/methods/games.methods.ts'
 import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
 import { getCreatorId } from '@/utils/creatorId.utils.ts'
+import { generateGameId, OFFLINE_GAME_ID_LENGTH } from '@/utils/gameId.utils.ts'
 import { generatePinCode, savePinCode } from '@/utils/pinCode.utils.ts'
 
 const { t } = useI18n()
@@ -58,15 +59,23 @@ async function onSubmit() {
     })
     return
   }
-  // we generate the _id on the FE because it will be a different id
-  // after the user gets back online and calls this method, so the method
-  // remembered by jam:offline in IndexDB should include the id
-  const _id = Random.id(8)
   const pinCode = generatePinCode()
+
   // cloneDeep is needed for jam:offline - it removes Proxied objects create by Vue.
   // Proxies can't be saved in IndexedDB and vue creates proxies for refs.
   // In this case, the players array was Proxies
   const gameData = cloneDeep(formData.value)
+
+  // The _id must be known on the client up front: it's used for the redirect and,
+  // when offline, for the createGame call that jam:offline replays on reconnect.
+  // Passing it into createGame also keeps the optimistic (client) and server
+  // inserts on the same id.
+  // - Online: ask the server for a short, collision-checked id (serverOnly method,
+  //   so there's no client stub and we get the real value back).
+  // - Offline: we can't check the DB, so generate a longer, collision-safe id.
+  const _id = Meteor.status().connected
+    ? await getAvailableGameId()
+    : generateGameId(OFFLINE_GAME_ID_LENGTH)
   await createGame({ ...gameData, _id, pinCode, creatorId: getCreatorId() })
   savePinCode(_id, pinCode)
   router.replace(`/${_id}`)
