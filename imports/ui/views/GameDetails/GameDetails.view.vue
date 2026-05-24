@@ -46,7 +46,7 @@ function copyLink() {
 </script>
 
 <template>
-  <div class="px-[18px] pt-[18px] pb-6 xl:px-8">
+  <div class="px-[18px] pt-[18px] pb-6 xl:flex xl:h-full xl:flex-col xl:px-8">
     <NavigationHeader :title="game?.title" :subtitle="date">
       <template #icon>
         <InfoTags
@@ -79,7 +79,11 @@ function copyLink() {
 
       <WinnerBanner :game="game" />
 
-      <div class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr] xl:items-start xl:gap-7">
+      <div
+        class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr]
+          xl:grid-rows-[minmax(0,1fr)] xl:min-h-0 xl:flex-1 xl:items-start
+          xl:gap-7"
+      >
         <PlayersTable :game="game" />
 
         <div class="xl:[&>section:first-child]:mt-0">
@@ -87,12 +91,15 @@ function copyLink() {
           <Settlement :game="game" />
         </div>
 
-        <div class="hidden xl:block">
+        <div class="hidden xl:flex xl:h-full xl:min-h-0 xl:flex-col">
           <SectionTitle>{{ t('history') }}</SectionTitle>
           <div class="mb-6">
             <GameMenuActions :game="game" />
           </div>
-          <History :history="game.history" />
+          <History
+            :history="game.history"
+            class="xl:min-h-0 xl:flex-1 xl:overflow-y-auto"
+          />
         </div>
       </div>
 
