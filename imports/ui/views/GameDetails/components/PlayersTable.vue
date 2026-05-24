@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
 import { useIsGameCreator } from '@/composables'
 import { Game, NewPlayer, Player } from '@/types'
+import AnimatedNumber from '@/ui/components/AnimatedNumber.vue'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
@@ -82,10 +83,11 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
         {{ r.name }}
       </div>
       <div class="text-ft-ink-70 text-right text-[16px]">
-        {{ r.in }}
+        <AnimatedNumber :value="r.in" />
       </div>
       <div class="text-ft-ink-70 text-right text-[16px]">
-        {{ r.out ?? '—' }}
+        <AnimatedNumber v-if="isNumber(r.out)" :value="r.out as number" />
+        <template v-else>—</template>
       </div>
       <div
         class="text-right text-sm text-[16px] font-bold"
@@ -97,7 +99,11 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
               : 'text-ft-ink-70'
         "
       >
-        {{ balanceText(r.balance) }}
+        <AnimatedNumber
+          v-if="isNumber(r.balance)"
+          :value="r.balance as number"
+          :format="b => balanceText(Math.round(b))"
+        />
       </div>
     </div>
 
@@ -127,8 +133,12 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
         px-[14px] py-[10px]"
     >
       <span>{{ t('sum') }}</span>
-      <span class="text-ft-ink text-right text-[16px]">{{ totalIn }}</span>
-      <span class="text-ft-ink text-right text-[16px]">{{ totalOut }}</span>
+      <span class="text-ft-ink text-right text-[16px]">
+        <AnimatedNumber :value="totalIn" />
+      </span>
+      <span class="text-ft-ink text-right text-[16px]">
+        <AnimatedNumber :value="totalOut" />
+      </span>
       <span></span>
     </div>
   </div>
