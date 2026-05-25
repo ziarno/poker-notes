@@ -20,7 +20,7 @@ const isRed = computed(() => card.suit === 'hearts' || card.suit === 'diamonds')
     class="font-sans inline-flex h-12 w-[34px] flex-col items-center
       justify-center rounded-[5px] border border-black/12 bg-white leading-none
       font-bold shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
-    :class="isRed ? 'text-ft-red' : 'text-ft-ink'"
+    :class="isRed ? 'text-[#c1392b]' : 'text-[#0d1411]'"
   >
     <span class="text-sm">{{ rank }}</span>
     <span class="mt-[2px] text-[19px]">{{ suit }}</span>

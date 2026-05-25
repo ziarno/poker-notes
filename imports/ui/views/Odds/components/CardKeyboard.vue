@@ -80,8 +80,12 @@ onClickOutside(refContainer, close)
           outlined
           v-for="rank in row"
           :key="rank"
-          class="h-10 w-10 bg-white! text-lg font-semibold transition-colors"
-          :class="selectedRank === rank && 'border-2 border-gray-500!'"
+          class="h-10 w-10 bg-white! dark:bg-surface-700! dark:text-surface-100!
+            text-lg font-semibold transition-colors"
+          :class="
+            selectedRank === rank &&
+            'border-2 border-gray-500! dark:border-surface-300!'
+          "
           @click="selectRank(rank)"
         >
           {{ rank === 'T' ? '10' : rank }}
@@ -92,15 +96,19 @@ onClickOutside(refContainer, close)
         <SecondaryButton
           @click="close"
           icon="pi pi-chevron-down"
-          class="bg-surface-200! h-12 w-14!"
+          class="bg-surface-200! dark:bg-surface-700! h-12 w-14!"
         />
 
         <SecondaryButton
           outlined
           v-for="suit in suits"
           :key="suit"
-          class="h-12 w-14 bg-white! text-2xl text-black! transition-colors"
-          :class="[selectedSuit === suit && 'border-2 border-gray-500!']"
+          class="h-12 w-14 bg-white! dark:bg-surface-700! text-2xl
+            transition-colors"
+          :class="[
+            selectedSuit === suit &&
+              'border-2 border-gray-500! dark:border-surface-300!',
+          ]"
           @click="selectSuit(suit)"
         >
           <SuitIcon :suit="suit" />
@@ -110,7 +118,7 @@ onClickOutside(refContainer, close)
           outlined
           @click="removeLastCard"
           icon="pi pi-delete-left"
-          class="bg-surface-200! h-12 w-14!"
+          class="bg-surface-200! dark:bg-surface-700! h-12 w-14!"
         />
       </div>
     </div>
