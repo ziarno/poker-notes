@@ -53,6 +53,7 @@ let startCoord = 0;
 let startCross = 0;
 let startTime = 0;
 let size = 0;
+let captured = false;
 let axisLock: 'none' | 'drag' | 'scroll' = 'none';
 
 function offsetFor(delta: number) {
@@ -66,6 +67,20 @@ function setTransform(el: HTMLElement, offset: number) {
         : `translateY(${offset}px)`;
 }
 
+// Commit to dragging the panel or to letting the content scroll, based on which
+// axis the gesture moves along first. Shared by the pointer and touch handlers
+// so they always agree regardless of which fires first.
+function resolveLock(along: number, perpendicular: number) {
+    if (axisLock !== 'none') return;
+    if (Math.max(Math.abs(along), Math.abs(perpendicular)) < LOCK_THRESHOLD) return;
+    if (Math.abs(along) > Math.abs(perpendicular)) {
+        axisLock = 'drag';
+        if (node) size = horizontal.value ? node.offsetWidth : node.offsetHeight;
+    } else {
+        axisLock = 'scroll';
+    }
+}
+
 function onPointerdown(e: PointerEvent) {
     if (!draggable.value) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -75,6 +90,7 @@ function onPointerdown(e: PointerEvent) {
     startCross = horizontal.value ? e.clientY : e.clientX;
     startTime = e.timeStamp;
     axisLock = 'none';
+    captured = false;
 }
 
 function onPointermove(e: PointerEvent) {
@@ -82,30 +98,42 @@ function onPointermove(e: PointerEvent) {
     const coord = horizontal.value ? e.clientX : e.clientY;
     const cross = horizontal.value ? e.clientY : e.clientX;
     const along = coord - startCoord;
-    const perpendicular = cross - startCross;
 
-    if (axisLock === 'none') {
-        if (Math.max(Math.abs(along), Math.abs(perpendicular)) < LOCK_THRESHOLD) return;
-        if (Math.abs(along) > Math.abs(perpendicular)) {
-            axisLock = 'drag';
-            size = horizontal.value ? node.offsetWidth : node.offsetHeight;
-            node.setPointerCapture(e.pointerId);
-        } else {
-            // A scroll gesture along the cross axis — let the content scroll.
-            axisLock = 'scroll';
-            node = null;
-            return;
-        }
-    }
-
+    resolveLock(along, cross - startCross);
     if (axisLock !== 'drag') return;
-    e.preventDefault();
+
+    // Mouse/pen need an explicit capture to keep tracking once the pointer
+    // leaves the panel. Touch pointers are implicitly captured already, and on
+    // Chrome Android an explicit capture triggers a spurious `pointercancel`.
+    if (!captured && e.pointerType !== 'touch') {
+        node.setPointerCapture(e.pointerId);
+        captured = true;
+    }
     setTransform(node, offsetFor(along));
+}
+
+// Non-passive (Vue attaches element listeners without `passive`), so this can
+// cancel the browser's default. On Chrome Android `touch-action` alone doesn't
+// stop the horizontal swipe from being claimed as a scroll/back-forward gesture
+// — which fires `pointercancel` and aborts the drag. Preventing the default on
+// `touchmove` once we've committed to a drag keeps the pointer stream alive,
+// while vertical scrolling of the content (the `scroll` lock) is left untouched.
+function onTouchmove(e: TouchEvent) {
+    if (axisLock === 'scroll') return;
+    if (axisLock === 'none') {
+        const t = e.touches[0];
+        if (!t) return;
+        const coord = horizontal.value ? t.clientX : t.clientY;
+        const cross = horizontal.value ? t.clientY : t.clientX;
+        resolveLock(coord - startCoord, cross - startCross);
+    }
+    if (axisLock === 'drag') e.preventDefault();
 }
 
 function endDrag(e: PointerEvent) {
     const el = node;
     node = null;
+    captured = false;
     if (!el || axisLock !== 'drag') {
         axisLock = 'none';
         return;
@@ -158,6 +186,7 @@ const theme = ref<DrawerPassThroughOptions>({
         p-full-screen:transition-opacity p-full-screen:transform-none p-full-screen:w-screen p-full-screen:h-screen p-full-screen:max-h-full p-full-screen:top-0 p-full-screen:left-0`,
         onPointerdown,
         onPointermove,
+        onTouchmove,
         onPointerup: endDrag,
         onPointercancel: endDrag
     } as DrawerPassThroughOptions['root'],
