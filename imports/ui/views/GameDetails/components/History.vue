@@ -29,7 +29,7 @@ function inDiff(oldValue: number | null, newValue: number | null): string {
 
 function balanceColorClass(balance: number | null): string {
   if (!balance) return ''
-  return balance > 0 ? 'text-lime-600' : 'text-red-700'
+  return balance > 0 ? 'text-lime-600' : 'text-red-700 dark:text-red-400'
 }
 
 function formatTime(timestamp: Date): string {

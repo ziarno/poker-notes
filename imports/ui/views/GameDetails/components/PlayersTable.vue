@@ -95,7 +95,7 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
           (r.balance ?? 0) > 0
             ? 'text-lime-600'
             : (r.balance ?? 0) < 0
-              ? 'text-red-700'
+              ? 'text-red-700 dark:text-red-400'
               : 'text-ft-ink-70'
         "
       >
