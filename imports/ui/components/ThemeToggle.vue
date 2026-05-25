@@ -22,7 +22,8 @@ const label = computed(() =>
     :class="
       variant === 'banner'
         ? `inline-flex h-[42px] w-[42px] cursor-pointer items-center
-          justify-center rounded-[11px] border-none bg-white/12 text-white
+          justify-center rounded-[9px] border-none bg-white/12 text-white
+          shadow-[inset_0_-2px_0_rgba(0,0,0,.18),0_1px_2px_rgba(0,0,0,.1)]
           transition-colors hover:bg-white/20`
         : 'ft-icon-btn'
     "
@@ -30,6 +31,7 @@ const label = computed(() =>
     :title="label"
     @click="toggle"
   >
-    <i :class="isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+    <span v-if="variant === 'banner'" class="text-[18px] leading-none">♠</span>
+    <i v-else :class="isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
   </button>
 </template>

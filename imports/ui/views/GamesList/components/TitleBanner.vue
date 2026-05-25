@@ -34,25 +34,12 @@ const router = useRouter()
 
     <div class="relative flex items-center justify-between gap-3">
       <div class="inline-flex items-center gap-[10px]">
-        <span
-          class="inline-flex items-center justify-center bg-white/12 text-white
-            shadow-[inset_0_-2px_0_rgba(0,0,0,.18),0_1px_2px_rgba(0,0,0,.1)]"
-          style="
-            width: 42px;
-            height: 42px;
-            border-radius: 9px;
-            font-size: 18px;
-            line-height: 1;
-          "
-          aria-hidden="true"
-          >♠</span
-        >
+        <ThemeToggle variant="banner" />
         <span class="font-[Jqkas] text-[34px] leading-none">{{
           t('poker_notes')
         }}</span>
       </div>
-      <div class="flex items-center gap-2">
-        <ThemeToggle variant="banner" />
+      <div class="flex items-center gap-2 shrink-0">
         <button
           class="text-ft-green-ink dark:text-ft-green-deep inline-flex
             cursor-pointer items-center gap-[6px] rounded-full border-none
