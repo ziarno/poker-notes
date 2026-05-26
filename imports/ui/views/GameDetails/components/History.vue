@@ -117,8 +117,8 @@ function getColorClass(item: HistoryItem): string {
 
         <span class="mb-5 flex-1 pl-3 leading-tight whitespace-pre-wrap">
           <template v-if="item.type === 'player_added'">
-            {{ getName(item.playerName) }}
-            <template v-if="item.in">: {{ item.in }}</template>
+            {{ getName(item.playerName)
+            }}<template v-if="item.in">: {{ item.in }}</template>
           </template>
           <i18n-t
             v-else-if="item.type === 'player_in_changed'"
