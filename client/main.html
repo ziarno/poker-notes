@@ -8,7 +8,10 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <!--  apply saved theme before paint to avoid a flash (see useTheme) -->
+  <!--  apply saved theme + status-bar color before paint to avoid a flash
+        (theme-color is kept in sync at runtime by useTheme; the literals here
+        must match --color-ft-bg in imports/ui/main.css since CSS isn't loaded
+        yet at this point) -->
   <script>
     ;(function () {
       try {
@@ -18,6 +21,10 @@
           ((!pref || pref === 'auto') &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)
         if (dark) document.documentElement.classList.add('dark')
+        var meta = document.createElement('meta')
+        meta.name = 'theme-color'
+        meta.content = dark ? '#0c1110' : '#f4f5f3'
+        document.head.appendChild(meta)
       } catch (e) {}
     })()
   </script>
@@ -38,9 +45,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/img/spades192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/img/spades512.png" />
 
-  <!--  colors-->
+  <!--  colors (theme-color is injected pre-paint + kept in sync by useTheme) -->
   <meta name="msapplication-TileColor" content="#3f3f46" />
-  <meta name="theme-col4. Force sslor" content="#3f3f46" />
 </head>
 
 <body>
