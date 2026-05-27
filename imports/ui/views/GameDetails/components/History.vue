@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toNumber } from 'lodash'
-import { TransitionGroup, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
