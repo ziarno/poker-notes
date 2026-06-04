@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { SUITS_ICONS } from '@/constants/playingCrads.const.ts'
-import { CardSuit } from '@/types/PlayingCards.type.ts'
+import { SUITS_ICONS } from '@/constants'
+import { CardSuit } from '@/types'
 
 const props = defineProps<{ suit: CardSuit }>()
 

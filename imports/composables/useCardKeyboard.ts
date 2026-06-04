@@ -1,6 +1,6 @@
 import { Ref, computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
-import { Card } from '@/types/PlayingCards.type.ts'
+import { Card } from '@/types'
 
 type InputRegistration = {
   id: symbol

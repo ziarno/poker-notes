@@ -6,9 +6,8 @@ import {
   addTransfer as addTransferMethod,
   removeTransfer as removeTransferMethod,
 } from '@/api/methods/games.methods.ts'
-import { useIsGameCreator } from '@/composables'
-import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { useDeleteConfirmationDialog, useIsGameCreator } from '@/composables'
+import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'

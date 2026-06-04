@@ -6,8 +6,7 @@ import { subscribe } from 'vue-meteor-tracker'
 import TabBar from '@/ui/components/TabBar.vue'
 import CardKeyboard from '@/ui/views/Odds/components/CardKeyboard.vue'
 import Router from '@/ui/views/Router.vue'
-import { accessToGameIds } from '@/utils/accessToGameIds.utils.ts'
-import { getCreatorId } from '@/utils/creatorId.utils.ts'
+import { accessToGameIds, getCreatorId } from '@/utils'
 
 subscribe('games', getCreatorId(), accessToGameIds.value)
 </script>

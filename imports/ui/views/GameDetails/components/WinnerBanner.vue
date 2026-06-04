@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { FinishedGame, Game } from '@/types'
 import SuitWatermark from '@/ui/components/SuitWatermark.vue'
 import GameSummaryCopy from '@/ui/views/GameDetails/components/GameSummaryCopy.vue'
-import { isGameFinished, isGameInOutEqual } from '@/utils/game.utils.ts'
+import { isGameFinished, isGameInOutEqual } from '@/utils'
 
 const { game } = defineProps<{
   game: Game

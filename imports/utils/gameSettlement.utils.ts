@@ -1,5 +1,5 @@
 import type { FinishedGame, Transfer } from '@/types'
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { POT_KEY_NAME } from '@/constants'
 
 export function getGameSettlement(game: FinishedGame): Transfer[] {
   // Compute each participant's net balance, then greedily pair the largest

@@ -1,4 +1,4 @@
-import { PlayerOdds } from '@/types/PlayingCards.type.ts'
+import { PlayerOdds } from '@/types'
 
 let currentRequestId = 0
 

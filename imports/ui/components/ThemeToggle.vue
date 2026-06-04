@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useTheme } from '@/composables/useTheme'
+import { useTheme } from '@/composables'
 
 const { variant = 'surface' } = defineProps<{
   variant?: 'surface' | 'banner'

@@ -5,9 +5,8 @@ import { useI18n } from 'vue-i18n'
 import ProgressBar from '@volt/ProgressBar.vue'
 import Skeleton from '@volt/Skeleton.vue'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard.ts'
-import { useSelectedCards } from '@/composables/useSelectedCards.ts'
-import { Card, PlayerInOddsCalculator } from '@/types/PlayingCards.type.ts'
+import { useCardKeyboard, useSelectedCards } from '@/composables'
+import { Card, PlayerInOddsCalculator } from '@/types'
 import PlayingCardText from '@/ui/views/Odds/components/PlayingCardText.vue'
 
 const props = defineProps<{ index: number }>()

@@ -19,7 +19,7 @@ import PlayersTable from '@/ui/views/GameDetails/components/PlayersTable.vue'
 import Settlement from '@/ui/views/GameDetails/components/Settlement.vue'
 import Transfers from '@/ui/views/GameDetails/components/Transfers.vue'
 import WinnerBanner from '@/ui/views/GameDetails/components/WinnerBanner.vue'
-import { addAccessToGameId } from '@/utils/accessToGameIds.utils.ts'
+import { addAccessToGameId } from '@/utils'
 
 const route = useRoute()
 

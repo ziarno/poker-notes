@@ -4,11 +4,11 @@ import SelectButton from '@volt/SelectButton.vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard'
 import {
   BOARD_MAX_CARDS,
+  useCardKeyboard,
   useSelectedCards,
-} from '@/composables/useSelectedCards'
+} from '@/composables'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import ThemeToggle from '@/ui/components/ThemeToggle.vue'
 import Board from '@/ui/views/Odds/components/Board.vue'

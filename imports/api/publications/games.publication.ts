@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor'
 
 import { GamesCollection } from '@/api/collections/games.collection.ts'
-import { Game } from '@/types/Game.type.ts'
+import { Game } from '@/types'
 
 Meteor.publish(
   'games',

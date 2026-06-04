@@ -4,16 +4,16 @@ import { useI18n } from 'vue-i18n'
 
 import { addTransfer } from '@/api/methods'
 import { useIsGameCreator } from '@/composables'
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
 import {
+  getGameSettlement,
   isGameFinished,
   isGameInOutEqual,
   isGameOngoing,
-} from '@/utils/game.utils.ts'
-import { getGameSettlement } from '@/utils/gameSettlement.utils.ts'
+} from '@/utils'
 
 const { game } = defineProps<{
   game: Game

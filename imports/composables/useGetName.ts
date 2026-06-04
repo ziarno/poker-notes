@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { POT_KEY_NAME } from '@/constants'
 
 export function useGetName() {
   const { t } = useI18n()

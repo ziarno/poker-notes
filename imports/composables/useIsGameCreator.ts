@@ -1,7 +1,7 @@
 import { MaybeRefOrGetter, computed, toValue } from 'vue'
 
 import { Game } from '@/types'
-import { hasValidPinCode } from '@/utils/pinCode.utils.ts'
+import { hasValidPinCode } from '@/utils'
 
 export function useIsGameCreator(game: MaybeRefOrGetter<Game | undefined>) {
   return computed(() => {

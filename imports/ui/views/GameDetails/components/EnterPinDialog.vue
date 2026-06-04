@@ -7,7 +7,7 @@ import { useToast } from 'primevue/usetoast'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { savePinCode } from '@/utils/pinCode.utils.ts'
+import { savePinCode } from '@/utils'
 
 const { gameId, pinCode } = defineProps<{
   gameId: string

@@ -1,12 +1,8 @@
-<script lang="ts">
-export const CARD_TEXT_WIDTH_REM = 2.6
-</script>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { SUITS_ICONS } from '@/constants/playingCrads.const.ts'
-import { Card } from '@/types/PlayingCards.type.ts'
+import { SUITS_ICONS } from '@/constants'
+import { Card } from '@/types'
 
 const { card } = defineProps<{ card: Card }>()
 

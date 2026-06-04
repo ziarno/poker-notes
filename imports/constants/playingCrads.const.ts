@@ -1,8 +1,4 @@
-import {
-  CardSuit,
-  CardSuitIcon,
-  CardSuitShort,
-} from '@/types/PlayingCards.type.ts'
+import { CardSuit, CardSuitIcon, CardSuitShort } from '@/types'
 
 export const PLAYING_CARDS = [
   '🂱',

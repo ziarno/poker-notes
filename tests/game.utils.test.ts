@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { POT_KEY_NAME } from '@/constants'
 import { FinishedGame, Transfer } from '@/types'
 import { getGameSettlement } from '@/utils/gameSettlement.utils.ts'
 import gameA from './gameA.mock.json'

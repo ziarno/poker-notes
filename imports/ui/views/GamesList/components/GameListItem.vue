@@ -4,8 +4,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
-import { Game } from '@/types'
-import { CardSuit } from '@/types/PlayingCards.type.ts'
+import { CardSuit, Game } from '@/types'
 import SuitWatermark from '@/ui/components/SuitWatermark.vue'
 import { getGameTotal } from '@/utils'
 

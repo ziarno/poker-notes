@@ -3,9 +3,8 @@ import { toNumber } from 'lodash'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useFormattedDate } from '@/composables'
-import { useGetName } from '@/composables/useGetName.ts'
-import { NBSP } from '@/constants/string.const.ts'
+import { useFormattedDate, useGetName } from '@/composables'
+import { NBSP } from '@/constants'
 import { HistoryItem } from '@/types'
 import { balanceToString } from '@/utils'
 

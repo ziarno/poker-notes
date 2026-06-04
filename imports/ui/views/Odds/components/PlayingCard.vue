@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { PLAYING_CARDS } from '@/constants/playingCrads.const.ts'
-import { Card, CardRank, CardSuit } from '@/types/PlayingCards.type.ts'
+import { PLAYING_CARDS } from '@/constants'
+import { Card, CardRank, CardSuit } from '@/types'
 
 type Props = {
   card: Card

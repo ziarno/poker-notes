@@ -11,9 +11,13 @@ import { NewPlayer } from '@/types'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import NavigationHeader from '@/ui/components/NavigationHeader.vue'
-import { getCreatorId } from '@/utils/creatorId.utils.ts'
-import { generateGameId, OFFLINE_GAME_ID_LENGTH } from '@/utils/gameId.utils.ts'
-import { generatePinCode, savePinCode } from '@/utils/pinCode.utils.ts'
+import {
+  generateGameId,
+  generatePinCode,
+  getCreatorId,
+  OFFLINE_GAME_ID_LENGTH,
+  savePinCode,
+} from '@/utils'
 
 const { t } = useI18n()
 const router = useRouter()

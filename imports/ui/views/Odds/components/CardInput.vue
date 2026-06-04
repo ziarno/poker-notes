@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue'
 
-import { useCardKeyboard } from '@/composables/useCardKeyboard.ts'
-import { Card } from '@/types/PlayingCards.type.ts'
+import { useCardKeyboard } from '@/composables'
+import { Card } from '@/types'
 import PlayingCardText from '@/ui/views/Odds/components/PlayingCardText.vue'
 
 const props = defineProps<{ max: number; label?: string; onFelt?: boolean }>()

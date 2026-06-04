@@ -10,8 +10,10 @@ import {
   removePlayer as removePlayerMethod,
   setPlayer as setPlayerMethod,
 } from '@/api/methods/games.methods.ts'
-import { useCheckExcludedName } from '@/composables'
-import { useDeleteConfirmationDialog } from '@/composables/useDeleteConfirmationDialog.ts'
+import {
+  useCheckExcludedName,
+  useDeleteConfirmationDialog,
+} from '@/composables'
 import { Game, Player } from '@/types'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 

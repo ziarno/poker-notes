@@ -5,7 +5,7 @@ import Select from '@volt/Select.vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 

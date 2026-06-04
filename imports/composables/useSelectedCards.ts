@@ -1,11 +1,7 @@
 import { ref, watch } from 'vue'
 
-import { SUIT_TO_LETTER } from '@/constants/playingCrads.const'
-import {
-  Card,
-  PlayerInOddsCalculator,
-  PlayerOdds,
-} from '@/types/PlayingCards.type.ts'
+import { SUIT_TO_LETTER } from '@/constants'
+import { Card, PlayerInOddsCalculator, PlayerOdds } from '@/types'
 import { calculateOddsAsync } from '@/utils/oddsWorker.utils.ts'
 
 export const PLAYER_MAX_CARDS = 2
