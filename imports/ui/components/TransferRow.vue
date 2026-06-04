@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import transferArrowUrl from '@/assets/transfer-arrow.svg'
+import TransferArrow from '@/ui/components/TransferArrow.vue'
 
 defineProps<{
   from: string
@@ -14,7 +14,7 @@ defineProps<{
       border px-3 py-[10px]"
   >
     <span class="text-ft-ink-70">{{ from }}</span>
-    <img :src="transferArrowUrl" alt="" class="shrink-0 dark:invert" />
+    <TransferArrow class="text-ft-ink-30 dark:text-ft-ink-70" />
     <span class="text-ft-ink font-semibold">{{ to }}</span>
     <span class="text-ft-ink ml-auto text-[16px] font-bold">{{ value }}</span>
     <slot name="action" />

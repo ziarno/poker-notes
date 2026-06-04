@@ -50,7 +50,7 @@ history: Historia
 no_history: Brak zmian
 player_added: '{name} dołączył'
 player_removed: '{name} został usunięty'
-player_in_changed: "{name}: {diff}\n{oldValue} → {newValue}"
+player_in_changed: "{name}: {diff}\n{oldValue} {arrow} {newValue}"
 player_out_changed: "{name} wyjście: {newValue}\nStan: {balance}"
 add_editor: Dodaj edytora
 add_editor_description: Udostępnij ten kod PIN, aby ktoś mógł edytować tę grę

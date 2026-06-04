@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useFormattedDate, useGetName } from '@/composables'
 import { NBSP } from '@/constants'
 import { HistoryItem } from '@/types'
+import TransferArrow from '@/ui/components/TransferArrow.vue'
 import { balanceToString } from '@/utils'
 
 const { history } = defineProps<{
@@ -135,6 +136,12 @@ function getColorClass(item: HistoryItem): string {
             <template #oldValue>
               {{ item.oldValue }}
             </template>
+            <template #arrow>
+              <TransferArrow
+                class="inline-block align-middle text-ft-ink-30
+                  dark:text-ft-ink-70"
+              />
+            </template>
             <template #newValue>
               {{ item.newValue }}
             </template>
@@ -164,8 +171,11 @@ function getColorClass(item: HistoryItem): string {
               item.type === 'transfer_added'
                 ? t('transfer')
                 : t('transfer_removed')
-            }}{{ '\n' }}{{ getName(item.transfer.from) }} {{ ' → '
-            }}{{ getName(item.transfer.to) }}:{{ NBSP
+            }}{{ '\n' }}{{ getName(item.transfer.from)
+            }}<TransferArrow
+              class="mx-1 inline-block align-middle text-ft-ink-30
+                dark:text-ft-ink-70"
+            />{{ getName(item.transfer.to) }}:{{ NBSP
             }}<strong>{{ item.transfer.value }}</strong></template
           >
           <template v-else-if="'playerName' in item"

@@ -50,7 +50,7 @@ history: History
 no_history: No changes yet
 player_added: '{name} joined'
 player_removed: '{name} removed'
-player_in_changed: "{name} {diff}\n{oldValue} → {newValue}"
+player_in_changed: "{name} {diff}\n{oldValue} {arrow} {newValue}"
 player_out_changed: "{name} cashed out: {newValue}\nBalance: {balance}"
 add_editor: Add editor
 add_editor_description: Share this PIN code with someone to let them edit this game
