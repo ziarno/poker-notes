@@ -87,20 +87,22 @@ function copyLink() {
       />
 
       <div
-        class="xl:grid xl:grid-cols-[1.1fr_1fr_1fr] xl:grid-rows-[minmax(0,1fr)]
+        class="xl:grid xl:grid-cols-[2.1fr_1fr] xl:grid-rows-[minmax(0,1fr)]
           xl:min-h-0 xl:flex-1 xl:items-start xl:gap-7"
       >
-        <div class="xl:h-full xl:min-h-0 xl:overflow-y-auto xl:pr-3">
-          <WinnerBanner :game="game" />
-          <PlayersTable :game="game" />
-        </div>
-
         <div
-          class="xl:h-full xl:min-h-0 xl:overflow-y-auto xl:pr-3
-            xl:[&>section:first-child]:mt-0"
+          class="xl:grid xl:h-full xl:min-h-0 xl:grid-cols-[1.1fr_1fr]
+            xl:items-start xl:gap-7 xl:overflow-y-auto"
         >
-          <Transfers :game="game" />
-          <Settlement :game="game" />
+          <div class="xl:pr-3">
+            <WinnerBanner :game="game" />
+            <PlayersTable :game="game" />
+          </div>
+
+          <div class="xl:[&>section:first-child]:mt-0 xl:pr-3">
+            <Transfers :game="game" />
+            <Settlement :game="game" />
+          </div>
         </div>
 
         <div class="hidden xl:flex xl:h-full xl:min-h-0 xl:flex-col">
