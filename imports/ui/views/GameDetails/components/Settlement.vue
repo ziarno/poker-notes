@@ -9,11 +9,11 @@ import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
 import {
-  getGameSettlement,
   isGameFinished,
   isGameInOutEqual,
   isGameOngoing,
 } from '@/utils/game.utils.ts'
+import { getGameSettlement } from '@/utils/gameSettlement.utils.ts'
 
 const { game } = defineProps<{
   game: Game

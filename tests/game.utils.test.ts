@@ -1,7 +1,27 @@
 import assert from 'assert'
 
-import { FinishedGame } from '../imports/types'
-import { getGameSettlement } from '../imports/utils/game.utils'
+import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
+import { FinishedGame, Transfer } from '@/types'
+import { getGameSettlement } from '@/utils'
+import gameA from './gameA.mock.json'
+
+function assertBalances(game: FinishedGame, result: Transfer[]) {
+  const balances: Record<string, number> = { [POT_KEY_NAME]: 0 }
+  for (const player of game.players) {
+    balances[player.name] = player.out - player.in
+  }
+  for (const t of [...game.transfers, ...result]) {
+    if (balances[t.from] !== undefined) balances[t.from]! += t.value
+    if (balances[t.to] !== undefined) balances[t.to]! -= t.value
+  }
+  for (const [name, balance] of Object.entries(balances)) {
+    assert.strictEqual(
+      balance,
+      0,
+      `${name} did not settle to zero (left with ${balance})`
+    )
+  }
+}
 
 describe('getGameSettlement', function () {
   function createGame(
@@ -154,5 +174,23 @@ describe('getGameSettlement', function () {
     // Should be single transfer from Bob to Alice
     assert.strictEqual(result.length, 1)
     assert.deepStrictEqual(result[0], { from: 'Bob', to: 'Alice', value: 30 })
+  })
+
+  it('should settle a 16-player game correctly and quickly', function () {
+    this.timeout(10_000)
+    const game = createGame(gameA.players, gameA.transfers)
+
+    const start = performance.now()
+    const result = getGameSettlement(game)
+    const durationMs = performance.now() - start
+
+    assertBalances(game, result)
+
+    const MAX_DURATION_MS = 200
+    assert.ok(
+      durationMs < MAX_DURATION_MS,
+      `getGameSettlement took ${durationMs.toFixed(2)}ms, ` +
+        `expected under ${MAX_DURATION_MS}ms`
+    )
   })
 })

@@ -1,0 +1,131 @@
+{
+  "players": [
+    {
+      "name": "Ala",
+      "in": 50,
+      "out": 0
+    },
+    {
+      "name": "Baba",
+      "in": 400,
+      "out": 1000
+    },
+    {
+      "name": "Cecylia",
+      "in": 200,
+      "out": 500
+    },
+    {
+      "name": "Darek",
+      "in": 300,
+      "out": 40
+    },
+    {
+      "name": "Edyta",
+      "in": 100,
+      "out": 50
+    },
+    {
+      "name": "Filip",
+      "in": 300,
+      "out": 50
+    },
+    {
+      "name": "Grzegorz",
+      "in": 200,
+      "out": 50
+    },
+    {
+      "name": "Irena",
+      "in": 150,
+      "out": 200
+    },
+    {
+      "name": "Jacek",
+      "in": 200,
+      "out": 50
+    },
+    {
+      "name": "Heniek",
+      "in": 350,
+      "out": 310
+    },
+    {
+      "name": "Kacper",
+      "in": 50,
+      "out": 0
+    },
+    {
+      "name": "Leon",
+      "in": 50,
+      "out": 0
+    },
+    {
+      "name": "Maciej",
+      "in": 50,
+      "out": 0
+    },
+    {
+      "name": "Nikodem",
+      "in": 50,
+      "out": 300
+    },
+    {
+      "name": "Olek",
+      "in": 50,
+      "out": 50
+    },
+    {
+      "name": "Piotr",
+      "in": 100,
+      "out": 0
+    }
+  ],
+  "transfers": [
+    {
+      "from": "Ala",
+      "to": "Cecylia",
+      "value": 60
+    },
+    {
+      "from": "Heniek",
+      "to": "Baba",
+      "value": 40
+    },
+    {
+      "from": "Baba",
+      "to": "Cecylia",
+      "value": 50
+    },
+    {
+      "from": "Cecylia",
+      "to": "Filip",
+      "value": 50
+    },
+    {
+      "from": "Ala",
+      "to": "---pot---",
+      "value": 50
+    },
+    {
+      "from": "Jacek",
+      "to": "Ala",
+      "value": 50
+    },
+    {
+      "from": "---pot---",
+      "to": "Jacek",
+      "value": 70
+    },
+    {
+      "from": "Irena",
+      "to": "Ala",
+      "value": 80
+    },
+    {
+      "from": "Cecylia",
+      "to": "Darek",
+      "value": 50
+    }
+  ]
+}

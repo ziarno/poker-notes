@@ -1,0 +1,9 @@
+{
+  "jsc": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["imports/*"],
+      "@volt/*": ["src/volt/*"]
+    }
+  }
+}

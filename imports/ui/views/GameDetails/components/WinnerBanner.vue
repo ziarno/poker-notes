@@ -28,7 +28,7 @@ const winner = computed(() => {
 </script>
 
 <template>
-  <Transition name="ft-banner" appear>
+  <Transition name="ft-banner">
     <div v-if="winner">
       <!-- Clipping wrapper enables the grid-row height-collapse animation. -->
       <div class="min-h-0 overflow-hidden">

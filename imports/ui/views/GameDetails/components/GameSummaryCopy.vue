@@ -6,11 +6,9 @@ import { useToast } from 'primevue/usetoast'
 import { ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useFormattedDate } from '@/composables'
-import { useGetName } from '@/composables/useGetName.ts'
+import { useFormattedDate, useGetName } from '@/composables'
 import { FinishedGame, FinishedPlayer, Transfer } from '@/types'
-import { getGameSettlement } from '@/utils/game.utils.ts'
-import { balanceToString } from '@/utils/string.utils.ts'
+import { balanceToString, getGameSettlement } from '@/utils'
 
 const { game } = defineProps<{
   game: FinishedGame
