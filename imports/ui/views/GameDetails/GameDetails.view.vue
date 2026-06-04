@@ -48,35 +48,37 @@ function copyLink() {
 
 <template>
   <div
-    class="px-[18px] pt-[18px] pb-6 xl:flex xl:h-full xl:flex-col xl:px-8
+    class="px-[18px] pb-6 xl:flex xl:h-full xl:flex-col xl:px-8 xl:pt-[18px]
       xl:pb-0"
   >
-    <NavigationHeader :title="game?.title" :subtitle="date">
-      <template #icon>
-        <InfoTags
-          v-if="game"
-          :game="game"
-          class="mr-1 hidden flex-wrap items-center justify-end gap-2 xl:flex"
-        />
-        <div class="hidden xl:block">
-          <ThemeToggle />
-        </div>
-        <button
-          class="ft-icon-btn"
-          @click="copyLink"
-          :aria-label="t('link_copied')"
-        >
-          <i class="pi pi-share-alt"></i>
-        </button>
-        <button
-          class="ft-icon-btn xl:hidden"
-          @click="showMenu = true"
-          :aria-label="t('history')"
-        >
-          <i class="pi pi-bars"></i>
-        </button>
-      </template>
-    </NavigationHeader>
+    <div class="bg-ft-bg sticky top-0 z-20 pt-[18px] xl:pt-0">
+      <NavigationHeader :title="game?.title" :subtitle="date">
+        <template #icon>
+          <InfoTags
+            v-if="game"
+            :game="game"
+            class="mr-1 hidden flex-wrap items-center justify-end gap-2 xl:flex"
+          />
+          <div class="hidden xl:block">
+            <ThemeToggle />
+          </div>
+          <button
+            class="ft-icon-btn"
+            @click="copyLink"
+            :aria-label="t('link_copied')"
+          >
+            <i class="pi pi-share-alt"></i>
+          </button>
+          <button
+            class="ft-icon-btn xl:hidden"
+            @click="showMenu = true"
+            :aria-label="t('history')"
+          >
+            <i class="pi pi-bars"></i>
+          </button>
+        </template>
+      </NavigationHeader>
+    </div>
 
     <template v-if="game">
       <InfoTags
