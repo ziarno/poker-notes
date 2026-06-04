@@ -2,7 +2,7 @@ import assert from 'assert'
 
 import { POT_KEY_NAME } from '@/constants/transfers.const.ts'
 import { FinishedGame, Transfer } from '@/types'
-import { getGameSettlement } from '@/utils'
+import { getGameSettlement } from '@/utils/gameSettlement.utils.ts'
 import gameA from './gameA.mock.json'
 
 function assertBalances(game: FinishedGame, result: Transfer[]) {
