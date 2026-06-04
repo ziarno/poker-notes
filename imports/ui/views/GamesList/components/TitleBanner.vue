@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -7,16 +8,38 @@ import ThemeToggle from '@/ui/components/ThemeToggle.vue'
 
 const { t } = useI18n()
 const router = useRouter()
+
+const sentinel = ref<HTMLElement>()
+const isStuck = ref(false)
+let observer: IntersectionObserver | undefined
+
+onMounted(() => {
+  if (!sentinel.value) return
+  const root = document.getElementById('main-scroll')
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      isStuck.value = !entry?.isIntersecting
+    },
+    { root, threshold: 0 }
+  )
+  observer.observe(sentinel.value)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
+  <div ref="sentinel" class="h-px" aria-hidden="true"></div>
   <section
-    class="from-ft-green to-ft-green-deep relative mx-[18px] mt-2 mb-4
-      overflow-hidden rounded-[18px] bg-gradient-to-br px-[18px] py-[18px]
-      text-white shadow-[0_8px_24px_-10px_var(--color-ft-green)]
-      dark:from-[#0f4d3a] dark:to-[#0a2c22]
-      dark:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.85)] dark:ring-1
-      dark:ring-white/[0.06] dark:ring-inset"
+    :class="[
+      `from-ft-green to-ft-green-deep relative mt-2 mb-4 overflow-hidden
+      bg-gradient-to-br px-[18px] py-[18px] text-white
+      shadow-[0_8px_24px_-10px_var(--color-ft-green)] dark:from-[#0f4d3a]
+      dark:to-[#0a2c22] dark:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.85)]
+      dark:ring-1 dark:ring-white/[0.06] dark:ring-inset sticky top-0 z-20
+      transition-[margin,border-radius] duration-300 ease-out`,
+      isStuck ? 'mx-0 rounded-none' : 'mx-[18px] rounded-[18px]',
+    ]"
   >
     <!-- Background suit decorations -->
     <div
