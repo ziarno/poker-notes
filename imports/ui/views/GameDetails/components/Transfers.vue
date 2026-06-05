@@ -49,8 +49,9 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       v-if="game.transfers.length"
       tag="div"
       name="ft-list"
-      class="relative grid grid-cols-[max-content_auto_1fr_auto_auto] gap-x-2
-        gap-y-[6px]"
+      class="relative grid
+        grid-cols-[minmax(0,max-content)_auto_minmax(0,max-content)_1fr_auto]
+        gap-x-1 gap-y-[6px]"
     >
       <TransferRow
         v-for="transfer in game.transfers"
