@@ -99,7 +99,10 @@ function copyLink() {
             <PlayersTable :game="game" />
           </div>
 
-          <div class="xl:[&>section:first-child]:mt-0 xl:pr-3">
+          <div
+            class="xl:[&>section:first-child]:mt-0 xl:pr-3 flex flex-col
+              xl:flex-col-reverse"
+          >
             <Transfers :game="game" />
             <Settlement :game="game" />
           </div>

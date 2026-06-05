@@ -37,6 +37,7 @@ value: Wartość
 settlement: Rozliczenie
 settlement_info: Rozliczenie dostępne kiedy wszyscy gracze wyjdą z gry
 settlement_warning: Sumy wejścia i wyjścia muszą być takie same
+settlement_settled: Wszystkie rozliczenia uregulowane
 copy_game: Skopiuj podsumowanie do schowka
 copied: Skopiowano do schowka
 link_copied: Link skopiowany do schowka

@@ -37,6 +37,7 @@ value: Value
 settlement: Settlement
 settlement_info: Settlement available when all players have cashed out
 settlement_warning: Buy in and buy out totals must match
+settlement_settled: All transfers settled
 copy_game: Copy summary to clipboard
 copied: Copied to clipboard
 link_copied: Link copied to clipboard
