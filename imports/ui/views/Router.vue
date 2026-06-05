@@ -25,10 +25,7 @@ function syncWidth() {
 </script>
 
 <template>
-  <div
-    class="safari:p-2 m-auto h-full max-w-xl"
-    :class="{ 'xl:max-w-none': wide }"
-  >
+  <div class="m-auto h-full max-w-xl" :class="{ 'xl:max-w-none': wide }">
     <router-view v-slot="{ Component }">
       <Transition
         :name="transitionName"
