@@ -56,8 +56,17 @@ function addToTransfers(transfer: Transfer) {
     </div>
 
     <template v-else>
+      <p
+        v-if="!settlement.length"
+        class="text-ft-green flex items-center justify-center gap-2 py-3
+          text-center text-[15px]"
+      >
+        <i class="pi pi-check-circle"></i>
+        <span>{{ t('settlement_settled') }}</span>
+      </p>
+
       <TransitionGroup
-        v-if="settlement.length"
+        v-else
         tag="div"
         name="ft-list"
         class="relative grid
