@@ -3,7 +3,7 @@ import { TransitionGroup, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addTransfer } from '@/api/methods'
-import { useIsGameCreator } from '@/composables'
+import { useIsGameEditor } from '@/composables'
 import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
@@ -19,7 +19,7 @@ const { game } = defineProps<{
   game: Game
 }>()
 const { t } = useI18n()
-const isCreator = useIsGameCreator(() => game)
+const isCreator = useIsGameEditor(() => game)
 
 const isOngoing = computed(() => isGameOngoing(game))
 const isInOutEqual = computed(() => isGameInOutEqual(game))

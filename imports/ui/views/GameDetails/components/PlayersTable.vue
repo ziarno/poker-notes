@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addPlayer as addPlayerMethod } from '@/api/methods/games.methods.ts'
-import { useIsGameCreator } from '@/composables'
+import { useIsGameEditor } from '@/composables'
 import { Game, NewPlayer, Player } from '@/types'
 import AnimatedNumber from '@/ui/components/AnimatedNumber.vue'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
@@ -16,12 +16,12 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
-const isCreator = useIsGameCreator(() => game)
+const isEditor = useIsGameEditor(() => game)
 
 const isAddingNewPlayer = ref(false)
 const editingPlayer = ref<Player | null>(null)
 
-const rows = computed(() =>
+const players = computed(() =>
   game.players.map(p => ({
     ...p,
     balance: isNumber(p.out) ? (p.out as number) - p.in : null,
@@ -40,7 +40,7 @@ function addPlayer(player: NewPlayer) {
 }
 
 function onRowClick(player: Player) {
-  if (!isCreator.value) return
+  if (!isEditor.value) return
   editingPlayer.value = player
 }
 
@@ -70,45 +70,56 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
     </div>
 
     <div
-      v-for="r in rows"
-      :key="r.name"
+      v-for="player in players"
+      :key="player.name"
       :class="[
         gridCols,
         'border-ft-ink-10 items-center border-b px-[14px] py-3 last:border-b-0',
-        isCreator ? 'cursor-pointer hover:bg-[rgba(13,20,17,0.02)]' : '',
+        isEditor
+          ? `focus-visible:ring-ft-ink-30 cursor-pointer
+            hover:bg-[rgba(13,20,17,0.02)] focus-visible:ring-2
+            focus-visible:outline-none focus-visible:ring-inset`
+          : '',
       ]"
-      @click="onRowClick(r as Player)"
+      :role="isEditor ? 'button' : undefined"
+      :tabindex="isEditor ? 0 : undefined"
+      @click="onRowClick(player as Player)"
+      @keydown.enter.prevent="onRowClick(player as Player)"
+      @keydown.space.prevent="onRowClick(player as Player)"
     >
       <div class="text-md">
-        {{ r.name }}
+        {{ player.name }}
       </div>
       <div class="text-ft-ink-70 text-right text-[16px]">
-        <AnimatedNumber :value="r.in" />
+        <AnimatedNumber :value="player.in" />
       </div>
       <div class="text-ft-ink-70 text-right text-[16px]">
-        <AnimatedNumber v-if="isNumber(r.out)" :value="r.out as number" />
+        <AnimatedNumber
+          v-if="isNumber(player.out)"
+          :value="player.out as number"
+        />
         <template v-else>—</template>
       </div>
       <div
         class="text-right text-sm text-[16px] font-bold"
         :class="
-          (r.balance ?? 0) > 0
+          (player.balance ?? 0) > 0
             ? 'text-lime-600'
-            : (r.balance ?? 0) < 0
+            : (player.balance ?? 0) < 0
               ? 'text-red-700 dark:text-red-400'
               : 'text-ft-ink-70'
         "
       >
         <AnimatedNumber
-          v-if="isNumber(r.balance)"
-          :value="r.balance as number"
+          v-if="isNumber(player.balance)"
+          :value="player.balance as number"
           :format="b => balanceText(Math.round(b))"
         />
       </div>
     </div>
 
     <div
-      v-if="isCreator"
+      v-if="isEditor"
       class="border-ft-ink-10 bg-ft-surface-alt border-t px-[14px] py-[10px]"
     >
       <DashedAddButton

@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import { removeGame as removeGameMethod } from '@/api/methods/games.methods'
-import { useDeleteConfirmationDialog, useIsGameCreator } from '@/composables'
+import { useDeleteConfirmationDialog, useIsGameEditor } from '@/composables'
 import { Game } from '@/types'
 import EnterPinDialog from '@/ui/views/GameDetails/components/EnterPinDialog.vue'
 import SharePinDialog from '@/ui/views/GameDetails/components/SharePinDialog.vue'
@@ -20,7 +20,7 @@ const emit = defineEmits<{
 
 const router = useRouter()
 const { t } = useI18n()
-const isCreator = useIsGameCreator(() => game)
+const isEditor = useIsGameEditor(() => game)
 
 const showSharePinDialog = ref(false)
 const showEnterPinDialog = ref(false)
@@ -37,7 +37,7 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
   <div class="flex flex-wrap justify-center gap-3">
     <SecondaryButton
       size="small"
-      v-if="isCreator"
+      v-if="isEditor"
       outlined
       :label="t('add_editor')"
       icon="pi pi-user-plus"
@@ -52,7 +52,7 @@ const confirmRemoveGame = useDeleteConfirmationDialog(removeGame)
       @click="showEnterPinDialog = true"
     />
     <SecondaryButton
-      v-if="isCreator"
+      v-if="isEditor"
       size="small"
       outlined
       :label="t('delete_game')"

@@ -6,7 +6,7 @@ import {
   addTransfer as addTransferMethod,
   removeTransfer as removeTransferMethod,
 } from '@/api/methods/games.methods.ts'
-import { useDeleteConfirmationDialog, useIsGameCreator } from '@/composables'
+import { useDeleteConfirmationDialog, useIsGameEditor } from '@/composables'
 import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
@@ -19,7 +19,7 @@ const { game } = defineProps<{
 }>()
 
 const { t } = useI18n()
-const isCreator = useIsGameCreator(() => game)
+const isEditor = useIsGameEditor(() => game)
 const isAddingNewTransfer = ref(false)
 
 const count = computed(() => game.transfers.length)
@@ -61,7 +61,7 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       >
         <template #action>
           <button
-            v-if="isCreator"
+            v-if="isEditor"
             type="button"
             class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-red
               hover:border-ft-red bg-ft-surface inline-flex h-[26px] w-[26px]
@@ -76,13 +76,13 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
     </TransitionGroup>
 
     <p
-      v-if="!game.transfers.length && !isCreator"
+      v-if="!game.transfers.length && !isEditor"
       class="text-ft-ink-50 my-2 text-center text-[15px]"
     >
       {{ t('no_transfers') }}
     </p>
 
-    <div v-if="isCreator" class="mt-[10px]">
+    <div v-if="isEditor" class="mt-[10px]">
       <DashedAddButton
         v-if="!isAddingNewTransfer"
         :label="t('add_transfer')"
