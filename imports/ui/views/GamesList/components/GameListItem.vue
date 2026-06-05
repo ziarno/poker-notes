@@ -37,7 +37,9 @@ const watermarkSuit = computed(() => suitCycle[(props.index ?? 0) % 4]!)
         <div class="mb-5 font-sans text-[18px] font-semibold">
           {{ game.title }}
         </div>
-        <div class="text-ft-ink-70 relative mr-5 font-sans text-sm">
+        <div
+          class="text-ft-ink-70 relative mr-5 line-clamp-3 font-sans text-sm"
+        >
           <template v-for="(p, i) in game.players" :key="p.name">
             <span>{{ p.name }}</span
             ><span v-if="i < game.players.length - 1">, </span>
