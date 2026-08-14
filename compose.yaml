@@ -1,0 +1,49 @@
+services:
+  app:
+    build: .
+    image: ghcr.io/ziarno/poker-notes:latest
+    container_name: poker-notes
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      MONGO_URL: mongodb://mongo:27017/poker-notes
+      ROOT_URL: https://poker.jarno.pl
+      PORT: "3000"
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:3010:3000"
+    networks:
+      - web
+      - poker-notes-internal
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:7
+    container_name: poker-notes-mongo
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - poker-notes-mongo-data:/data/db
+    networks:
+      - poker-notes-internal
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  web:
+    external: true
+  poker-notes-internal:
+    driver: bridge
+
+volumes:
+  poker-notes-mongo-data:
