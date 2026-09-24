@@ -72,6 +72,10 @@ function distribute() {
   )
 }
 
+function reset() {
+  deltas.value = Object.fromEntries(game.players.map(p => [p.name, 0]))
+}
+
 function confirm() {
   if (remaining.value !== 0) return
   setAdjustments({
@@ -159,7 +163,7 @@ function confirm() {
         </li>
       </ul>
 
-      <div class="mt-4 flex justify-center">
+      <div class="mt-4 flex flex-wrap justify-center gap-2">
         <SecondaryButton
           size="small"
           outlined
@@ -167,6 +171,14 @@ function confirm() {
           :label="t('adjustments_distribute')"
           :disabled="!includedCount"
           @click="distribute"
+        />
+        <SecondaryButton
+          size="small"
+          outlined
+          icon="pi pi-refresh"
+          :label="t('reset')"
+          :disabled="game.players.every(p => !deltas[p.name])"
+          @click="reset"
         />
       </div>
     </div>
