@@ -37,16 +37,6 @@ const includedCount = computed(
   () => game.players.filter(p => included.value[p.name]).length
 )
 
-const targetHint = computed(() => {
-  if (target.value < 0) {
-    return t('adjustments_excess', { value: -target.value })
-  }
-  if (target.value > 0) {
-    return t('adjustments_shortfall', { value: target.value })
-  }
-  return t('adjustments_raw_match')
-})
-
 // Prefill with the saved adjustments. When editing, only players that already
 // have an adjustment stay included in the even split.
 watch(visible, isVisible => {
@@ -97,17 +87,13 @@ function confirm() {
     class="m-4 w-lg max-w-screen"
   >
     <div class="mx-2 mb-2 sm:mx-5">
-      <div class="mb-4 text-center">
-        <div
-          class="font-mono text-[32px] leading-none font-bold tabular-nums"
-          :class="target === 0 ? 'text-ft-ink-70' : 'text-ft-red'"
-        >
-          {{ balanceToString(target) || '0' }}
-        </div>
-        <p class="text-ft-ink-70 mt-2 text-[15px]">{{ targetHint }}</p>
-        <p class="text-ft-ink-50 mt-1 text-[13px]">
-          {{ t('adjustments_description') }}
-        </p>
+      <div
+        class="mb-4 flex items-center justify-center gap-2 font-mono text-[32px]
+          leading-none font-bold tabular-nums"
+        :class="remaining === 0 ? 'text-ft-green' : 'text-ft-red'"
+      >
+        <i v-if="remaining === 0" class="pi pi-check-circle text-[24px]"></i>
+        <span>{{ balanceToString(remaining) || '0' }}</span>
       </div>
 
       <ul class="m-0 list-none p-0">
@@ -144,7 +130,7 @@ function confirm() {
         </li>
       </ul>
 
-      <div class="mt-4 flex flex-col items-center gap-3">
+      <div class="mt-4 flex justify-center">
         <SecondaryButton
           size="small"
           outlined
@@ -153,19 +139,6 @@ function confirm() {
           :disabled="!includedCount"
           @click="distribute"
         />
-        <p
-          class="m-0 text-center text-[14px] tabular-nums"
-          :class="remaining === 0 ? 'text-ft-green' : 'text-ft-ink-70'"
-        >
-          <i v-if="remaining === 0" class="pi pi-check-circle mr-1"></i>
-          {{
-            t('adjustments_assigned', {
-              assigned: balanceToString(assigned) || '0',
-              target: balanceToString(target) || '0',
-              remaining: balanceToString(remaining) || '0',
-            })
-          }}
-        </p>
       </div>
     </div>
 

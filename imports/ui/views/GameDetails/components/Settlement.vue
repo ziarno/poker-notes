@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import SecondaryButton from '@volt/SecondaryButton.vue'
+import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
 import { TransitionGroup, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { addTransfer } from '@/api/methods'
+import { addTransfer, setAdjustments } from '@/api/methods'
 import { useIsGameEditor } from '@/composables'
 import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
 import AdjustmentsDialog from '@/ui/views/GameDetails/components/AdjustmentsDialog.vue'
-import AdjustmentsSummary from '@/ui/views/GameDetails/components/AdjustmentsSummary.vue'
 import {
   applyAdjustments,
   getGameSettlement,
@@ -30,6 +31,8 @@ const isOngoing = computed(() => isGameOngoing(game))
 const isInOutEqual = computed(() => isGameInOutEqual(game))
 const showAdjustments = computed(() => !isOngoing.value && hasAdjustments(game))
 const isAdjustmentsDialogVisible = ref(false)
+const confirm = useConfirm()
+const toast = useToast()
 
 const settlement = computed<Transfer[]>(() => {
   if (!isGameFinished(game)) return []
@@ -43,17 +46,54 @@ function pretty(name: string): string {
 function addToTransfers(transfer: Transfer) {
   addTransfer({ gameId: game._id, transfer })
 }
+
+function confirmResetAdjustments() {
+  confirm.require({
+    header: t('adjustments_reset'),
+    message: t('adjustments_reset_description'),
+    rejectProps: {
+      label: t('cancel'),
+      severity: 'secondary',
+      outlined: true,
+    },
+    acceptProps: {
+      label: t('reset'),
+    },
+    accept: async () => {
+      await setAdjustments({ gameId: game._id!, adjustments: [] })
+      toast.add({
+        severity: 'success',
+        summary: t('adjustments_reset_done'),
+        life: 1000,
+      })
+    },
+  })
+}
 </script>
 
 <template>
   <section class="mt-5 mb-6">
     <SectionTitle>{{ t('settlement') }}</SectionTitle>
 
-    <AdjustmentsSummary
-      v-if="showAdjustments"
-      :game="game"
-      @edit="isAdjustmentsDialogVisible = true"
-    />
+    <div
+      v-if="showAdjustments && isCreator"
+      class="mb-3 flex flex-wrap justify-center gap-2"
+    >
+      <SecondaryButton
+        size="small"
+        outlined
+        icon="pi pi-pencil"
+        :label="t('adjustments_edit')"
+        @click="isAdjustmentsDialogVisible = true"
+      />
+      <SecondaryButton
+        size="small"
+        outlined
+        icon="pi pi-refresh"
+        :label="t('adjustments_reset')"
+        @click="confirmResetAdjustments"
+      />
+    </div>
 
     <p v-if="isOngoing" class="text-ft-ink-50 py-3 text-center text-[15px]">
       {{ t('settlement_info') }}

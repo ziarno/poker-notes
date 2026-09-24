@@ -76,17 +76,11 @@ fast_description: Sprawdza 100 000 losowych kombinacji — szybko, ale przybliż
 precise_description: Sprawdza wszystkie możliwe kombinacje — dokładne, ale wolniejsze
 theme_dark: Tryb ciemny
 theme_light: Tryb jasny
-edit: Edytuj
 confirm: Zatwierdź
 resolve: Wyrównaj
-adjustments_title: Korekty wyjścia
 adjustments_dialog_title: Wyrównaj sumy
-adjustments_excess: Suma wyjść przekracza sumę wejść o {value}
-adjustments_shortfall: Suma wyjść jest mniejsza od sumy wejść o {value}
-adjustments_description: Ustaw, o ile ma się zmienić wyjście każdego gracza. Zmiany muszą sumować się do różnicy.
 adjustments_distribute: Rozdziel po równo
-adjustments_assigned: 'Przydzielono {assigned} z {target} · pozostało {remaining}'
-adjustments_raw_match: Sumy wejścia i wyjścia zgadzają się bez korekt
+adjustments_edit: Edytuj korekty
 adjustments_reset: Resetuj korekty
 adjustments_reset_description: Czy na pewno chcesz usunąć wszystkie korekty wyjścia?
 adjustments_reset_done: Korekty usunięte
