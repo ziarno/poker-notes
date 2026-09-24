@@ -3,7 +3,7 @@ import Button from '@volt/Button.vue'
 import Dialog from '@volt/Dialog.vue'
 import InputText from '@volt/InputText.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/composables'
 import { Game, Player } from '@/types'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
+import { getTotalIn, getTotalOut, isNumber } from '@/utils'
 
 const { player, game } = defineProps<{
   player: Player | null
@@ -43,6 +44,19 @@ watch(
       .filter(n => n !== player.name)
   }
 )
+
+// When this is the last player without an out value, hint the amount that
+// would balance the game: everything bought in minus what others took out.
+const remainingOut = computed(() => {
+  if (!player || isNumber(player.out)) return undefined
+  const othersFinished = game.players.every(
+    p => p.name === player.name || isNumber(p.out)
+  )
+  if (!othersFinished) return undefined
+  const totalIn = getTotalIn(game) - player.in + (buyIn.value ?? 0)
+  const remaining = totalIn - getTotalOut(game)
+  return remaining >= 0 ? remaining : undefined
+})
 
 async function removePlayer() {
   await removePlayerMethod({ gameId: game._id, playerName: player!.name })
@@ -83,7 +97,7 @@ async function setPlayer() {
       </div>
       <div class="my-5 flex items-center justify-between">
         <p class="text-lg">{{ t('buy_out') }}</p>
-        <InputNumberStep v-model="buyOut" />
+        <InputNumberStep v-model="buyOut" :placeholder="remainingOut" />
       </div>
       <div class="flex items-center justify-between">
         <label for="name" class="mr-10 inline-block text-lg">{{
