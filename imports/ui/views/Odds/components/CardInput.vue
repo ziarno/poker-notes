@@ -6,7 +6,7 @@ import { Card } from '@/types'
 import PlayingCardText from '@/ui/views/Odds/components/PlayingCardText.vue'
 
 const props = defineProps<{ max: number; label?: string; onFelt?: boolean }>()
-const cards = defineModel<Card[]>({ default: [] })
+const cards = defineModel<Card[]>({ default: () => [] })
 
 const { show, isActive, onActiveIdChanged } = useCardKeyboard(
   cards,

@@ -14,6 +14,6 @@ export const formatDate: typeof formatDateFns = (
   formatStr,
   options = {}
 ) => {
-  const locale = i18n.global.locale as Langs
+  const locale = i18n.global.locale.value as Langs
   return formatDateFns(date, formatStr, { ...options, locale: locales[locale] })
 }

@@ -16,7 +16,8 @@ import { router } from '@/ui/router'
 
 import './serviceworker.ts'
 
-export const i18n = createI18n<typeof pl, Langs>({
+export const i18n = createI18n<typeof pl, Langs, false>({
+  legacy: false,
   locale: pl._locale,
   messages: { en, pl },
 })

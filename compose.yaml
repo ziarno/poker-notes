@@ -24,7 +24,7 @@ services:
         condition: service_healthy
 
   mongo:
-    image: mongo:7
+    image: mongo:8
     container_name: poker-notes-mongo
     restart: unless-stopped
     security_opt:
