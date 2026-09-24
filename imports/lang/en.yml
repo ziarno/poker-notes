@@ -80,6 +80,7 @@ confirm: Confirm
 resolve: Resolve
 adjustments_dialog_title: Resolve mismatch
 adjustments_distribute: Split evenly
+adjustments_info: Players' outs were adjusted to balance the totals
 adjustments_edit: Edit adjustments
 adjustments_reset: Reset adjustments
 adjustments_reset_description: Are you sure you want to remove all out adjustments?

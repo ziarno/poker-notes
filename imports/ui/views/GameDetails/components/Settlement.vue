@@ -76,23 +76,30 @@ function confirmResetAdjustments() {
     <SectionTitle>{{ t('settlement') }}</SectionTitle>
 
     <div
-      v-if="showAdjustments && isCreator"
-      class="mb-3 flex flex-wrap justify-center gap-2"
+      v-if="showAdjustments"
+      class="bg-ft-green-soft text-ft-green-ink mb-3 flex flex-col items-center
+        gap-3 rounded-xl px-[14px] py-[10px] text-center text-[15px]"
     >
-      <SecondaryButton
-        size="small"
-        outlined
-        icon="pi pi-pencil"
-        :label="t('adjustments_edit')"
-        @click="isAdjustmentsDialogVisible = true"
-      />
-      <SecondaryButton
-        size="small"
-        outlined
-        icon="pi pi-refresh"
-        :label="t('adjustments_reset')"
-        @click="confirmResetAdjustments"
-      />
+      <div class="flex items-center gap-2">
+        <i class="pi pi-info-circle"></i>
+        <span>{{ t('adjustments_info') }}</span>
+      </div>
+      <div v-if="isCreator" class="flex flex-wrap justify-center gap-2">
+        <SecondaryButton
+          size="small"
+          outlined
+          icon="pi pi-pencil"
+          :label="t('adjustments_edit')"
+          @click="isAdjustmentsDialogVisible = true"
+        />
+        <SecondaryButton
+          size="small"
+          outlined
+          icon="pi pi-refresh"
+          :label="t('adjustments_reset')"
+          @click="confirmResetAdjustments"
+        />
+      </div>
     </div>
 
     <p v-if="isOngoing" class="text-ft-ink-50 py-3 text-center text-[15px]">
