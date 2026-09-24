@@ -18,6 +18,7 @@ import {
 } from '@/types'
 import { isNumber } from '@/utils/number.utils.ts'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
+import { removeTransferFromGame } from '@/utils/transfer.utils.ts'
 
 function check(condition: boolean, message: string) {
   if (!condition) throw new Meteor.Error('validation-error', message)
@@ -220,14 +221,13 @@ export const removeTransfer = createMethod({
     check(!!transfer.to, 'Transfer receiver is required')
   },
   async run({ gameId, transfer }: { gameId: string; transfer: Transfer }) {
-    const historyItem: HistoryItem = {
-      type: 'transfer_removed',
-      timestamp: new Date(),
-      transfer: { from: transfer.from, to: transfer.to, value: transfer.value },
-    }
+    const game = await GamesCollection.findOneAsync(gameId)
+    if (!game) return
+    const updated = removeTransferFromGame(game, transfer)
+    if (updated === game) return
     return GamesCollection.updateAsync(
       { _id: gameId },
-      { $pull: { transfers: transfer }, $push: { history: historyItem } }
+      { $set: { transfers: updated.transfers, history: updated.history } }
     )
   },
 })

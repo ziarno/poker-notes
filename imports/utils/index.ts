@@ -10,6 +10,7 @@ export * from './number.utils.ts'
 export * from './pinCode.utils.ts'
 export * from './playerColor.utils.ts'
 export * from './string.utils.ts'
+export * from './transfer.utils.ts'
 
 // This barrel is CLIENT-ONLY. Do not import it from server-side code
 // (api/methods, api/publications, …) — it is a runtime module that Vite

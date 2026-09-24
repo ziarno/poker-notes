@@ -23,6 +23,16 @@ const count = computed(() => game.transfers.length)
 const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
 const playerColors = computed(() => getGamePlayerColors(game))
 
+const keyedTransfers = computed(() => {
+  const occurrences = new Map<string, number>()
+  return game.transfers.map(transfer => {
+    const base = `${transfer.from}-${transfer.to}-${transfer.value}`
+    const occurrence = occurrences.get(base) ?? 0
+    occurrences.set(base, occurrence + 1)
+    return { transfer, key: `${base}-${occurrence}` }
+  })
+})
+
 function removeTransfer(transfer: Transfer) {
   return removeTransferMethod({ gameId: game._id!, transfer })
 }
@@ -43,8 +53,8 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
         gap-x-1 gap-y-[6px]"
     >
       <TransferRow
-        v-for="transfer in game.transfers"
-        :key="`${transfer.from}-${transfer.to}-${transfer.value}`"
+        v-for="{ transfer, key } in keyedTransfers"
+        :key="key"
         :from="transfer.from"
         :to="transfer.to"
         :value="transfer.value"
