@@ -1,3 +1,4 @@
+export * from './Adjustment.type.ts'
 export * from './Game.type.ts'
 export * from './History.type.ts'
 export * from './Player.type.ts'

@@ -1,3 +1,4 @@
+import { Adjustment } from '@/types/Adjustment.type.ts'
 import { HistoryItem } from '@/types/History.type.ts'
 import { FinishedPlayer, NewPlayer, Player } from '@/types/Player.type.ts'
 import { Transfer } from '@/types/Transfer.type.ts'
@@ -12,6 +13,7 @@ export interface Game {
   players: Player[]
   transfers: Transfer[]
   history: HistoryItem[]
+  adjustments?: Adjustment[]
 }
 
 export interface NewGame {

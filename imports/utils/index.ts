@@ -1,4 +1,5 @@
 export * from './accessToGameIds.utils.ts'
+export * from './adjustments.utils.ts'
 export * from './api.utils.ts'
 export * from './creatorId.utils.ts'
 export * from './date.utils.ts'

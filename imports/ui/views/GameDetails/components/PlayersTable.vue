@@ -9,7 +9,13 @@ import AnimatedNumber from '@/ui/components/AnimatedNumber.vue'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
 import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
-import { getTotalIn, getTotalOut, isNumber } from '@/utils'
+import {
+  balanceToString,
+  getAdjustment,
+  getTotalIn,
+  getTotalOut,
+  isNumber,
+} from '@/utils'
 
 const { game } = defineProps<{
   game: Game
@@ -22,14 +28,22 @@ const isAddingNewPlayer = ref(false)
 const editingPlayer = ref<Player | null>(null)
 
 const players = computed(() =>
-  game.players.map(p => ({
-    ...p,
-    balance: isNumber(p.out) ? (p.out as number) - p.in : null,
-  }))
+  game.players.map(p => {
+    const delta = getAdjustment(game, p.name)
+    return {
+      ...p,
+      delta,
+      balance: isNumber(p.out) ? p.out + delta - p.in : null,
+    }
+  })
 )
 
 const totalIn = computed(() => getTotalIn(game))
 const totalOut = computed(() => getTotalOut(game))
+// Sum of the adjustments equals the adjusted minus the raw out total.
+const totalDelta = computed(() =>
+  game.players.reduce((sum, p) => sum + getAdjustment(game, p.name), 0)
+)
 
 function addPlayer(player: NewPlayer) {
   addPlayerMethod({
@@ -99,6 +113,11 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
           :value="player.out as number"
         />
         <template v-else>—</template>
+        <span
+          v-if="player.delta"
+          class="text-ft-ink-50 ml-1 align-middle text-[11px] font-semibold"
+          >{{ balanceToString(player.delta) }}</span
+        >
       </div>
       <div
         class="text-right text-sm text-[16px] font-bold"
@@ -149,6 +168,11 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
       </span>
       <span class="text-ft-ink text-right text-[16px]">
         <AnimatedNumber :value="totalOut" />
+        <span
+          v-if="totalDelta"
+          class="text-ft-ink-50 ml-1 align-middle text-[11px] font-semibold"
+          >{{ balanceToString(totalDelta) }}</span
+        >
       </span>
       <span></span>
     </div>

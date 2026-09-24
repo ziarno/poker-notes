@@ -1,4 +1,5 @@
 import type { FinishedGame, Game } from '../types'
+import { applyAdjustments } from './adjustments.utils.ts'
 import { isNumber } from './number.utils.ts'
 
 export function getTotalIn(game: Game) {
@@ -17,6 +18,7 @@ export function isGameFinished(game: Game): game is FinishedGame {
   return !isGameOngoing(game)
 }
 
+// Compares the totals with adjustments applied on top of the raw out values.
 export function isGameInOutEqual(game: Game) {
-  return getTotalIn(game) === getTotalOut(game)
+  return getTotalIn(game) === getTotalOut(applyAdjustments(game))
 }

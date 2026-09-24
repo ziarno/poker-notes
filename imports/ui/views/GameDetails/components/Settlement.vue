@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { TransitionGroup, computed } from 'vue'
+import SecondaryButton from '@volt/SecondaryButton.vue'
+import { TransitionGroup, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { addTransfer } from '@/api/methods'
@@ -8,8 +9,12 @@ import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
+import AdjustmentsDialog from '@/ui/views/GameDetails/components/AdjustmentsDialog.vue'
+import AdjustmentsSummary from '@/ui/views/GameDetails/components/AdjustmentsSummary.vue'
 import {
+  applyAdjustments,
   getGameSettlement,
+  hasAdjustments,
   isGameFinished,
   isGameInOutEqual,
   isGameOngoing,
@@ -23,10 +28,12 @@ const isCreator = useIsGameEditor(() => game)
 
 const isOngoing = computed(() => isGameOngoing(game))
 const isInOutEqual = computed(() => isGameInOutEqual(game))
+const showAdjustments = computed(() => !isOngoing.value && hasAdjustments(game))
+const isAdjustmentsDialogVisible = ref(false)
 
 const settlement = computed<Transfer[]>(() => {
   if (!isGameFinished(game)) return []
-  return getGameSettlement(game)
+  return getGameSettlement(applyAdjustments(game))
 })
 
 function pretty(name: string): string {
@@ -42,17 +49,32 @@ function addToTransfers(transfer: Transfer) {
   <section class="mt-5 mb-6">
     <SectionTitle>{{ t('settlement') }}</SectionTitle>
 
+    <AdjustmentsSummary
+      v-if="showAdjustments"
+      :game="game"
+      @edit="isAdjustmentsDialogVisible = true"
+    />
+
     <p v-if="isOngoing" class="text-ft-ink-50 py-3 text-center text-[15px]">
       {{ t('settlement_info') }}
     </p>
 
-    <div
-      v-else-if="!isInOutEqual"
-      class="bg-ft-red-soft text-ft-red flex items-center justify-center gap-2
-        rounded-xl px-[14px] py-[10px] text-[15px]"
-    >
-      <i class="pi pi-exclamation-triangle"></i>
-      <span>{{ t('settlement_warning') }}</span>
+    <div v-else-if="!isInOutEqual" class="flex flex-col items-center gap-3">
+      <div
+        class="bg-ft-red-soft text-ft-red flex w-full items-center
+          justify-center gap-2 rounded-xl px-[14px] py-[10px] text-[15px]"
+      >
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>{{ t('settlement_warning') }}</span>
+      </div>
+      <SecondaryButton
+        v-if="isCreator"
+        size="small"
+        outlined
+        icon="pi pi-wrench"
+        :label="t('resolve')"
+        @click="isAdjustmentsDialogVisible = true"
+      />
     </div>
 
     <template v-else>
@@ -97,5 +119,11 @@ function addToTransfers(transfer: Transfer) {
         </TransferRow>
       </TransitionGroup>
     </template>
+
+    <AdjustmentsDialog
+      v-if="isCreator"
+      v-model:visible="isAdjustmentsDialogVisible"
+      :game="game"
+    />
   </section>
 </template>

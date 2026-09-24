@@ -1,5 +1,5 @@
-import { PLAYER_COLORS } from '@/constants'
-import { PlayerColor } from '@/types'
+import { PLAYER_COLORS, POT_KEY_NAME } from '@/constants'
+import { HistoryItem, PlayerColor } from '@/types'
 
 // FNV-1a — a stable string hash, so a name always prefers the same slot.
 function hashString(str: string): number {
@@ -26,4 +26,17 @@ export function getPlayerColors(
     colors.set(name, PLAYER_COLORS[slot]!)
   }
   return colors
+}
+
+// Colors for every player mentioned in a game's history, so the same name gets
+// the same color wherever it is shown for that game.
+export function getHistoryPlayerColors(
+  history: HistoryItem[]
+): Map<string, PlayerColor> {
+  const names = history.flatMap(item =>
+    'transfer' in item
+      ? [item.transfer.from, item.transfer.to]
+      : [item.playerName]
+  )
+  return getPlayerColors(names.filter(name => name !== POT_KEY_NAME))
 }

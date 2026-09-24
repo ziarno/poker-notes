@@ -16,7 +16,14 @@ import {
 } from '@/composables'
 import { Game, Player } from '@/types'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
-import { getTotalIn, getTotalOut, isNumber } from '@/utils'
+import {
+  applyAdjustments,
+  balanceToString,
+  getAdjustment,
+  getTotalIn,
+  getTotalOut,
+  isNumber,
+} from '@/utils'
 
 const { player, game } = defineProps<{
   player: Player | null
@@ -45,8 +52,11 @@ watch(
   }
 )
 
+const delta = computed(() => (player ? getAdjustment(game, player.name) : 0))
+
 // When this is the last player without an out value, hint the amount that
 // would balance the game: everything bought in minus what others took out.
+// The hint is a raw value, so the player's own adjustment is taken off it.
 const remainingOut = computed(() => {
   if (!player || isNumber(player.out)) return undefined
   const othersFinished = game.players.every(
@@ -54,7 +64,7 @@ const remainingOut = computed(() => {
   )
   if (!othersFinished) return undefined
   const totalIn = getTotalIn(game) - player.in + (buyIn.value ?? 0)
-  const remaining = totalIn - getTotalOut(game)
+  const remaining = totalIn - getTotalOut(applyAdjustments(game)) - delta.value
   return remaining >= 0 ? remaining : undefined
 })
 
@@ -99,6 +109,9 @@ async function setPlayer() {
         <p class="text-lg">{{ t('buy_out') }}</p>
         <InputNumberStep v-model="buyOut" :placeholder="remainingOut" />
       </div>
+      <p v-if="delta" class="text-ft-ink-50 -mt-3 mb-5 text-right text-[13px]">
+        {{ t('adjustments_player_hint', { delta: balanceToString(delta) }) }}
+      </p>
       <div class="flex items-center justify-between">
         <label for="name" class="mr-10 inline-block text-lg">{{
           t('name')

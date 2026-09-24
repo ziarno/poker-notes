@@ -7,6 +7,7 @@ import {
   renamePlayerInHistoryAndTransfers,
 } from '@/api/methods/games.methods.utils.ts'
 import {
+  Adjustment,
   Game,
   HistoryItem,
   HistoryItemTransfer,
@@ -181,6 +182,7 @@ export const removePlayer = createMethod({
         $pull: {
           players: { name: playerName },
           transfers: { $or: [{ from: playerName }, { to: playerName }] } as any,
+          adjustments: { name: playerName },
         },
         $push: { history: historyItem },
       }
@@ -227,5 +229,48 @@ export const removeTransfer = createMethod({
       { _id: gameId },
       { $pull: { transfers: transfer }, $push: { history: historyItem } }
     )
+  },
+})
+
+// Replaces all out adjustments of a game; pass an empty list to reset them.
+// The sum is deliberately not checked against the in/out mismatch: an offline
+// call could otherwise be rejected on sync after someone else changed an out
+// value, silently dropping the resolution. The UI shows the mismatch instead.
+export const setAdjustments = createMethod({
+  name: 'setAdjustments',
+  validate({
+    gameId,
+    adjustments,
+  }: {
+    gameId: string
+    adjustments: Adjustment[]
+  }) {
+    check(!!gameId, 'Game ID is required')
+    check(Array.isArray(adjustments), 'Adjustments are required')
+    check(
+      adjustments.every(a => !!a.name && Number.isInteger(a.delta)),
+      'Adjustments must be whole numbers'
+    )
+    const names = adjustments.map(a => a.name)
+    check(new Set(names).size === names.length, 'Player names must be unique')
+  },
+  async run({
+    gameId,
+    adjustments,
+  }: {
+    gameId: string
+    adjustments: Adjustment[]
+  }) {
+    const game = await GamesCollection.findOneAsync(gameId)
+    if (!game) return
+
+    const playerNames = new Set(game.players.map(p => p.name))
+    return GamesCollection.updateAsync(gameId, {
+      $set: {
+        adjustments: adjustments
+          .filter(a => a.delta !== 0 && playerNames.has(a.name))
+          .map(a => ({ name: a.name, delta: a.delta })),
+      },
+    })
   },
 })

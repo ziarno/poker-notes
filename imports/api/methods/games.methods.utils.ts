@@ -60,7 +60,12 @@ export async function renamePlayerInHistoryAndTransfers(
     return historyItem
   })
 
+  const adjustments = updatedGame.adjustments?.map(a => ({
+    ...a,
+    name: maybeRenameInTransfer(a.name),
+  }))
+
   await GamesCollection.updateAsync(gameId, {
-    $set: { transfers, history },
+    $set: { transfers, history, ...(adjustments && { adjustments }) },
   })
 }

@@ -4,11 +4,11 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
-import { NBSP, POT_KEY_NAME } from '@/constants'
+import { NBSP } from '@/constants'
 import { HistoryItem } from '@/types'
 import PlayerName from '@/ui/components/PlayerName.vue'
 import TransferArrow from '@/ui/components/TransferArrow.vue'
-import { balanceToString, getPlayerColors } from '@/utils'
+import { balanceToString, getHistoryPlayerColors } from '@/utils'
 
 const { history } = defineProps<{
   history: HistoryItem[]
@@ -23,14 +23,7 @@ const sortedHistory = computed(() => {
   )
 })
 
-const playerColors = computed(() => {
-  const names = history.flatMap(item =>
-    'transfer' in item
-      ? [item.transfer.from, item.transfer.to]
-      : [item.playerName]
-  )
-  return getPlayerColors(names.filter(name => name !== POT_KEY_NAME))
-})
+const playerColors = computed(() => getHistoryPlayerColors(history))
 
 function inDiff(oldValue: number | null, newValue: number | null): string {
   return balanceToString(toNumber(newValue) - toNumber(oldValue))

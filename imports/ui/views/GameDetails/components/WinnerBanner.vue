@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { FinishedGame, Game } from '@/types'
 import SuitWatermark from '@/ui/components/SuitWatermark.vue'
 import GameSummaryCopy from '@/ui/views/GameDetails/components/GameSummaryCopy.vue'
-import { isGameFinished, isGameInOutEqual } from '@/utils'
+import { applyAdjustments, isGameFinished, isGameInOutEqual } from '@/utils'
 
 const { game } = defineProps<{
   game: Game
@@ -18,7 +18,7 @@ const settled = computed(() => isGameInOutEqual(game))
 
 const winner = computed(() => {
   if (!finished.value || !settled.value) return null
-  const sorted = [...game.players].sort(
+  const sorted = [...applyAdjustments(game).players].sort(
     (a, b) => (b.out ?? 0) - b.in - ((a.out ?? 0) - a.in)
   )
   const top = sorted[0]

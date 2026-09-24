@@ -8,7 +8,12 @@ import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate, useGetName } from '@/composables'
 import { FinishedGame, FinishedPlayer, Transfer } from '@/types'
-import { balanceToString, getGameSettlement } from '@/utils'
+import {
+  applyAdjustments,
+  balanceToString,
+  getAdjustment,
+  getGameSettlement,
+} from '@/utils'
 
 const { game } = defineProps<{
   game: FinishedGame
@@ -35,13 +40,19 @@ function copyToClipboard() {
 }
 
 function generateCopyText() {
+  const adjustedGame = applyAdjustments(game)
+
   const playersText = flow(
     sortBy((p: FinishedPlayer) => p.in - p.out),
     map(p => {
-      return `${p.name}: ${p.in} → ${p.out} = ${balanceToString(p.out - p.in)}`
+      const delta = getAdjustment(game, p.name)
+      const rawOut = delta
+        ? `${p.out - delta} (${balanceToString(delta)})`
+        : p.out
+      return `${p.name}: ${p.in} → ${rawOut} = ${balanceToString(p.out - p.in)}`
     }),
     join('\n')
-  )(game.players as FinishedPlayer[])
+  )(adjustedGame.players as FinishedPlayer[])
 
   const settlementText = flow(
     map((t: Transfer) => ({
@@ -51,7 +62,7 @@ function generateCopyText() {
     })),
     map((t: Transfer) => `${t.from} → ${t.to}: ${t.value}`),
     join('\n')
-  )(getGameSettlement(game))
+  )(getGameSettlement(adjustedGame))
 
   return `${game.title} | ${date.value}
 ${document.URL}
