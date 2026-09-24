@@ -6,7 +6,8 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { setAdjustments } from '@/api/methods'
-import { Game } from '@/types'
+import { Game, Player } from '@/types'
+import Balance from '@/ui/components/Balance.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import PlayerName from '@/ui/components/PlayerName.vue'
 import {
@@ -16,6 +17,7 @@ import {
   getHistoryPlayerColors,
   getInOutDifference,
   hasAdjustments,
+  isNumber,
 } from '@/utils'
 
 const { game } = defineProps<{
@@ -52,6 +54,12 @@ watch(visible, isVisible => {
     ])
   )
 })
+
+// Balance with the adjustment currently entered in the modal.
+function balance(player: Player): number | null {
+  if (!isNumber(player.out)) return null
+  return player.out + (deltas.value[player.name] ?? 0) - player.in
+}
 
 function distribute() {
   const parts = distributeEvenly(target.value, includedCount.value)
@@ -96,37 +104,58 @@ function confirm() {
         <span>{{ balanceToString(remaining) || '0' }}</span>
       </div>
 
-      <ul class="m-0 list-none p-0">
+      <ul
+        class="m-0 grid list-none
+          grid-cols-[auto_minmax(0,1fr)_repeat(5,auto)_auto] items-center
+          gap-x-2 p-0"
+      >
         <li
           v-for="player in game.players"
           :key="player.name"
-          class="border-ft-ink-10 flex items-center gap-3 border-b py-2
-            last:border-b-0"
+          class="border-ft-ink-10 col-span-full grid grid-cols-subgrid
+            items-center gap-y-1 border-b py-2 last:border-b-0"
         >
           <input
             :id="`adjustment-${player.name}`"
             v-model="included[player.name]"
             type="checkbox"
-            class="accent-ft-green size-5 shrink-0 cursor-pointer"
+            class="accent-ft-green size-5 cursor-pointer max-sm:row-span-2"
           />
           <label
             :for="`adjustment-${player.name}`"
-            class="min-w-0 flex-1 cursor-pointer break-words"
+            class="min-w-0 cursor-pointer break-words max-sm:col-[2/-2]"
           >
             <PlayerName
               :name="player.name"
               :color="playerColors.get(player.name)"
             />
-            <span class="text-ft-ink-50 ml-2 text-[13px]">
-              {{ t('buy_out') }}: {{ player.out ?? '—' }}
-            </span>
           </label>
-          <InputNumberStep
-            v-model="deltas[player.name]"
-            size="small"
-            :step="1"
-            :min="Number.MIN_SAFE_INTEGER"
+          <!-- On narrow screens the numbers wrap under the name. -->
+          <span
+            class="text-ft-ink-50 text-right text-[13px] tabular-nums
+              max-sm:col-start-3"
+          >
+            {{ player.in }}
+          </span>
+          <span class="text-ft-ink-30 text-[13px]">→</span>
+          <span class="text-ft-ink-50 text-right text-[13px] tabular-nums">
+            {{ player.out ?? '—' }}
+          </span>
+          <span class="text-ft-ink-30 text-[13px]">=</span>
+          <Balance
+            class="text-right text-[13px] tabular-nums"
+            :value="balance(player)"
           />
+          <div
+            class="ml-1 max-sm:col-start-8 max-sm:row-span-2 max-sm:row-start-1"
+          >
+            <InputNumberStep
+              v-model="deltas[player.name]"
+              size="small"
+              :step="1"
+              :min="Number.MIN_SAFE_INTEGER"
+            />
+          </div>
         </li>
       </ul>
 
