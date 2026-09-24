@@ -49,3 +49,10 @@ jobs:
 
       - name: Pull and restart
         run: docker compose pull && docker compose up -d
+
+      - name: Diagnostics
+        if: failure()
+        run: |
+          docker compose ps -a
+          docker inspect poker-notes-mongo --format '{{json .State}}' || true
+          docker logs poker-notes-mongo --tail 80 2>&1 || true
