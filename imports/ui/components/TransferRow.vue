@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { PlayerColor } from '@/types'
+import PlayerName from '@/ui/components/PlayerName.vue'
 import TransferArrow from '@/ui/components/TransferArrow.vue'
 
 defineProps<{
   from: string
   to: string
   value: number
+  colors: Map<string, PlayerColor>
 }>()
 </script>
 
@@ -13,9 +16,17 @@ defineProps<{
     class="bg-ft-surface border-ft-ink-10 col-span-full grid grid-cols-subgrid
       items-center rounded-xl border px-3 py-[10px]"
   >
-    <span class="text-ft-ink-70 min-w-0 break-words">{{ from }}</span>
+    <PlayerName
+      :name="from"
+      :color="colors.get(from)"
+      class="min-w-0 break-words"
+    />
     <TransferArrow class="text-ft-ink-30 dark:text-ft-ink-70 mx-2" />
-    <span class="text-ft-ink min-w-0 font-semibold break-words">{{ to }}</span>
+    <PlayerName
+      :name="to"
+      :color="colors.get(to)"
+      class="min-w-0 break-words"
+    />
     <span
       class="text-ft-ink justify-self-end text-[16px] font-bold mr-2 ml-2"
       >{{ value }}</span

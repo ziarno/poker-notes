@@ -8,7 +8,6 @@ import { useI18n } from 'vue-i18n'
 
 import { addTransfer, setAdjustments } from '@/api/methods'
 import { useIsGameEditor } from '@/composables'
-import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
@@ -16,6 +15,7 @@ import AdjustmentsDialog from '@/ui/views/GameDetails/components/AdjustmentsDial
 import {
   applyAdjustments,
   getGameSettlement,
+  getHistoryPlayerColors,
   hasAdjustments,
   isGameFinished,
   isGameInOutEqual,
@@ -40,9 +40,7 @@ const settlement = computed<Transfer[]>(() => {
   return getGameSettlement(applyAdjustments(game))
 })
 
-function pretty(name: string): string {
-  return name === POT_KEY_NAME ? t('pot').toUpperCase() : name
-}
+const playerColors = computed(() => getHistoryPlayerColors(game.history))
 
 function addToTransfers(transfer: Transfer) {
   addTransfer({ gameId: game._id, transfer })
@@ -144,9 +142,10 @@ function confirmResetAdjustments() {
         <TransferRow
           v-for="transfer in settlement"
           :key="`${transfer.from}-${transfer.to}-${transfer.value}`"
-          :from="pretty(transfer.from)"
-          :to="pretty(transfer.to)"
+          :from="transfer.from"
+          :to="transfer.to"
           :value="transfer.value"
+          :colors="playerColors"
         >
           <template #action>
             <button

@@ -8,10 +8,12 @@ import { Game, NewPlayer, Player } from '@/types'
 import AnimatedNumber from '@/ui/components/AnimatedNumber.vue'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewPlayer from '@/ui/components/InputNewPlayer.vue'
+import PlayerName from '@/ui/components/PlayerName.vue'
 import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog.vue'
 import {
   balanceToString,
   getAdjustment,
+  getHistoryPlayerColors,
   getTotalIn,
   getTotalOut,
   isNumber,
@@ -37,6 +39,8 @@ const players = computed(() =>
     }
   })
 )
+
+const playerColors = computed(() => getHistoryPlayerColors(game.history))
 
 const totalIn = computed(() => getTotalIn(game))
 const totalOut = computed(() => getTotalOut(game))
@@ -101,8 +105,11 @@ const gridCols = 'grid grid-cols-[1.3fr_1fr_1fr_1fr]'
       @keydown.enter.prevent="onRowClick(player as Player)"
       @keydown.space.prevent="onRowClick(player as Player)"
     >
-      <div class="text-md">
-        {{ player.name }}
+      <div class="text-md min-w-0 break-words">
+        <PlayerName
+          :name="player.name"
+          :color="playerColors.get(player.name)"
+        />
       </div>
       <div class="text-ft-ink-70 text-right text-[16px]">
         <AnimatedNumber :value="player.in" />

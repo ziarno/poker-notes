@@ -7,12 +7,12 @@ import {
   removeTransfer as removeTransferMethod,
 } from '@/api/methods/games.methods.ts'
 import { useDeleteConfirmationDialog, useIsGameEditor } from '@/composables'
-import { POT_KEY_NAME } from '@/constants'
 import { Game, Transfer } from '@/types'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
+import { getHistoryPlayerColors } from '@/utils'
 
 const { game } = defineProps<{
   game: Game
@@ -24,10 +24,7 @@ const isAddingNewTransfer = ref(false)
 
 const count = computed(() => game.transfers.length)
 const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
-
-function name(n: string) {
-  return n === POT_KEY_NAME ? t('pot').toUpperCase() : n
-}
+const playerColors = computed(() => getHistoryPlayerColors(game.history))
 
 async function addTransfer(transfer: Transfer) {
   addTransferMethod({ gameId: game._id!, transfer })
@@ -56,9 +53,10 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
       <TransferRow
         v-for="transfer in game.transfers"
         :key="`${transfer.from}-${transfer.to}-${transfer.value}`"
-        :from="name(transfer.from)"
-        :to="name(transfer.to)"
+        :from="transfer.from"
+        :to="transfer.to"
         :value="transfer.value"
+        :colors="playerColors"
       >
         <template #action>
           <button
