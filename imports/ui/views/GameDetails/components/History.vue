@@ -3,24 +3,33 @@ import { toNumber } from 'lodash'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useFormattedDate, useGetName } from '@/composables'
-import { NBSP } from '@/constants'
+import { useFormattedDate } from '@/composables'
+import { NBSP, POT_KEY_NAME } from '@/constants'
 import { HistoryItem } from '@/types'
+import PlayerName from '@/ui/components/PlayerName.vue'
 import TransferArrow from '@/ui/components/TransferArrow.vue'
-import { balanceToString } from '@/utils'
+import { balanceToString, getPlayerColors } from '@/utils'
 
 const { history } = defineProps<{
   history: HistoryItem[]
 }>()
 
 const { t } = useI18n()
-const getName = useGetName()
 
 const sortedHistory = computed(() => {
   if (!history?.length) return []
   return [...history].sort(
     (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   )
+})
+
+const playerColors = computed(() => {
+  const names = history.flatMap(item =>
+    'transfer' in item
+      ? [item.transfer.from, item.transfer.to]
+      : [item.playerName]
+  )
+  return getPlayerColors(names.filter(name => name !== POT_KEY_NAME))
 })
 
 function inDiff(oldValue: number | null, newValue: number | null): string {
@@ -117,8 +126,10 @@ function getColorClass(item: HistoryItem): string {
 
         <span class="mb-5 flex-1 pl-3 leading-tight whitespace-pre-wrap">
           <template v-if="item.type === 'player_added'">
-            {{ getName(item.playerName)
-            }}<template v-if="item.in">: {{ item.in }}</template>
+            <PlayerName
+              :name="item.playerName"
+              :color="playerColors.get(item.playerName)"
+            /><template v-if="item.in">: {{ item.in }}</template>
           </template>
           <i18n-t
             v-else-if="item.type === 'player_in_changed'"
@@ -126,7 +137,10 @@ function getColorClass(item: HistoryItem): string {
             tag="span"
           >
             <template #name>
-              {{ getName(item.playerName) }}
+              <PlayerName
+                :name="item.playerName"
+                :color="playerColors.get(item.playerName)"
+              />
             </template>
             <template #diff>
               <strong>
@@ -152,8 +166,10 @@ function getColorClass(item: HistoryItem): string {
             tag="span"
           >
             <template #name
-              ><strong>{{ getName(item.playerName) }}</strong></template
-            >
+              ><PlayerName
+                :name="item.playerName"
+                :color="playerColors.get(item.playerName)"
+            /></template>
             <template #newValue
               ><strong>{{ item.newValue }}</strong></template
             >
@@ -171,16 +187,23 @@ function getColorClass(item: HistoryItem): string {
               item.type === 'transfer_added'
                 ? t('transfer')
                 : t('transfer_removed')
-            }}{{ '\n' }}{{ getName(item.transfer.from)
-            }}<TransferArrow
+            }}{{ '\n'
+            }}<PlayerName
+              :name="item.transfer.from"
+              :color="playerColors.get(item.transfer.from)"
+            /><TransferArrow
               class="mx-1 inline-block align-middle text-ft-ink-30
                 dark:text-ft-ink-70"
-            />{{ getName(item.transfer.to) }}:{{ NBSP
-            }}<strong>{{ item.transfer.value }}</strong></template
+            /><PlayerName
+              :name="item.transfer.to"
+              :color="playerColors.get(item.transfer.to)"
+            />:{{ NBSP }}<strong>{{ item.transfer.value }}</strong></template
           >
           <template v-else-if="'playerName' in item"
-            ><strong>{{ getName(item.playerName) }}</strong></template
-          >
+            ><PlayerName
+              :name="item.playerName"
+              :color="playerColors.get(item.playerName)"
+          /></template>
         </span>
       </div>
     </TransitionGroup>

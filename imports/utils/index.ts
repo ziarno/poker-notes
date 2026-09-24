@@ -7,6 +7,7 @@ export * from './gameId.utils.ts'
 export * from './gameSettlement.utils.ts'
 export * from './number.utils.ts'
 export * from './pinCode.utils.ts'
+export * from './playerColor.utils.ts'
 export * from './string.utils.ts'
 
 // This barrel is CLIENT-ONLY. Do not import it from server-side code

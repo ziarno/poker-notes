@@ -93,6 +93,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+@utility ft-player-name {
+  color: var(--player-color);
+  @variant dark {
+    color: var(--player-color-dark);
+  }
+}
+
 /* List enter/leave/move transitions — GameDetails transfers, settlement, history.
    Used with <TransitionGroup name="ft-list">. */
 .ft-list-move,
