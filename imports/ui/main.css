@@ -100,6 +100,15 @@
   }
 }
 
+/* Resolves the player color (same vars as ft-player-name) into --accent for
+   borders, fills and gradient stops. Falls back to neutral ink, used for POT. */
+@utility ft-player-accent {
+  --accent: var(--player-color, var(--color-ft-ink-50));
+  @variant dark {
+    --accent: var(--player-color-dark, var(--color-ft-ink-50));
+  }
+}
+
 /* List enter/leave/move transitions — GameDetails transfers, settlement, history.
    Used with <TransitionGroup name="ft-list">. */
 .ft-list-move,

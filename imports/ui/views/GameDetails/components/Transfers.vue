@@ -2,16 +2,13 @@
 import { TransitionGroup, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import {
-  addTransfer as addTransferMethod,
-  removeTransfer as removeTransferMethod,
-} from '@/api/methods/games.methods.ts'
+import { removeTransfer as removeTransferMethod } from '@/api/methods/games.methods.ts'
 import { useDeleteConfirmationDialog, useIsGameEditor } from '@/composables'
 import { Game, Transfer } from '@/types'
 import DashedAddButton from '@/ui/components/DashedAddButton.vue'
-import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
+import AddTransferDialog from '@/ui/views/GameDetails/components/AddTransferDialog.vue'
 import { getGamePlayerColors } from '@/utils'
 
 const { game } = defineProps<{
@@ -20,16 +17,11 @@ const { game } = defineProps<{
 
 const { t } = useI18n()
 const isEditor = useIsGameEditor(() => game)
-const isAddingNewTransfer = ref(false)
+const showAddTransferDialog = ref(false)
 
 const count = computed(() => game.transfers.length)
 const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
 const playerColors = computed(() => getGamePlayerColors(game))
-
-async function addTransfer(transfer: Transfer) {
-  addTransferMethod({ gameId: game._id!, transfer })
-  isAddingNewTransfer.value = false
-}
 
 function removeTransfer(transfer: Transfer) {
   return removeTransferMethod({ gameId: game._id!, transfer })
@@ -83,16 +75,10 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
 
     <div v-if="isEditor" class="mt-[10px]">
       <DashedAddButton
-        v-if="!isAddingNewTransfer"
         :label="t('add_transfer')"
-        @click="isAddingNewTransfer = true"
+        @click="showAddTransferDialog = true"
       />
-      <InputNewTransfer
-        v-else
-        :game="game"
-        @add="addTransfer"
-        @cancel="isAddingNewTransfer = false"
-      />
+      <AddTransferDialog v-model:visible="showAddTransferDialog" :game="game" />
     </div>
   </section>
 </template>
