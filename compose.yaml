@@ -24,7 +24,9 @@ services:
         condition: service_healthy
 
   mongo:
-    image: mongo:8
+    # Pinned: data is at featureCompatibilityVersion 7.0, which 8.2+ refuses to
+    # start with. Raise FCV to 8.0 before moving to a newer tag.
+    image: mongo:8.0
     container_name: poker-notes-mongo
     restart: unless-stopped
     security_opt:
