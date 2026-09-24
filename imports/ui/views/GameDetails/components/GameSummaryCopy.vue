@@ -82,8 +82,8 @@ function onCollapsed(collapsed: boolean) {
   <button
     v-if="isSupported"
     type="button"
-    class="bg-ft-green inline-flex cursor-pointer items-center gap-[6px]
-      rounded-full border-none px-[14px] py-2 font-sans text-xs font-semibold
+    class="bg-ft-green inline-flex cursor-pointer items-center gap-1.5
+      rounded-full border-none px-3.5 py-2 font-sans text-xs font-semibold
       text-white shadow-[0_3px_10px_-4px_var(--color-ft-green-ink)]"
     @click="copyToClipboard"
   >
