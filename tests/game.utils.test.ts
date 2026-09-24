@@ -176,6 +176,28 @@ describe('getGameSettlement', function () {
     assert.deepStrictEqual(result[0], { from: 'Bob', to: 'Alice', value: 30 })
   })
 
+  it('should keep the remaining transfers when a suggested one is paid', function () {
+    const players = [
+      { name: 'Ala', in: 50, out: 60 },
+      { name: 'Bela', in: 50, out: 77 },
+      { name: 'Cela', in: 150, out: 0 },
+      { name: 'Dela', in: 50, out: 40 },
+      { name: 'Ela', in: 100, out: 55 },
+      { name: 'Fela', in: 100, out: 220 },
+      { name: 'Hela', in: 50, out: 98 },
+    ]
+    const settlement = getGameSettlement(createGame(players))
+
+    for (const paid of settlement) {
+      const result = getGameSettlement(createGame(players, [paid]))
+      assert.deepStrictEqual(
+        result,
+        settlement.filter(t => t !== paid),
+        `paying ${paid.from} -> ${paid.to} changed other transfers`
+      )
+    }
+  })
+
   it('should settle a 16-player game correctly and quickly', function () {
     this.timeout(10_000)
     const game = createGame(gameA.players, gameA.transfers)

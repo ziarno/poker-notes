@@ -10,10 +10,11 @@ export function getGameSettlement(game: FinishedGame): Transfer[] {
   // Positive balance = needs to receive; negative = needs to pay.
   // The POT is a virtual participant: it starts at zero and only shows up
   // here if existing transfers moved money in or out of it.
-  const balances = new Map<string, number>([[POT_KEY_NAME, 0]])
+  const results = new Map<string, number>([[POT_KEY_NAME, 0]])
   for (const player of game.players) {
-    balances.set(player.name, player.out - player.in)
+    results.set(player.name, player.out - player.in)
   }
+  const balances = new Map(results)
   for (const t of game.transfers) {
     const from = balances.get(t.from)
     if (from !== undefined) balances.set(t.from, from + t.value)
@@ -21,14 +22,15 @@ export function getGameSettlement(game: FinishedGame): Transfer[] {
     if (to !== undefined) balances.set(t.to, to - t.value)
   }
 
-  const winners: { name: string; balance: number }[] = []
-  const losers: { name: string; balance: number }[] = []
+  const winners: { name: string; balance: number; result: number }[] = []
+  const losers: { name: string; balance: number; result: number }[] = []
   for (const [name, balance] of balances) {
-    if (balance > 0) winners.push({ name, balance })
-    else if (balance < 0) losers.push({ name, balance })
+    const result = results.get(name)!
+    if (balance > 0) winners.push({ name, balance, result })
+    else if (balance < 0) losers.push({ name, balance, result })
   }
-  winners.sort((a, b) => b.balance - a.balance)
-  losers.sort((a, b) => a.balance - b.balance)
+  winners.sort((a, b) => b.result - a.result)
+  losers.sort((a, b) => a.result - b.result)
 
   const transfers: Transfer[] = []
   let wi = 0
