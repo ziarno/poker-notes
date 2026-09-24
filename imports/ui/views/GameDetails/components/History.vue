@@ -5,25 +5,25 @@ import { useI18n } from 'vue-i18n'
 
 import { useFormattedDate } from '@/composables'
 import { NBSP } from '@/constants'
-import { HistoryItem } from '@/types'
+import { Game, HistoryItem } from '@/types'
 import PlayerName from '@/ui/components/PlayerName.vue'
 import TransferArrow from '@/ui/components/TransferArrow.vue'
-import { balanceToString, getHistoryPlayerColors } from '@/utils'
+import { balanceToString, getGamePlayerColors } from '@/utils'
 
-const { history } = defineProps<{
-  history: HistoryItem[]
+const { game } = defineProps<{
+  game: Game
 }>()
 
 const { t } = useI18n()
 
 const sortedHistory = computed(() => {
-  if (!history?.length) return []
-  return [...history].sort(
+  if (!game.history?.length) return []
+  return [...game.history].sort(
     (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   )
 })
 
-const playerColors = computed(() => getHistoryPlayerColors(history))
+const playerColors = computed(() => getGamePlayerColors(game))
 
 function inDiff(oldValue: number | null, newValue: number | null): string {
   return balanceToString(toNumber(newValue) - toNumber(oldValue))

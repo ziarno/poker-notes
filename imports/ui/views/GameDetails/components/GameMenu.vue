@@ -22,7 +22,7 @@ const { t } = useI18n()
     :header="t('history')"
     class="p-right:w-[440px] p-right:max-w-[85vw] rounded-tl-[14px]"
   >
-    <History :history="game.history" />
+    <History :game="game" />
 
     <template #footer>
       <GameMenuActions :game="game" @saved="visible = false" />

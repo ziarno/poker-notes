@@ -13,7 +13,7 @@ import EditPlayerDialog from '@/ui/views/GameDetails/components/EditPlayerDialog
 import {
   balanceToString,
   getAdjustment,
-  getHistoryPlayerColors,
+  getGamePlayerColors,
   getTotalIn,
   getTotalOut,
   isNumber,
@@ -40,7 +40,7 @@ const players = computed(() =>
   })
 )
 
-const playerColors = computed(() => getHistoryPlayerColors(game.history))
+const playerColors = computed(() => getGamePlayerColors(game))
 
 const totalIn = computed(() => getTotalIn(game))
 const totalOut = computed(() => getTotalOut(game))

@@ -14,7 +14,7 @@ import {
   balanceToString,
   distributeEvenly,
   getAdjustment,
-  getHistoryPlayerColors,
+  getGamePlayerColors,
   getInOutDifference,
   hasAdjustments,
   isNumber,
@@ -29,7 +29,7 @@ const { t } = useI18n()
 const deltas = ref<Record<string, number | null>>({})
 const included = ref<Record<string, boolean>>({})
 
-const playerColors = computed(() => getHistoryPlayerColors(game.history))
+const playerColors = computed(() => getGamePlayerColors(game))
 const target = computed(() => getInOutDifference(game))
 const assigned = computed(() =>
   game.players.reduce((sum, p) => sum + (deltas.value[p.name] ?? 0), 0)

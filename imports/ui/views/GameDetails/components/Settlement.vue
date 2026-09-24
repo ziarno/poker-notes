@@ -15,7 +15,7 @@ import AdjustmentsDialog from '@/ui/views/GameDetails/components/AdjustmentsDial
 import {
   applyAdjustments,
   getGameSettlement,
-  getHistoryPlayerColors,
+  getGamePlayerColors,
   hasAdjustments,
   isGameFinished,
   isGameInOutEqual,
@@ -40,7 +40,7 @@ const settlement = computed<Transfer[]>(() => {
   return getGameSettlement(applyAdjustments(game))
 })
 
-const playerColors = computed(() => getHistoryPlayerColors(game.history))
+const playerColors = computed(() => getGamePlayerColors(game))
 
 function addToTransfers(transfer: Transfer) {
   addTransfer({ gameId: game._id, transfer })

@@ -12,7 +12,7 @@ import DashedAddButton from '@/ui/components/DashedAddButton.vue'
 import InputNewTransfer from '@/ui/components/InputNewTransfer.vue'
 import SectionTitle from '@/ui/components/SectionTitle.vue'
 import TransferRow from '@/ui/components/TransferRow.vue'
-import { getHistoryPlayerColors } from '@/utils'
+import { getGamePlayerColors } from '@/utils'
 
 const { game } = defineProps<{
   game: Game
@@ -24,7 +24,7 @@ const isAddingNewTransfer = ref(false)
 
 const count = computed(() => game.transfers.length)
 const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
-const playerColors = computed(() => getHistoryPlayerColors(game.history))
+const playerColors = computed(() => getGamePlayerColors(game))
 
 async function addTransfer(transfer: Transfer) {
   addTransferMethod({ gameId: game._id!, transfer })

@@ -114,7 +114,7 @@ function copyLink() {
             <GameMenuActions :game="game" />
           </div>
           <History
-            :history="game.history"
+            :game="game"
             class="xl:min-h-0 xl:flex-1 xl:overflow-y-auto"
           />
         </div>
