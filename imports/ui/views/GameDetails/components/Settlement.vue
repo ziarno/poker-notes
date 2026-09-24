@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Message from '@volt/Message.vue'
 import SecondaryButton from '@volt/SecondaryButton.vue'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
@@ -75,32 +76,30 @@ function confirmResetAdjustments() {
   <section class="mt-5 mb-6">
     <SectionTitle>{{ t('settlement') }}</SectionTitle>
 
-    <div
-      v-if="showAdjustments"
-      class="bg-ft-green-soft text-ft-green-ink mb-3 flex flex-col items-center
-        gap-3 rounded-xl px-[14px] py-[10px] text-center text-[15px]"
-    >
-      <div class="flex items-center gap-2">
-        <i class="pi pi-info-circle"></i>
-        <span>{{ t('adjustments_info') }}</span>
+    <Message v-if="showAdjustments" severity="info" class="mb-3 rounded-xl">
+      <div class="flex flex-col items-center gap-3 py-1 text-center">
+        <div class="flex items-center gap-2">
+          <i class="pi pi-info-circle"></i>
+          <span>{{ t('adjustments_info') }}</span>
+        </div>
+        <div v-if="isCreator" class="flex flex-wrap justify-center gap-2">
+          <SecondaryButton
+            size="small"
+            outlined
+            icon="pi pi-pencil"
+            :label="t('adjustments_edit')"
+            @click="isAdjustmentsDialogVisible = true"
+          />
+          <SecondaryButton
+            size="small"
+            outlined
+            icon="pi pi-refresh"
+            :label="t('adjustments_reset')"
+            @click="confirmResetAdjustments"
+          />
+        </div>
       </div>
-      <div v-if="isCreator" class="flex flex-wrap justify-center gap-2">
-        <SecondaryButton
-          size="small"
-          outlined
-          icon="pi pi-pencil"
-          :label="t('adjustments_edit')"
-          @click="isAdjustmentsDialogVisible = true"
-        />
-        <SecondaryButton
-          size="small"
-          outlined
-          icon="pi pi-refresh"
-          :label="t('adjustments_reset')"
-          @click="confirmResetAdjustments"
-        />
-      </div>
-    </div>
+    </Message>
 
     <p v-if="isOngoing" class="text-ft-ink-50 py-3 text-center text-[15px]">
       {{ t('settlement_info') }}
