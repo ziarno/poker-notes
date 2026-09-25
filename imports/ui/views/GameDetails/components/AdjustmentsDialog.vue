@@ -10,6 +10,7 @@ import { Game, Player } from '@/types'
 import Balance from '@/ui/components/Balance.vue'
 import InputNumberStep from '@/ui/components/InputNumberStep.vue'
 import PlayerName from '@/ui/components/PlayerName.vue'
+import TransferArrow from '@/ui/components/TransferArrow.vue'
 import {
   balanceToString,
   distributeEvenly,
@@ -39,8 +40,6 @@ const includedCount = computed(
   () => game.players.filter(p => included.value[p.name]).length
 )
 
-// Prefill with the saved adjustments. When editing, only players that already
-// have an adjustment stay included in the even split.
 watch(visible, isVisible => {
   if (!isVisible) return
   const isEditing = hasAdjustments(game)
@@ -55,7 +54,6 @@ watch(visible, isVisible => {
   )
 })
 
-// Balance with the adjustment currently entered in the modal.
 function balance(player: Player): number | null {
   if (!isNumber(player.out)) return null
   return player.out + (deltas.value[player.name] ?? 0) - player.in
@@ -111,7 +109,7 @@ function confirm() {
       <ul
         class="m-0 grid list-none
           grid-cols-[auto_minmax(0,1fr)_repeat(5,auto)_auto] items-center
-          gap-x-2 p-0"
+          gap-x-2 p-0 max-sm:grid-cols-[auto_repeat(5,auto)_minmax(0,1fr)_auto]"
       >
         <li
           v-for="player in game.players"
@@ -127,21 +125,20 @@ function confirm() {
           />
           <label
             :for="`adjustment-${player.name}`"
-            class="min-w-0 cursor-pointer break-words max-sm:col-[2/-2]"
+            class="min-w-0 cursor-pointer wrap-break-word max-sm:col-[2/-2]"
           >
             <PlayerName
               :name="player.name"
               :color="playerColors.get(player.name)"
             />
           </label>
-          <!-- On narrow screens the numbers wrap under the name. -->
           <span
             class="text-ft-ink-50 text-right text-[13px] tabular-nums
-              max-sm:col-start-3"
+              max-sm:col-start-2"
           >
             {{ player.in }}
           </span>
-          <span class="text-ft-ink-30 text-[13px]">→</span>
+          <TransferArrow class="text-ft-ink-30 h-2 w-4" />
           <span class="text-ft-ink-50 text-right text-[13px] tabular-nums">
             {{ player.out ?? '—' }}
           </span>
