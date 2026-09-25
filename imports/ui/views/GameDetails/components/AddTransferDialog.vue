@@ -7,9 +7,14 @@ import InputNumber from 'primevue/inputnumber'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { addTransfer as addTransferMethod } from '@/api/methods/games.methods.ts'
+import {
+  addTransfer as addTransferMethod,
+  editTransfer as editTransferMethod,
+  removeTransfer as removeTransferMethod,
+} from '@/api/methods/games.methods.ts'
+import { useDeleteConfirmationDialog } from '@/composables'
 import { POT_KEY_NAME } from '@/constants'
-import { Game, PlayerColor } from '@/types'
+import { Game, PlayerColor, Transfer } from '@/types'
 import PlayerName from '@/ui/components/PlayerName.vue'
 import AddTransferArrow, {
   ArrowBoxes,
@@ -18,8 +23,10 @@ import { getGamePlayerColors } from '@/utils'
 
 type Side = 'from' | 'to'
 
-const { game } = defineProps<{
+// With a transfer the dialog edits it, otherwise it adds a new one.
+const { game, transfer = null } = defineProps<{
   game: Game
+  transfer?: Transfer | null
 }>()
 
 const visible = defineModel<boolean>('visible', { default: false })
@@ -40,9 +47,9 @@ const canSubmit = computed(
 // Every open starts fresh, so closing without saving needs no cleanup.
 watch(visible, isVisible => {
   if (!isVisible) return
-  from.value = undefined
-  to.value = undefined
-  value.value = game.buyIn
+  from.value = transfer?.from
+  to.value = transfer?.to
+  value.value = transfer?.value ?? game.buyIn
 })
 
 // Pressing the selected entry again deselects it.
@@ -61,12 +68,20 @@ function step(delta: number) {
 
 function submit() {
   if (!canSubmit.value || !visible.value) return
-  addTransferMethod({
-    gameId: game._id!,
-    transfer: { from: from.value!, to: to.value!, value: value.value! },
-  })
+  const newTransfer = { from: from.value!, to: to.value!, value: value.value! }
+  if (transfer) {
+    editTransferMethod({ gameId: game._id!, transfer, newTransfer })
+  } else {
+    addTransferMethod({ gameId: game._id!, transfer: newTransfer })
+  }
   visible.value = false
 }
+
+const confirmRemove = useDeleteConfirmationDialog(async () => {
+  if (!transfer) return
+  await removeTransferMethod({ gameId: game._id!, transfer })
+  visible.value = false
+})
 
 const colorVars = (color?: PlayerColor) =>
   color
@@ -116,7 +131,7 @@ useResizeObserver(grid, measure)
     v-model:visible="visible"
     :draggable="false"
     modal
-    :header="t('add_transfer')"
+    :header="transfer ? t('edit_transfer') : t('add_transfer')"
     closable
     class="m-4 flex w-lg max-w-screen flex-col"
   >
@@ -204,9 +219,24 @@ useResizeObserver(grid, measure)
             />
           </div>
         </div>
-        <div class="flex justify-end gap-2">
-          <SecondaryButton :label="t('cancel')" @click="visible = false" />
-          <Button type="submit" :label="t('add')" :disabled="!canSubmit" />
+        <div class="flex gap-2">
+          <SecondaryButton
+            v-if="transfer"
+            outlined
+            icon="pi pi-trash"
+            :aria-label="t('delete_confirm_button')"
+            @click="confirmRemove"
+          />
+          <SecondaryButton
+            class="ml-auto"
+            :label="t('cancel')"
+            @click="visible = false"
+          />
+          <Button
+            type="submit"
+            :label="transfer ? t('save') : t('add')"
+            :disabled="!canSubmit"
+          />
         </div>
       </form>
     </template>

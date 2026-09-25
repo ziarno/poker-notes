@@ -30,6 +30,7 @@ transfer: Transfer
 transfer_removed: Transfer usunięty
 transfers: Transfery
 add_transfer: Dodaj transfer
+edit_transfer: Edytuj transfer
 no_transfers: Brak transferów
 from: Od
 to: Do

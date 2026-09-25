@@ -17,7 +17,8 @@ const { game } = defineProps<{
 
 const { t } = useI18n()
 const isEditor = useIsGameEditor(() => game)
-const showAddTransferDialog = ref(false)
+const showTransferDialog = ref(false)
+const editedTransfer = ref<Transfer | null>(null)
 
 const count = computed(() => game.transfers.length)
 const subtitle = computed(() => `${t('transfers')} · ${count.value}`)
@@ -38,6 +39,12 @@ function removeTransfer(transfer: Transfer) {
 }
 
 const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
+
+function openTransferDialog(transfer: Transfer | null) {
+  if (!isEditor.value) return
+  editedTransfer.value = transfer
+  showTransferDialog.value = true
+}
 </script>
 
 <template>
@@ -59,6 +66,12 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
         :to="transfer.to"
         :value="transfer.value"
         :colors="playerColors"
+        :class="isEditor && 'hover:border-ft-ink-30 cursor-pointer'"
+        :role="isEditor ? 'button' : undefined"
+        :tabindex="isEditor ? 0 : undefined"
+        :aria-label="isEditor ? t('edit_transfer') : undefined"
+        @click="openTransferDialog(transfer)"
+        @keydown.enter.space.prevent="openTransferDialog(transfer)"
       >
         <template #action>
           <button
@@ -67,8 +80,9 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
             class="border-ft-ink-10 text-ft-ink-50 hover:text-ft-red
               hover:border-ft-red bg-ft-surface inline-flex h-[26px] w-[26px]
               cursor-pointer items-center justify-center rounded-full border"
-            :aria-label="t('cancel')"
-            @click="confirmRemoveTransfer(transfer)"
+            :aria-label="t('delete_confirm_button')"
+            @click.stop="confirmRemoveTransfer(transfer)"
+            @keydown.enter.space.stop
           >
             <i class="pi pi-times text-[12px]"></i>
           </button>
@@ -86,9 +100,13 @@ const confirmRemoveTransfer = useDeleteConfirmationDialog(removeTransfer)
     <div v-if="isEditor" class="mt-[10px]">
       <DashedAddButton
         :label="t('add_transfer')"
-        @click="showAddTransferDialog = true"
+        @click="openTransferDialog(null)"
       />
-      <AddTransferDialog v-model:visible="showAddTransferDialog" :game="game" />
+      <AddTransferDialog
+        v-model:visible="showTransferDialog"
+        :game="game"
+        :transfer="editedTransfer"
+      />
     </div>
   </section>
 </template>

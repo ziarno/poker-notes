@@ -18,7 +18,10 @@ import {
 } from '@/types'
 import { isNumber } from '@/utils/number.utils.ts'
 import { capitalizeFirstLetter } from '@/utils/string.utils.ts'
-import { removeTransferFromGame } from '@/utils/transfer.utils.ts'
+import {
+  editTransferInGame,
+  removeTransferFromGame,
+} from '@/utils/transfer.utils.ts'
 
 function check(condition: boolean, message: string) {
   if (!condition) throw new Meteor.Error('validation-error', message)
@@ -224,6 +227,45 @@ export const removeTransfer = createMethod({
     const game = await GamesCollection.findOneAsync(gameId)
     if (!game) return
     const updated = removeTransferFromGame(game, transfer)
+    if (updated === game) return
+    return GamesCollection.updateAsync(
+      { _id: gameId },
+      { $set: { transfers: updated.transfers, history: updated.history } }
+    )
+  },
+})
+
+export const editTransfer = createMethod({
+  name: 'editTransfer',
+  validate({
+    gameId,
+    transfer,
+    newTransfer,
+  }: {
+    gameId: string
+    transfer: Transfer
+    newTransfer: Transfer
+  }) {
+    check(!!gameId, 'Game ID is required')
+    check(!!transfer.from, 'Transfer sender is required')
+    check(!!transfer.to, 'Transfer receiver is required')
+    check(!!newTransfer.from?.trim(), 'Transfer sender is required')
+    check(!!newTransfer.to?.trim(), 'Transfer receiver is required')
+    check(newTransfer.from !== newTransfer.to, 'Cannot transfer to yourself')
+    check(newTransfer.value > 0, 'Transfer value must be positive')
+  },
+  async run({
+    gameId,
+    transfer,
+    newTransfer,
+  }: {
+    gameId: string
+    transfer: Transfer
+    newTransfer: Transfer
+  }) {
+    const game = await GamesCollection.findOneAsync(gameId)
+    if (!game) return
+    const updated = editTransferInGame(game, transfer, newTransfer)
     if (updated === game) return
     return GamesCollection.updateAsync(
       { _id: gameId },
