@@ -1,32 +1,16 @@
 import { PLAYER_COLORS, POT_KEY_NAME } from '@/constants'
 import { Game, HistoryItem, PlayerColor } from '@/types'
 
-// FNV-1a — a stable string hash, so a name always prefers the same slot.
-function hashString(str: string): number {
-  let hash = 0x811c9dc5
-  for (let i = 0; i < str.length; i++) {
-    hash ^= str.charCodeAt(i)
-    hash = Math.imul(hash, 0x01000193)
-  }
-  return hash >>> 0
-}
-
-// Assigns colors in the given order: each name takes its preferred palette slot,
-// or the next free one. The slot always wraps by the full palette size, so
-// appending a name never changes the colors of the names before it.
+// Assigns palette colors in the given order, so the first players get the most
+// distinct ones and appending a name never changes the colors of the names
+// before it. Past the palette size, colors repeat.
 export function getPlayerColors(
   names: Iterable<string>
 ): Map<string, PlayerColor> {
-  const size = PLAYER_COLORS.length
-  const taken = new Set<number>()
   const colors = new Map<string, PlayerColor>()
   for (const name of names) {
     if (colors.has(name)) continue
-    if (taken.size === size) taken.clear()
-    let slot = hashString(name) % size
-    while (taken.has(slot)) slot = (slot + 1) % size
-    taken.add(slot)
-    colors.set(name, PLAYER_COLORS[slot]!)
+    colors.set(name, PLAYER_COLORS[colors.size % PLAYER_COLORS.length]!)
   }
   return colors
 }
